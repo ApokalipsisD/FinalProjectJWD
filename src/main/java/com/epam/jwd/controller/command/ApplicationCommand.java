@@ -26,6 +26,7 @@ public enum ApplicationCommand {
     ApplicationCommand(Command command, Role... roles) {
         this.command = command;
         this.allowRoles = roles != null && roles.length > 0 ? Arrays.asList(roles) : Role.valuesAsList();
+
     }
 
     public static Command getCommandByString(String name) {
