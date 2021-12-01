@@ -17,8 +17,8 @@ public enum ApplicationCommand {
     SHOW_LOGIN(ShowLoginPageCommand.getInstance()),
     SHOW_MAIN(ShowMainPageCommand.getInstance()),
     SHOW_SIGN_UP(ShowSignUpPageCommand.getInstance()),
-    SIGN_UP_COMMAND(SignUpCommand.getInstance()),
-    LOGIN();
+    SIGN_UP_COMMAND(SignUpCommand.getInstance());
+
 
     private final Command command;
     private final List<Role> allowRoles;
