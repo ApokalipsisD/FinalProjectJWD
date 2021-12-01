@@ -1,8 +1,77 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd"
-        >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+    <jsp-config>
+        <taglib>
+            <taglib-uri>jwdTags</taglib-uri>
+            <taglib-location>/WEB-INF/tld/customTags.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+<!--    <error-page>-->
+<!--        <error-code>404</error-code>-->
+<!--        <location>/WEB-INF/jsp/error.jsp</location>-->
+<!--    </error-page>-->
+<!--    <servlet>-->
+<!--        <servlet-name>servletJ</servlet-name>-->
+<!--        <servlet-class>com.epam.jwd.controller.servlet.Controller</servlet-class>-->
+<!--    </servlet>-->
+<!--    <servlet>-->
+<!--        <servlet-name>servlet</servlet-name>-->
+<!--        <servlet-class>com.epam.jwd.controller.servlet.Controller</servlet-class>-->
+
+<!--        <init-param>-->
+<!--            <param-name>name</param-name>-->
+<!--            <param-value>Baichik</param-value>-->
+<!--        </init-param>-->
+<!--    </servlet>-->
+
+<!--    <servlet>-->
+<!--        <servlet-name>servletSession</servlet-name>-->
+<!--        <servlet-class>com.epam.jwd.controller.servlet.Controller</servlet-class>-->
+<!--    </servlet>-->
+
+<!--    <servlet>-->
+<!--        <servlet-name>servletJsp</servlet-name>-->
+<!--        <servlet-class>/WEB-INF/jsp/error.jsp</servlet-class>-->
+<!--    </servlet>-->
+
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>servlet</servlet-name>-->
+<!--        <url-pattern>/serv</url-pattern>-->
+<!--    </servlet-mapping>-->
+<!--    <servlet-mapping>-->
+<!--        <servlet-name>servletSession</servlet-name>-->
+<!--        <url-pattern>/session</url-pattern>-->
+<!--    </servlet-mapping>-->
+
+<!--    <context-param>-->
+<!--        <param-name>name</param-name>-->
+<!--        <param-value>Сука на мне дай топ дай топ</param-value>-->
+<!--    </context-param>-->
+
+<!--    <servlet>-->
+<!--        <servlet-name>sevletJsp</servlet-name>-->
+<!--        <servlet-class>com.epam.jwd.controller.servlet.Controller</servlet-class>-->
+<!--    </servlet>-->
+
+
+<!--    <welcome-file-list>-->
+<!--        <welcome-file>index.jsp</welcome-file>-->
+<!--    </welcome-file-list>-->
+
 </web-app>
+
+
+<!--        <%@ page contentType="text/html;charset=UTF-8" language="java" %>-->
+<!--        <html>-->
+<!--        <head>-->
+<!--            <title>JSP Timing</title>-->
+<!--        </head>-->
+<!--        <body>-->
+<!--            <jsp:forward page="/controller"/>-->
+<!--        </body>-->

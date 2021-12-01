@@ -1,33 +1,36 @@
 package com.epam.jwd.dao.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Account extends Entity<Integer> {
     private String firstName;
-    private String secondName;
+    private String lastName;
     private String email;
     private Date birthDate;
-    private Role role;
+    private Integer roleId;
+    private Integer userId;
 
-    public Account(Integer id, String firstName, String secondName, String email, Date birthDate, Role role) {
+    public Account(){
+
+    }
+
+    public Account(String firstName, String lastName, String email, Date birthDate, Integer roleId, Integer userId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.birthDate = birthDate;
+        this.roleId = roleId;
+        this.userId = userId;
+    }
+
+    public Account(Integer id, String firstName, String lastName, String email, Date birthDate, Integer roleId, Integer userId) {
         this.id = id;
         this.firstName = firstName;
-        this.secondName = secondName;
+        this.lastName = lastName;
         this.email = email;
         this.birthDate = birthDate;
-        this.role = role;
-    }
-
-    public Account(String firstName, String secondName, String email, Date birthDate, Role role) {
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.email = email;
-        this.birthDate = birthDate;
-        this.role = role;
-    }
-
-    public Account() {
-
+        this.roleId = roleId;
+        this.userId = userId;
     }
 
     public String getFirstName() {
@@ -38,12 +41,12 @@ public class Account extends Entity<Integer> {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -62,12 +65,20 @@ public class Account extends Entity<Integer> {
         this.birthDate = birthDate;
     }
 
-    public Role getRole() {
-        return role;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     @Override
@@ -78,19 +89,21 @@ public class Account extends Entity<Integer> {
         Account account = (Account) o;
 
         if (!firstName.equals(account.firstName)) return false;
-        if (!secondName.equals(account.secondName)) return false;
+        if (!lastName.equals(account.lastName)) return false;
         if (!email.equals(account.email)) return false;
         if (!birthDate.equals(account.birthDate)) return false;
-        return role == account.role;
+        if (!roleId.equals(account.roleId)) return false;
+        return userId.equals(account.userId);
     }
 
     @Override
     public int hashCode() {
         int result = firstName.hashCode();
-        result = 31 * result + secondName.hashCode();
+        result = 31 * result + lastName.hashCode();
         result = 31 * result + email.hashCode();
         result = 31 * result + birthDate.hashCode();
-        result = 31 * result + role.hashCode();
+        result = 31 * result + roleId.hashCode();
+        result = 31 * result + userId.hashCode();
         return result;
     }
 
@@ -99,10 +112,11 @@ public class Account extends Entity<Integer> {
         return "Account{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
-                ", role=" + role +
+                ", roleId=" + roleId +
+                ", userId=" + userId +
                 '}';
     }
 }

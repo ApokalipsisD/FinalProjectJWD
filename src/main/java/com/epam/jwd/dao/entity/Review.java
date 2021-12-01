@@ -1,47 +1,47 @@
 package com.epam.jwd.dao.entity;
 
 public class Review extends Entity<Integer> {
-    private Course course;
-    private Account account;
+    private Integer courseId;
+    private Integer studentId;
     private int grade;
     private int attendance;
     private String review;
 
-    public Review(Integer id, Course course, Account account, int grade, int attendance, String review) {
+    public Review(){
+
+    }
+
+    public Review(Integer courseId, Integer studentId, int grade, int attendance, String review) {
+        this.courseId = courseId;
+        this.studentId = studentId;
+        this.grade = grade;
+        this.attendance = attendance;
+        this.review = review;
+    }
+
+    public Review(Integer id, Integer courseId, Integer studentId, int grade, int attendance, String review) {
         this.id = id;
-        this.course = course;
-        this.account = account;
+        this.courseId = courseId;
+        this.studentId = studentId;
         this.grade = grade;
         this.attendance = attendance;
         this.review = review;
     }
 
-    public Review(Course course, Account account, int grade, int attendance, String review) {
-        this.course = course;
-        this.account = account;
-        this.grade = grade;
-        this.attendance = attendance;
-        this.review = review;
+    public Integer getCourseId() {
+        return courseId;
     }
 
-    public Review() {
-
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 
-    public Course getCourse() {
-        return course;
+    public Integer getStudentId() {
+        return studentId;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
     }
 
     public int getGrade() {
@@ -77,15 +77,15 @@ public class Review extends Entity<Integer> {
 
         if (grade != review1.grade) return false;
         if (attendance != review1.attendance) return false;
-        if (!course.equals(review1.course)) return false;
-        if (!account.equals(review1.account)) return false;
+        if (!courseId.equals(review1.courseId)) return false;
+        if (!studentId.equals(review1.studentId)) return false;
         return review.equals(review1.review);
     }
 
     @Override
     public int hashCode() {
-        int result = course.hashCode();
-        result = 31 * result + account.hashCode();
+        int result = courseId.hashCode();
+        result = 31 * result + studentId.hashCode();
         result = 31 * result + grade;
         result = 31 * result + attendance;
         result = 31 * result + review.hashCode();
@@ -96,8 +96,8 @@ public class Review extends Entity<Integer> {
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", course=" + course +
-                ", account=" + account +
+                ", courseId=" + courseId +
+                ", accountId=" + studentId +
                 ", grade=" + grade +
                 ", attendance=" + attendance +
                 ", review='" + review + '\'' +

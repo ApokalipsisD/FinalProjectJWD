@@ -1,36 +1,36 @@
 package com.epam.jwd.dao.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Course extends Entity<Integer> {
     private String title;
     private String description;
     private Date startDate;
     private Date endDate;
-    private Status courseStatus;
-    private Account account;
+    private Integer courseStatus;
+    private Integer teacherId;
 
-    public Course(Integer id, String title, String description, Date startDate, Date endDate, Status courseStatus, Account account) {
+    public Course(){
+
+    }
+
+    public Course(String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.courseStatus = courseStatus;
+        this.teacherId = teacherId;
+    }
+
+    public Course(Integer id, String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.courseStatus = courseStatus;
-        this.account = account;
-    }
-
-    public Course(String title, String description, Date startDate, Date endDate, Status courseStatus, Account account) {
-        this.title = title;
-        this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.courseStatus = courseStatus;
-        this.account = account;
-    }
-
-    public Course() {
-
+        this.teacherId = teacherId;
     }
 
     public String getTitle() {
@@ -65,20 +65,20 @@ public class Course extends Entity<Integer> {
         this.endDate = endDate;
     }
 
-    public Status getCourseStatus() {
+    public Integer getCourseStatus() {
         return courseStatus;
     }
 
-    public void setCourseStatus(Status courseStatus) {
+    public void setCourseStatus(Integer courseStatus) {
         this.courseStatus = courseStatus;
     }
 
-    public Account getAccount() {
-        return account;
+    public Integer getTeacherId() {
+        return teacherId;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setTeacherId(Integer teacherId) {
+        this.teacherId = teacherId;
     }
 
     @Override
@@ -92,8 +92,8 @@ public class Course extends Entity<Integer> {
         if (!description.equals(course.description)) return false;
         if (!startDate.equals(course.startDate)) return false;
         if (!endDate.equals(course.endDate)) return false;
-        if (courseStatus != course.courseStatus) return false;
-        return account.equals(course.account);
+        if (!courseStatus.equals(course.courseStatus)) return false;
+        return teacherId.equals(course.teacherId);
     }
 
     @Override
@@ -103,20 +103,20 @@ public class Course extends Entity<Integer> {
         result = 31 * result + startDate.hashCode();
         result = 31 * result + endDate.hashCode();
         result = 31 * result + courseStatus.hashCode();
-        result = 31 * result + account.hashCode();
+        result = 31 * result + teacherId.hashCode();
         return result;
     }
 
     @Override
     public String toString() {
         return "Course{" +
-                ", id=" + id +
+                "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", courseStatus=" + courseStatus +
-                ", account=" + account +
+                ", teacherId=" + teacherId +
                 '}';
     }
 }

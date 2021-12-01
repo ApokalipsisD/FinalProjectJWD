@@ -11,9 +11,9 @@ import java.util.List;
 public interface Dao<T extends Entity<K>, K> {
     T save(T entity);
 
-    T update(T entity);
+    boolean update(T entity);
 
-    void delete(T entity);
+    boolean delete(T entity);
 
     T findById(K id);
 

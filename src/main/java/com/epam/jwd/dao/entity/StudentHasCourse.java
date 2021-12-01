@@ -1,39 +1,43 @@
 package com.epam.jwd.dao.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class StudentHasCourse extends Entity<Integer> {
-    private Course course;
-    private Account account;
+    private Integer courseId;
+    private Integer studentId;
     private Date applicationDate;
 
-    public StudentHasCourse(Integer id, Course course, Account account, Date applicationDate) {
+    public StudentHasCourse() {
+
+    }
+
+    public StudentHasCourse(Integer courseId, Integer studentId, Date applicationDate) {
+        this.courseId = courseId;
+        this.studentId = studentId;
+        this.applicationDate = applicationDate;
+    }
+
+    public StudentHasCourse(Integer id, Integer courseId, Integer studentId, Date applicationDate) {
         this.id = id;
-        this.course = course;
-        this.account = account;
+        this.courseId = courseId;
+        this.studentId = studentId;
         this.applicationDate = applicationDate;
     }
 
-    public StudentHasCourse(Course course, Account account, Date applicationDate) {
-        this.course = course;
-        this.account = account;
-        this.applicationDate = applicationDate;
+    public Integer getCourseId() {
+        return courseId;
     }
 
-    public Course getCourse() {
-        return course;
+    public void setCourseId(Integer courseId) {
+        this.courseId = courseId;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public Integer getStudentId() {
+        return studentId;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setStudentId(Integer studentId) {
+        this.studentId = studentId;
     }
 
     public Date getApplicationDate() {
@@ -51,15 +55,15 @@ public class StudentHasCourse extends Entity<Integer> {
 
         StudentHasCourse that = (StudentHasCourse) o;
 
-        if (!course.equals(that.course)) return false;
-        if (!account.equals(that.account)) return false;
+        if (!courseId.equals(that.courseId)) return false;
+        if (!studentId.equals(that.studentId)) return false;
         return applicationDate.equals(that.applicationDate);
     }
 
     @Override
     public int hashCode() {
-        int result = course.hashCode();
-        result = 31 * result + account.hashCode();
+        int result = courseId.hashCode();
+        result = 31 * result + studentId.hashCode();
         result = 31 * result + applicationDate.hashCode();
         return result;
     }
@@ -68,8 +72,8 @@ public class StudentHasCourse extends Entity<Integer> {
     public String toString() {
         return "StudentHasCourse{" +
                 "id=" + id +
-                ", course=" + course +
-                ", account=" + account +
+                ", courseId=" + courseId +
+                ", accountId=" + studentId +
                 ", applicationDate=" + applicationDate +
                 '}';
     }

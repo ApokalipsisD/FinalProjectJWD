@@ -1,4 +1,4 @@
-package com.epam.jwd.dao.impl;
+package com.epam.jwd.dao.impl.connectionPool;
 
 import com.epam.jwd.dao.exception.ConnectionPoolException;
 import com.epam.jwd.dao.api.ConnectionPool;
@@ -95,9 +95,13 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     }
 
     @Override
-    public synchronized Connection takeConnection() throws InterruptedException {
+    public synchronized Connection takeConnection() {
         while (availableConnections.isEmpty()) {
-            this.wait();
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                //
+            }
         }
         final ProxyConnection connection = availableConnections.poll();
         usedConnections.add(connection);
@@ -110,6 +114,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             availableConnections.add((ProxyConnection) connection);
             this.notifyAll();
         } else {
+            System.out.println(1);
             //todo log and something else
         }
     }

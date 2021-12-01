@@ -1,4 +1,4 @@
-package com.epam.jwd.dao.impl;
+package com.epam.jwd.dao.impl.connectionPool;
 
 import com.epam.jwd.dao.api.ConnectionPool;
 
@@ -77,11 +77,7 @@ public class ProxyConnection implements Connection {
 
     @Override
     public void close() {
-        try {
-            this.connectionPool.returnConnection(connection);
-        } catch (InterruptedException e) {
-            // log
-        }
+        this.connectionPool.returnConnection(connection);
     }
 
     @Override

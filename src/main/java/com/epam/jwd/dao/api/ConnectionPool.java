@@ -7,7 +7,7 @@ public interface ConnectionPool {
 
     void shutdown();
 
-    Connection takeConnection() throws InterruptedException;
+    Connection takeConnection();
 
-    void returnConnection(Connection connection) throws InterruptedException;
+    void returnConnection(Connection connection);
 }
