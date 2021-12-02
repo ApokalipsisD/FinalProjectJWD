@@ -19,7 +19,7 @@
 
 <br>
 <c:choose>
-    <c:when test="${empty sessionScope.currentUser}">
+    <c:when test="${empty sessionScope.userName}">
         <a href="${pageContext.request.contextPath}/controller?command=show_sign_up">SignUp page</a><br>
         <a href="${pageContext.request.contextPath}/controller?command=show_login">Login page</a>
     </c:when>

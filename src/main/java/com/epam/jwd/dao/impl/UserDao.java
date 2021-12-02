@@ -3,13 +3,10 @@ package com.epam.jwd.dao.impl;
 import com.epam.jwd.dao.api.ConnectionPool;
 import com.epam.jwd.dao.api.Dao;
 import com.epam.jwd.dao.entity.User;
+import com.epam.jwd.dao.exception.DaoException;
 import com.epam.jwd.dao.impl.connectionPool.ConnectionPoolImpl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,10 +114,11 @@ public class UserDao implements Dao<User, Integer> {
         return userList;
     }
 
-    public User getByLogin(String login){
+    public User findByLogin(String login) {
         Connection connection = pool.takeConnection();
         User user = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_USER_BY_LOGIN)) {
+            preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 user = new User(resultSet.getInt(1),
@@ -128,6 +126,8 @@ public class UserDao implements Dao<User, Integer> {
                         resultSet.getString(3));
             }
             resultSet.close();
+        } catch (DaoException e){
+            throw new DaoException("UserNotFound");
         } catch (SQLException e) {
             //
         } finally {

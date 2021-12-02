@@ -23,7 +23,7 @@ public class SignUpCommand implements Command {
     private static final String REPEAT_PASSWORD_ATTRIBUTE = "repeat_password";
     private static final String ERROR_ATTRIBUTE = "error";
 
-    private static final String CURRENT_USER = "currentUser";
+    private static final String CURRENT_USER = "currentUserSignUp";
 
     private static final ResponseContext SUCCESSFUL_SIGN_UP_CONTEXT = new ResponseContext() {
         @Override
@@ -75,8 +75,7 @@ public class SignUpCommand implements Command {
             return ERROR_CONTEXT;
         }
 
-        UserDto userDto = new UserDto(login, password);
-        UserDto user = userService.create(userDto);
+        UserDto user = userService.create(new UserDto(login, password));
 
         HttpSession session;
 
@@ -86,8 +85,8 @@ public class SignUpCommand implements Command {
             return ERROR_CONTEXT;
         }
 
-        session.setAttribute(CURRENT_USER, user);
-        context.addAttributeToJsp("message", "Registration is successfully completed");
+//        session.setAttribute(CURRENT_USER, user);
+//        context.addAttributeToJsp("message", "Registration is successfully completed");
 
 
 

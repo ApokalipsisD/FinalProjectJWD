@@ -56,6 +56,16 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
         return userDtoList;
     }
 
+    public UserDto getByLogin(String login) {
+        User result = userDao.findByLogin(login);
+        if (Objects.isNull(result)) {
+            throw new ServiceException(MessageException.USER_NOT_FOUND_EXCEPTION);
+        }
+        return converter.convert(result);
+    }
+
+
+
     // getByLogin
     // sort
 }

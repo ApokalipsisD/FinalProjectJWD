@@ -5,6 +5,7 @@ import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ public class LoginCommand implements Command {
 
     private final Service<UserDto, Integer> userService = new UserServiceImpl();
     private static final Command INSTANCE = new LoginCommand();
+    UserServiceImpl user = new UserServiceImpl();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
     private static final String FAIL_PAGE_PATH = "/WEB-INF/jsp/login.jsp";
@@ -22,7 +24,7 @@ public class LoginCommand implements Command {
     private static final String PASSWORD_ATTRIBUTE = "password";
     private static final String ERROR_ATTRIBUTE = "error";
 
-    private static final String CURRENT_USER = "currentUser";
+    private static final String CURRENT_USER = "userName";
 
     private static final ResponseContext SUCCESSFUL_LOG_IN_CONTEXT = new ResponseContext() {
         @Override
@@ -60,7 +62,7 @@ public class LoginCommand implements Command {
         }
     };
 
-    public static Command getInstance(){
+    public static Command getInstance() {
         return INSTANCE;
     }
 
@@ -69,22 +71,29 @@ public class LoginCommand implements Command {
 
         String login = context.getParameterByName(LOGIN_ATTRIBUTE);
         String password = context.getParameterByName(PASSWORD_ATTRIBUTE);
-
-
-        UserDto userDto = new UserDto(login, password);
-        UserDto user = userService.create(userDto);
-
         HttpSession session;
-
         if (context.getCurrentSession().isPresent()) {
             session = context.getCurrentSession().get();
         } else {
             return ERROR_CONTEXT;
         }
+        UserDto userDto;
+        try {
+            userDto = user.getByLogin(login);
+            if (userDto.getPassword().equals(password)) {
+                session.setAttribute(CURRENT_USER, userDto.getLogin());
+                context.addAttributeToJsp("message", "Log in is successfully completed");
+            } else {
+               return ERROR_CONTEXT;
+            }
+        } catch (ServiceException e) {
+            return ERROR_CONTEXT;
+        }
 
-        session.setAttribute(CURRENT_USER, user);
-        context.addAttributeToJsp("message", "Registration is successfully completed");
 
+
+//        session.setAttribute(CURRENT_USER, user);
+//        context.addAttributeToJsp("message", "Registration is successfully completed");
 
 
         return SUCCESSFUL_LOG_IN_CONTEXT;
