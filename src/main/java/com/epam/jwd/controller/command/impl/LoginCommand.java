@@ -3,7 +3,6 @@ package com.epam.jwd.controller.command.impl;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
-import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.UserServiceImpl;
@@ -12,9 +11,8 @@ import javax.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
 
-    private final Service<UserDto, Integer> userService = new UserServiceImpl();
     private static final Command INSTANCE = new LoginCommand();
-    UserServiceImpl user = new UserServiceImpl();
+    private static final UserServiceImpl user = new UserServiceImpl();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
     private static final String FAIL_PAGE_PATH = "/WEB-INF/jsp/login.jsp";

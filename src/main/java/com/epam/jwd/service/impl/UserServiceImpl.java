@@ -64,8 +64,5 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
         return converter.convert(result);
     }
 
-
-
-    // getByLogin
     // sort
 }
