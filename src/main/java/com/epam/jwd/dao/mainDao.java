@@ -12,6 +12,8 @@ public class mainDao {
         ConnectionPool pool = ConnectionPoolImpl.getInstance();
         Connection connection = pool.takeConnection();
 
+
+
 //        Statement statement = connection.prepareStatement("SELECT * FROM account");
 //        Statement statement = connection.createStatement();
 
@@ -21,7 +23,8 @@ public class mainDao {
 //        UserDao userDao = new UserDao();
 //        System.out.println(userDao.save(user));
 
-
+//        AccountDao accountDao = new AccountDao();
+//        System.out.println(accountDao.getAccountByUserId(1));
 //        Account account = new Account("EVE", "Baichik", "game@mail.ru", Date.valueOf("2002-06-21"), 1, 1);
 //        AccountDao accountDao = new AccountDao();
 //        System.out.println(userDao.save(user));

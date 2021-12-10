@@ -15,9 +15,13 @@ public class UserDao implements Dao<User, Integer> {
     private static final String SQL_DELETE_USER = "DELETE FROM user WHERE id=?";
     private static final String SQL_FIND_USER_BY_ID = "SELECT id, login, password FROM user WHERE id=?";
     private static final String SQL_FIND_USER_BY_LOGIN = "SELECT id, login, password FROM user WHERE login=?";
+    private static final String SQL_CHECK_IF_EXISTS_BY_LOGIN = "SELECT EXISTS(SELECT id FROM user WHERE login = ?);";
+
     private static final String SQL_FIND_ALL_USERS = "SELECT id, login, password FROM user";
 
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
+
+    private static final AccountDao accountDao = new AccountDao();
 
     //todo transactions and add to account
     @Override
@@ -31,6 +35,9 @@ public class UserDao implements Dao<User, Integer> {
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
                 user.setId(resultSet.getInt(1));
+            }
+            if (!accountDao.saveAfterUser(connection, user)) {
+                throw new SQLException();
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -125,13 +132,36 @@ public class UserDao implements Dao<User, Integer> {
                         resultSet.getString(3));
             }
             resultSet.close();
-//        } catch (DaoException e){
-//            throw new DaoException("UserNotFound");
         } catch (SQLException e) {
             //
         } finally {
             pool.returnConnection(connection);
         }
         return user;
+    }
+
+    public boolean checkIfLoginFree(String login) {
+        Connection connection = pool.takeConnection();
+        boolean isLoginFree = false;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_CHECK_IF_EXISTS_BY_LOGIN)) {
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next() && resultSet.getInt(1) == 0) {
+                isLoginFree = true;
+            }
+//            while (resultSet.next()) {
+//                System.out.println(resultSet.getInt(1));
+//                user = new User(resultSet.getInt(1),
+//                        resultSet.getString(2),
+//                        resultSet.getString(3));
+//            }
+            resultSet.close();
+        } catch (SQLException e) {
+            //
+        } finally {
+            pool.returnConnection(connection);
+        }
+        return isLoginFree;
+//        return Objects.isNull(findByLogin(login));
     }
 }

@@ -17,13 +17,13 @@ public class UserValidator implements Validator<UserDto, Integer> {
     private static final String PASSWORD_PATTERN = "(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}";
 
     @Override
-    public void validate(UserDto userDto) {
+    public void validate(UserDto userDto) throws ServiceException {
         validateId(userDto.getId());
         validateLogin(userDto.getLogin());
         validatePassword(userDto.getPassword());
     }
 
-    private void validateLogin(String login) {
+    private void validateLogin(String login) throws ServiceException {
         if (Objects.isNull(login)) {
             throw new ServiceException(MessageException.LOGIN_IS_NULL_EXCEPTION);
         }
@@ -35,7 +35,7 @@ public class UserValidator implements Validator<UserDto, Integer> {
 
     }
 
-    private void validatePassword(String password) {
+    private void validatePassword(String password) throws ServiceException {
         if (Objects.isNull(password)) {
             throw new ServiceException(MessageException.PASSWORD_IS_NULL_EXCEPTION);
         }

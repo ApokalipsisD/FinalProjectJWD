@@ -1,13 +1,17 @@
 package com.epam.jwd.service.dto;
 
+import com.epam.jwd.dao.entity.Role;
+
 import java.sql.Date;
+import java.util.Objects;
 
 public class AccountDto extends AbstractDto<Integer>{
     private String firstName;
     private String lastName;
     private String email;
     private Date birthDate;
-    private Integer roleId;
+    private Role role;
+//    private Integer roleId;
     private Integer userId;
 
     public AccountDto(){
@@ -19,7 +23,7 @@ public class AccountDto extends AbstractDto<Integer>{
         this.lastName = lastName;
         this.email = email;
         this.birthDate = birthDate;
-        this.roleId = roleId;
+        this.role = Role.getById(roleId);
         this.userId = userId;
     }
 
@@ -29,7 +33,7 @@ public class AccountDto extends AbstractDto<Integer>{
         this.lastName = lastName;
         this.email = email;
         this.birthDate = birthDate;
-        this.roleId = roleId;
+        this.role = Role.getById(roleId);
         this.userId = userId;
     }
 
@@ -65,12 +69,12 @@ public class AccountDto extends AbstractDto<Integer>{
         this.birthDate = birthDate;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Integer getUserId() {
@@ -85,26 +89,13 @@ public class AccountDto extends AbstractDto<Integer>{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         AccountDto that = (AccountDto) o;
-
-        if (!firstName.equals(that.firstName)) return false;
-        if (!lastName.equals(that.lastName)) return false;
-        if (!email.equals(that.email)) return false;
-        if (!birthDate.equals(that.birthDate)) return false;
-        if (!roleId.equals(that.roleId)) return false;
-        return userId.equals(that.userId);
+        return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) && Objects.equals(birthDate, that.birthDate) && role == that.role && userId.equals(that.userId);
     }
 
     @Override
     public int hashCode() {
-        int result = firstName.hashCode();
-        result = 31 * result + lastName.hashCode();
-        result = 31 * result + email.hashCode();
-        result = 31 * result + birthDate.hashCode();
-        result = 31 * result + roleId.hashCode();
-        result = 31 * result + userId.hashCode();
-        return result;
+        return Objects.hash(firstName, lastName, email, birthDate, role, userId);
     }
 
     @Override
@@ -115,7 +106,7 @@ public class AccountDto extends AbstractDto<Integer>{
                 ", secondName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", birthDate=" + birthDate +
-                ", roleId=" + roleId +
+                ", role=" + role +
                 ", userId=" + userId +
                 '}';
     }

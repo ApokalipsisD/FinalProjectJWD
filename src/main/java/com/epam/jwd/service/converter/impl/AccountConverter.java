@@ -12,7 +12,7 @@ public class AccountConverter implements Converter<Account, AccountDto, Integer>
                 accountDto.getLastName(),
                 accountDto.getEmail(),
                 accountDto.getBirthDate(),
-                accountDto.getRoleId(),
+                accountDto.getRole().getId(),
                 accountDto.getUserId());
     }
 
@@ -23,7 +23,7 @@ public class AccountConverter implements Converter<Account, AccountDto, Integer>
                 account.getLastName(),
                 account.getEmail(),
                 account.getBirthDate(),
-                account.getRoleId(),
+                account.getRole().getId(),
                 account.getUserId());
     }
 }

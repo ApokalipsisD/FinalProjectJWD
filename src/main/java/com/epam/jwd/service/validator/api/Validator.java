@@ -7,9 +7,9 @@ import com.epam.jwd.service.exception.ServiceException;
 import java.util.Objects;
 
 public interface Validator<T extends AbstractDto<K>, K> {
-    void validate(T value);
+    void validate(T value) throws ServiceException;
 
-    default void validateId(K value) {
+    default void validateId(K value) throws ServiceException {
         if (Objects.isNull(value)) {
             throw new ServiceException(MessageException.ID_IS_NULL_EXCEPTION);
         }

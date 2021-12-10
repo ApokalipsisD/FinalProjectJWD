@@ -14,7 +14,7 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
     private static final Integer MAX_ATTENDANCE = 100;
 
     @Override
-    public void validate(ReviewDto value) {
+    public void validate(ReviewDto value) throws ServiceException {
         validateId(value.getId());
         validateCourseId(value.getCourseId());
         validateStudentId(value.getStudentId());
@@ -23,19 +23,19 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
         validateReview(value.getReview());
     }
 
-    private void validateCourseId(Integer id) {
+    private void validateCourseId(Integer id) throws ServiceException {
         if (Objects.isNull(id)) {
             throw new ServiceException(MessageException.COURSE_ID_IS_NULL_EXCEPTION);
         }
     }
 
-    private void validateStudentId(Integer id) {
+    private void validateStudentId(Integer id) throws ServiceException {
         if (Objects.isNull(id)) {
             throw new ServiceException(MessageException.STUDENT_ID_IS_NULL_EXCEPTION);
         }
     }
 
-    private void validateGrade(Integer grade) {
+    private void validateGrade(Integer grade) throws ServiceException {
         if (Objects.isNull(grade)) {
             throw new ServiceException(MessageException.GRADE_IS_NULL_EXCEPTION);
         }
@@ -45,7 +45,7 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
         }
     }
 
-    private void validateAttendance(Integer attendance) {
+    private void validateAttendance(Integer attendance) throws ServiceException {
         if (Objects.isNull(attendance)) {
             throw new ServiceException(MessageException.ATTENDANCE_IS_NULL_EXCEPTION);
         }
@@ -56,7 +56,7 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
     }
 
     // check for null in db
-    private void validateReview(String review) {
+    private void validateReview(String review) throws ServiceException {
         if (Objects.isNull(review)) {
             throw new ServiceException(MessageException.REVIEW_IS_NULL_EXCEPTION);
         }

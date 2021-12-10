@@ -21,8 +21,9 @@ public class LoginCommand implements Command {
     private static final String LOGIN_ATTRIBUTE = "login";
     private static final String PASSWORD_ATTRIBUTE = "password";
     private static final String ERROR_ATTRIBUTE = "error";
+    private static final String CURRENT_USER = "user";
 
-    private static final String CURRENT_USER = "userName";
+    private static final String CURRENT_USER_NAME = "userName";
 
     private static final ResponseContext SUCCESSFUL_LOG_IN_CONTEXT = new ResponseContext() {
         @Override
@@ -79,7 +80,8 @@ public class LoginCommand implements Command {
         try {
             userDto = user.getByLogin(login);
             if (userDto.getPassword().equals(password)) {
-                session.setAttribute(CURRENT_USER, userDto.getLogin());
+                session.setAttribute(CURRENT_USER, userDto);
+                session.setAttribute(CURRENT_USER_NAME, userDto.getLogin());
                 context.addAttributeToJsp("message", "Log in is successfully completed");
             } else {
                return ERROR_CONTEXT;

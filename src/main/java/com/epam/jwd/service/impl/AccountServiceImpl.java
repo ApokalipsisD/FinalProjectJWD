@@ -21,25 +21,25 @@ public class AccountServiceImpl implements Service<AccountDto, Integer> {
     private final Converter<Account, AccountDto, Integer> converter = new AccountConverter();
 
     @Override
-    public AccountDto create(AccountDto accountDto) {
+    public AccountDto create(AccountDto accountDto) throws ServiceException {
         validator.validate(accountDto);
         return converter.convert(accountDao.save(converter.convert(accountDto)));
     }
 
     @Override
-    public boolean update(AccountDto accountDto) {
+    public boolean update(AccountDto accountDto) throws ServiceException {
         validator.validate(accountDto);
         return accountDao.update(converter.convert(accountDto));
     }
 
     @Override
-    public boolean delete(AccountDto accountDto) {
+    public boolean delete(AccountDto accountDto) throws ServiceException {
         validator.validate(accountDto);
         return accountDao.delete(converter.convert(accountDto));
     }
 
     @Override
-    public AccountDto getById(Integer id) {
+    public AccountDto getById(Integer id) throws ServiceException {
         validator.validateId(id);
         Account result = accountDao.findById(id);
         if (Objects.isNull(result)) {
@@ -55,5 +55,10 @@ public class AccountServiceImpl implements Service<AccountDto, Integer> {
         // validate?
         accountList.forEach(account -> accountDtoList.add(converter.convert(account)));
         return accountDtoList;
+    }
+
+    //todo validation
+    public AccountDto getAccountByUserId(Integer id){
+        return converter.convert(accountDao.getAccountByUserId(id));
     }
 }

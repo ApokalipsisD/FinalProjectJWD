@@ -27,19 +27,19 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
     }
 
     @Override
-    public boolean update(UserDto userDto) {
+    public boolean update(UserDto userDto) throws ServiceException {
         validator.validate(userDto);
         return userDao.update(converter.convert(userDto));
     }
 
     @Override
-    public boolean delete(UserDto userDto) {
+    public boolean delete(UserDto userDto) throws ServiceException {
         validator.validate(userDto);
         return userDao.delete(converter.convert(userDto));
     }
 
     @Override
-    public UserDto getById(Integer id) {
+    public UserDto getById(Integer id) throws ServiceException {
         validator.validateId(id);
         User result = userDao.findById(id);
         if (Objects.isNull(result)) {
@@ -56,12 +56,17 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
         return userDtoList;
     }
 
-    public UserDto getByLogin(String login) {
+    public UserDto getByLogin(String login) throws ServiceException {
         User result = userDao.findByLogin(login);
         if (Objects.isNull(result)) {
             throw new ServiceException(MessageException.USER_NOT_FOUND_EXCEPTION);
         }
         return converter.convert(result);
+    }
+
+
+    public boolean checkIfLoginFree(String login){
+       return userDao.checkIfLoginFree(login);
     }
 
     // sort

@@ -21,25 +21,25 @@ public class ReviewServiceImpl implements Service<ReviewDto, Integer> {
     private final Converter<Review, ReviewDto, Integer> converter = new ReviewConverter();
 
     @Override
-    public ReviewDto create(ReviewDto reviewDto) {
+    public ReviewDto create(ReviewDto reviewDto) throws ServiceException {
         validator.validate(reviewDto);
         return converter.convert(reviewDao.save(converter.convert(reviewDto)));
     }
 
     @Override
-    public boolean update(ReviewDto reviewDto) {
+    public boolean update(ReviewDto reviewDto) throws ServiceException {
         validator.validate(reviewDto);
         return reviewDao.update(converter.convert(reviewDto));
     }
 
     @Override
-    public boolean delete(ReviewDto reviewDto) {
+    public boolean delete(ReviewDto reviewDto) throws ServiceException {
         validator.validate(reviewDto);
         return reviewDao.delete(converter.convert(reviewDto));
     }
 
     @Override
-    public ReviewDto getById(Integer id) {
+    public ReviewDto getById(Integer id) throws ServiceException {
         validator.validateId(id);
         Review result = reviewDao.findById(id);
         if (Objects.isNull(result)) {

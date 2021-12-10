@@ -21,25 +21,25 @@ public class CourseServiceImpl implements Service<CourseDto, Integer> {
     private final Converter<Course, CourseDto, Integer> converter = new CourseConverter();
 
     @Override
-    public CourseDto create(CourseDto courseDto) {
+    public CourseDto create(CourseDto courseDto) throws ServiceException {
         validator.validate(courseDto);
         return converter.convert(courseDao.save(converter.convert(courseDto)));
     }
 
     @Override
-    public boolean update(CourseDto courseDto) {
+    public boolean update(CourseDto courseDto) throws ServiceException {
         validator.validate(courseDto);
         return courseDao.update(converter.convert(courseDto));
     }
 
     @Override
-    public boolean delete(CourseDto courseDto) {
+    public boolean delete(CourseDto courseDto) throws ServiceException {
         validator.validate(courseDto);
         return courseDao.delete(converter.convert(courseDto));
     }
 
     @Override
-    public CourseDto getById(Integer id) {
+    public CourseDto getById(Integer id) throws ServiceException {
         validator.validateId(id);
         Course result = courseDao.findById(id);
         if (Objects.isNull(result)) {

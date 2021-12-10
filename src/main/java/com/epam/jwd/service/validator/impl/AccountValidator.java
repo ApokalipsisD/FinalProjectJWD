@@ -7,7 +7,6 @@ import com.epam.jwd.service.validator.api.Validator;
 
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class AccountValidator implements Validator<AccountDto, Integer> {
     private static final Integer MIN_NAME_LENGTH = 2;
@@ -18,20 +17,25 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
     private static final String DATE_PATTERN = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
 
     @Override
-    public void validate(AccountDto value) {
+    public void validate(AccountDto value) throws ServiceException {
         validateId(value.getId());
         validateFirstName(value.getFirstName());
-        validateSecondName(value.getLastName());
-        validateEmail(value.getEmail());
-        validateDate(value.getBirthDate());
-        validateRoleId(value.getRoleId());
-        validateUserId(value.getUserId());
+        if(value.getLastName()!=null){
+            validateLastName(value.getLastName());
+        }
+
+        if(value.getEmail()!=null){
+            validateEmail(value.getEmail());
+        }
+        validateDate(value.getBirthDate().toString());
+//        validateRoleId(value.getRoleId());
+//        validateUserId(value.getUserId());
     }
 
-    private void validateFirstName(String firstName) {
-        if (Objects.isNull(firstName)) {
-            throw new ServiceException(MessageException.FIRST_NAME_IS_NULL_EXCEPTION);
-        }
+    private void validateFirstName(String firstName) throws ServiceException {
+//        if (Objects.isNull(firstName)) {
+//            throw new ServiceException(MessageException.FIRST_NAME_IS_NULL_EXCEPTION);
+//        }
         if (!firstName.matches(NAME_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_FIRST_NAME_EXCEPTION);
         }
@@ -40,10 +44,10 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
         }
     }
 
-    private void validateSecondName(String lastName) {
-        if (Objects.isNull(lastName)) {
-            throw new ServiceException(MessageException.LAST_NAME_IS_NULL_EXCEPTION);
-        }
+    private void validateLastName(String lastName) throws ServiceException {
+//        if (Objects.isNull(lastName)) {
+//            throw new ServiceException(MessageException.LAST_NAME_IS_NULL_EXCEPTION);
+//        }
         if (!lastName.matches(NAME_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_LAST_NAME_EXCEPTION);
         }
@@ -52,34 +56,34 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
         }
     }
 
-    private void validateEmail(String email) {
-        if (Objects.isNull(email)) {
-            throw new ServiceException(MessageException.EMAIL_IS_NULL_EXCEPTION);
-        }
+    private void validateEmail(String email) throws ServiceException {
+//        if (Objects.isNull(email)) {
+//            throw new ServiceException(MessageException.EMAIL_IS_NULL_EXCEPTION);
+//        }
         if (!email.matches(EMAIL_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_EMAIL_EXCEPTION);
         }
     }
 
-    private void validateDate(Date birthDate) {
-        if (Objects.isNull(birthDate)) {
-            throw new ServiceException(MessageException.BIRTH_DATE_IS_NULL_EXCEPTION);
-        }
-        if (!birthDate.toString().matches(DATE_PATTERN)
-                || !birthDate.toLocalDate().isBefore(LocalDate.now())) {
+    public void validateDate(String birthDate) throws ServiceException {
+//        if (Objects.isNull(birthDate)) {
+//            throw new ServiceException(MessageException.BIRTH_DATE_IS_NULL_EXCEPTION);
+//        }
+        if (!birthDate.matches(DATE_PATTERN)
+                || !Date.valueOf(birthDate).toLocalDate().isBefore(LocalDate.now())) {
             throw new ServiceException(MessageException.INCORRECT_DATE_EXCEPTION);
         }
     }
 
     private void validateRoleId(Integer id) {
-        if (Objects.isNull(id)) {
-            throw new ServiceException(MessageException.ROLE_ID_IS_NULL_EXCEPTION);
-        }
+//        if (Objects.isNull(id)) {
+//            throw new ServiceException(MessageException.ROLE_ID_IS_NULL_EXCEPTION);
+//        }
     }
 
     private void validateUserId(Integer id) {
-        if (Objects.isNull(id)) {
-            throw new ServiceException(MessageException.USER_ID_IS_NULL_EXCEPTION);
-        }
+//        if (Objects.isNull(id)) {
+//            throw new ServiceException(MessageException.USER_ID_IS_NULL_EXCEPTION);
+//        }
     }
 }

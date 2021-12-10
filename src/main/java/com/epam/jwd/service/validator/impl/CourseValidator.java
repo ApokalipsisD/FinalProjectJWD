@@ -12,7 +12,7 @@ public class CourseValidator implements Validator<CourseDto, Integer> {
     private static final String DATE_PATTERN = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
 
     @Override
-    public void validate(CourseDto value) {
+    public void validate(CourseDto value) throws ServiceException {
         validateId(value.getId());
         validateTitle(value.getTitle());
         validateDescription(value.getDescription());
@@ -22,19 +22,19 @@ public class CourseValidator implements Validator<CourseDto, Integer> {
         validateTeacherId(value.getTeacherId());
     }
 
-    private void validateTitle(String title) {
+    private void validateTitle(String title) throws ServiceException {
         if (Objects.isNull(title)) {
             throw new ServiceException(MessageException.TITLE_IS_NULL_EXCEPTION);
         }
     }
 
-    private void validateDescription(String description) {
+    private void validateDescription(String description) throws ServiceException {
         if (Objects.isNull(description)) {
             throw new ServiceException(MessageException.DESCRIPTION_IS_NULL_EXCEPTION);
         }
     }
 
-    private void validateStartDate(Date startDate) {
+    private void validateStartDate(Date startDate) throws ServiceException {
         if (Objects.isNull(startDate)) {
             throw new ServiceException(MessageException.START_DATE_IS_NULL_EXCEPTION);
         }
@@ -43,7 +43,7 @@ public class CourseValidator implements Validator<CourseDto, Integer> {
         }
     }
 
-    private void validateEndDate(Date endDate) {
+    private void validateEndDate(Date endDate) throws ServiceException {
         if (Objects.isNull(endDate)) {
             throw new ServiceException(MessageException.END_DATE_IS_NULL_EXCEPTION);
         }
@@ -52,13 +52,13 @@ public class CourseValidator implements Validator<CourseDto, Integer> {
         }
     }
 
-    private void validateCourseStatus(Integer id) {
+    private void validateCourseStatus(Integer id) throws ServiceException {
         if (Objects.isNull(id)) {
             throw new ServiceException(MessageException.COURSE_STATUS_IS_NULL);
         }
     }
 
-    private void validateTeacherId(Integer id) {
+    private void validateTeacherId(Integer id) throws ServiceException {
         if (Objects.isNull(id)) {
             throw new ServiceException(MessageException.TEACHER_ID_IS_NULL);
         }

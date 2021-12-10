@@ -3,15 +3,12 @@ package com.epam.jwd.controller.command.impl;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
-import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.impl.UserServiceImpl;
 
-import javax.servlet.http.HttpSession;
-
 public class SignUpCommand implements Command {
 
-    private final Service<UserDto, Integer> userService = new UserServiceImpl();
+    private static final UserServiceImpl userService = new UserServiceImpl();
     private static final Command INSTANCE = new SignUpCommand();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/login.jsp";
@@ -67,28 +64,24 @@ public class SignUpCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
+
         String login = context.getParameterByName(LOGIN_ATTRIBUTE);
         String password = context.getParameterByName(PASSWORD_ATTRIBUTE);
         String repeatPassword = context.getParameterByName(REPEAT_PASSWORD_ATTRIBUTE);
 
-        if(!password.equals(repeatPassword)){
+
+        if(!password.equals(repeatPassword) || !userService.checkIfLoginFree(login)){
             return ERROR_CONTEXT;
         }
 
         UserDto user = userService.create(new UserDto(login, password));
+//        HttpSession session;
 
-        HttpSession session;
-
-        if (context.getCurrentSession().isPresent()) {
-            session = context.getCurrentSession().get();
-        } else {
-            return ERROR_CONTEXT;
-        }
-
-//        session.setAttribute(CURRENT_USER, user);
-//        context.addAttributeToJsp("message", "Registration is successfully completed");
-
-
+//        if (context.getCurrentSession().isPresent()) {
+//            session = context.getCurrentSession().get();
+//        } else {
+//            return ERROR_CONTEXT;
+//        }
 
         return SUCCESSFUL_SIGN_UP_CONTEXT;
     }
