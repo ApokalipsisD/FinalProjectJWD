@@ -12,7 +12,7 @@ public class CourseConverter implements Converter<Course, CourseDto, Integer> {
                 courseDto.getDescription(),
                 courseDto.getStartDate(),
                 courseDto.getEndDate(),
-                courseDto.getCourseStatus(),
+                courseDto.getCourseStatus().getId(),
                 courseDto.getTeacherId());
     }
 
@@ -23,7 +23,7 @@ public class CourseConverter implements Converter<Course, CourseDto, Integer> {
                 course.getDescription(),
                 course.getStartDate(),
                 course.getEndDate(),
-                course.getCourseStatus(),
+                course.getCourseStatus().getId(),
                 course.getTeacherId());
     }
 }

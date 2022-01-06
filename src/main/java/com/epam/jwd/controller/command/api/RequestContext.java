@@ -6,6 +6,8 @@ import java.util.Optional;
 public interface RequestContext {
     void addAttributeToJsp(String name, Object attribute);
 
+    void removeAttributeFromJsp(String name);
+
     Optional<HttpSession> getCurrentSession();
 
     String getParameterByName(String paramName);
@@ -13,4 +15,8 @@ public interface RequestContext {
     void invalidateCurrentSession();
 
     HttpSession createSession();
+
+    String getContextPath();
+
+    String getHeader();
 }

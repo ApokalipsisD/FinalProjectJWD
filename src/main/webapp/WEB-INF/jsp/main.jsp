@@ -24,8 +24,10 @@
     <c:otherwise>
         <a href="${pageContext.request.contextPath}/controller?command=logout">Logout</a>
         <a href="${pageContext.request.contextPath}/controller?command=show_profile_page">Profile</a>
+        <a href="${pageContext.request.contextPath}/controller?command=show_courses">Courses</a>
     </c:otherwise>
 </c:choose>
 <jwdt:currentTime/>
+<%--${message}--%>
 </body>
 </html>

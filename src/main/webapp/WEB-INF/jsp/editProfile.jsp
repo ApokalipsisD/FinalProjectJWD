@@ -102,7 +102,7 @@
                     </div>
                     <div class="form-group">
                         <label for="inputAddress5">${birthDate}</label>
-                        <input type="text" name="birthDate" class="form-control" id="inputAddress5"
+                        <input type="date" name="birthDate" class="form-control" id="inputAddress5"
                         <c:choose>
                         <c:when test="${not empty sessionScope.account.birthDate}">
                             value="${sessionScope.account.birthDate}"

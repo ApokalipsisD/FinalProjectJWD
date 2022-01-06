@@ -1,14 +1,20 @@
 package com.epam.jwd.dao.entity;
 
+import com.epam.jwd.dao.api.Dao;
+import com.epam.jwd.dao.impl.AccountDao;
+
 import java.sql.Date;
+import java.util.Objects;
 
 public class Course extends Entity<Integer> {
     private String title;
     private String description;
     private Date startDate;
     private Date endDate;
-    private Integer courseStatus;
+    private Status courseStatus;
     private Integer teacherId;
+
+    private static final Dao<Account, Integer> accountDao = new AccountDao();
 
     public Course(){
 
@@ -19,7 +25,7 @@ public class Course extends Entity<Integer> {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.courseStatus = courseStatus;
+        this.courseStatus = Status.getById(courseStatus);
         this.teacherId = teacherId;
     }
 
@@ -29,7 +35,7 @@ public class Course extends Entity<Integer> {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.courseStatus = courseStatus;
+        this.courseStatus = Status.getById(courseStatus);
         this.teacherId = teacherId;
     }
 
@@ -65,11 +71,11 @@ public class Course extends Entity<Integer> {
         this.endDate = endDate;
     }
 
-    public Integer getCourseStatus() {
+    public Status getCourseStatus() {
         return courseStatus;
     }
 
-    public void setCourseStatus(Integer courseStatus) {
+    public void setCourseStatus(Status courseStatus) {
         this.courseStatus = courseStatus;
     }
 
@@ -85,38 +91,25 @@ public class Course extends Entity<Integer> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Course course = (Course) o;
-
-        if (!title.equals(course.title)) return false;
-        if (!description.equals(course.description)) return false;
-        if (!startDate.equals(course.startDate)) return false;
-        if (!endDate.equals(course.endDate)) return false;
-        if (!courseStatus.equals(course.courseStatus)) return false;
-        return teacherId.equals(course.teacherId);
+        return title.equals(course.title) && description.equals(course.description) && startDate.equals(course.startDate) && endDate.equals(course.endDate) && courseStatus == course.courseStatus && Objects.equals(teacherId, course.teacherId);
     }
 
     @Override
     public int hashCode() {
-        int result = title.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + courseStatus.hashCode();
-        result = 31 * result + teacherId.hashCode();
-        return result;
+        return Objects.hash(title, description, startDate, endDate, courseStatus, teacherId);
     }
 
     @Override
     public String toString() {
         return "Course{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", courseStatus=" + courseStatus +
                 ", teacherId=" + teacherId +
+                ", id=" + id +
                 '}';
     }
 }

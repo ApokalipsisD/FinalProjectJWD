@@ -1,9 +1,7 @@
 package com.epam.jwd.dao.impl.connectionPool;
 
-import com.epam.jwd.dao.exception.ConnectionPoolException;
 import com.epam.jwd.dao.api.ConnectionPool;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import com.epam.jwd.dao.exception.ConnectionPoolException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +11,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public final class ConnectionPoolImpl implements ConnectionPool {
-    private static final Logger logger = LogManager.getLogger(ConnectionPoolImpl.class);
+//    private static final Logger logger = LogManager.getLogger(ConnectionPoolImpl.class);
 
     private static final int POOL_SIZE = 5;
     private static final String DB_URL = "jdbc:mysql://localhost:3306/jwd";
@@ -66,7 +64,7 @@ public final class ConnectionPoolImpl implements ConnectionPool {
             ProxyConnection proxyConnection = new ProxyConnection(connection, this);
             availableConnections.add(proxyConnection);
         } catch (SQLException e) {
-            logger.error(CONNECTION_FAILED);
+//            logger.error(CONNECTION_FAILED);
             throw new ConnectionPoolException(CONNECTION_FAILED);
         }
     }

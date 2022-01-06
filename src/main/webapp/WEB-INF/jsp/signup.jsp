@@ -33,7 +33,8 @@
             <form action="${pageContext.request.contextPath}/controller?command=sign_up_command" method="post" class="form-signin">
                 <span id="reauth-email" class="reauth-email"></span>
 
-                <input name="login" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
+                <input name="login" id="login" type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required><span id="errmsg"></span>
+<%--                <input  name="quantity" id="quantity" /> --%>
 <%--                <label for="validationCustomUsername" class="">Имя пользователя</label>--%>
 <%--                <div class="input-group has-validation">--%>
 <%--                    <span class="" id="inputGroupPrepend">@</span>--%>
@@ -41,14 +42,13 @@
 <%--                    <div class="invalid-feedback">--%>
 <%--                        Пожалуйста, выберите имя пользователя.--%>
 <%--                    </div>--%>
-<%--                </div>--%>
-
+            <%--                </div>--%>
+                <div>${errors}</div>
 
                 <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
 <%--                <div id="passwordHelpBlock" class="form-text text-muted">--%>
 <%--                    Ваш пароль должен состоять из 8-20 символов, содержать минимум одну прописную букву и цифры и не должен содержать пробелов.--%>
 <%--                </div>--%>
-
                 <input type="password" name="repeat_password" id="inputRepeatPassword" class="form-control" placeholder="Repeat password" required>
                 <div id="remember" class="checkbox">
                     <label>

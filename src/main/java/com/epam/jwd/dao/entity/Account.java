@@ -9,7 +9,6 @@ public class Account extends Entity<Integer> {
     private String email;
     private Date birthDate;
     private Role role;
-//    private Integer roleId;
     private Integer userId;
 
     public Account(){

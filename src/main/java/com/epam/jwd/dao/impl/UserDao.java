@@ -4,6 +4,8 @@ import com.epam.jwd.dao.api.ConnectionPool;
 import com.epam.jwd.dao.api.Dao;
 import com.epam.jwd.dao.entity.User;
 import com.epam.jwd.dao.impl.connectionPool.ConnectionPoolImpl;
+import com.epam.jwd.service.passwordHashing.api.PasswordManager;
+import com.epam.jwd.service.passwordHashing.impl.PasswordManagerImpl;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class UserDao implements Dao<User, Integer> {
     private static final String SQL_FIND_ALL_USERS = "SELECT id, login, password FROM user";
 
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
+    private final PasswordManager passwordManager = new PasswordManagerImpl();
 
     private static final AccountDao accountDao = new AccountDao();
 
@@ -29,7 +32,7 @@ public class UserDao implements Dao<User, Integer> {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(2, passwordManager.encode(user.getPassword()));
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -53,9 +56,9 @@ public class UserDao implements Dao<User, Integer> {
     public boolean update(User user) {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_USER)) {
-            preparedStatement.setString(1, "uka");
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setInt(3, 20);
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, passwordManager.encode(user.getPassword()));
+            preparedStatement.setInt(3, user.getId());
 
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -109,7 +112,7 @@ public class UserDao implements Dao<User, Integer> {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 userList.add(new User(resultSet.getInt(1),
-                        resultSet.getString(2), resultSet.getString(3)));
+                        resultSet.getString(2), passwordManager.decode(resultSet.getString(3))));
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -129,7 +132,7 @@ public class UserDao implements Dao<User, Integer> {
             while (resultSet.next()) {
                 user = new User(resultSet.getInt(1),
                         resultSet.getString(2),
-                        resultSet.getString(3));
+                        passwordManager.decode(resultSet.getString(3)));
             }
             resultSet.close();
         } catch (SQLException e) {

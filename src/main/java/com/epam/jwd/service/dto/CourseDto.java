@@ -1,35 +1,38 @@
 package com.epam.jwd.service.dto;
 
+import com.epam.jwd.dao.entity.Status;
+
 import java.sql.Date;
+import java.util.Objects;
 
 public class CourseDto extends AbstractDto<Integer> {
     private String title;
     private String description;
     private Date startDate;
     private Date endDate;
-    private Integer courseStatus;
+    private Status courseStatus;
     private Integer teacherId;
 
     public CourseDto() {
 
     }
 
-    public CourseDto(String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId) {
+    public CourseDto(String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId){
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.courseStatus = courseStatus;
+        this.courseStatus = Status.getById(courseStatus);
         this.teacherId = teacherId;
     }
 
-    public CourseDto(Integer id, String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId) {
+    public CourseDto(Integer id, String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId){
         this.id = id;
         this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.courseStatus = courseStatus;
+        this.courseStatus = Status.getById(courseStatus);
         this.teacherId = teacherId;
     }
 
@@ -65,11 +68,11 @@ public class CourseDto extends AbstractDto<Integer> {
         this.endDate = endDate;
     }
 
-    public Integer getCourseStatus() {
+    public Status getCourseStatus() {
         return courseStatus;
     }
 
-    public void setCourseStatus(Integer courseStatus) {
+    public void setCourseStatus(Status courseStatus) {
         this.courseStatus = courseStatus;
     }
 
@@ -85,26 +88,13 @@ public class CourseDto extends AbstractDto<Integer> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         CourseDto courseDto = (CourseDto) o;
-
-        if (!title.equals(courseDto.title)) return false;
-        if (!description.equals(courseDto.description)) return false;
-        if (!startDate.equals(courseDto.startDate)) return false;
-        if (!endDate.equals(courseDto.endDate)) return false;
-        if (!courseStatus.equals(courseDto.courseStatus)) return false;
-        return teacherId.equals(courseDto.teacherId);
+        return title.equals(courseDto.title) && description.equals(courseDto.description) && startDate.equals(courseDto.startDate) && endDate.equals(courseDto.endDate) && courseStatus == courseDto.courseStatus && teacherId.equals(courseDto.teacherId);
     }
 
     @Override
     public int hashCode() {
-        int result = title.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + courseStatus.hashCode();
-        result = 31 * result + teacherId.hashCode();
-        return result;
+        return Objects.hash(title, description, startDate, endDate, courseStatus, teacherId);
     }
 
     @Override
@@ -116,7 +106,7 @@ public class CourseDto extends AbstractDto<Integer> {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", courseStatus=" + courseStatus +
-                ", teacherId=" + teacherId +
+                ", teacher=" + teacherId +
                 '}';
     }
 }

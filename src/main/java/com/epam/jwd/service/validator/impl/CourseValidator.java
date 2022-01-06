@@ -13,12 +13,12 @@ public class CourseValidator implements Validator<CourseDto, Integer> {
 
     @Override
     public void validate(CourseDto value) throws ServiceException {
-        validateId(value.getId());
+//        validateId(value.getId());
         validateTitle(value.getTitle());
         validateDescription(value.getDescription());
         validateStartDate(value.getStartDate());
         validateEndDate(value.getEndDate());
-        validateCourseStatus(value.getCourseStatus());
+        validateCourseStatus(value.getCourseStatus().getId());
         validateTeacherId(value.getTeacherId());
     }
 

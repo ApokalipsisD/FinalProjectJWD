@@ -8,6 +8,7 @@
 Something went wrong.
 
     <p>${sessionScope.error}</p>
+${error}
 
 </body>
 </html>

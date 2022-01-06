@@ -21,7 +21,7 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
     private final Converter<User, UserDto, Integer> converter = new UserConverter();
 
     @Override
-    public UserDto create(UserDto userDto) {
+    public UserDto create(UserDto userDto){
 //        validator.validate(userDto);
         return converter.convert(userDao.save(converter.convert(userDto)));
     }
@@ -67,6 +67,10 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
 
     public boolean checkIfLoginFree(String login){
        return userDao.checkIfLoginFree(login);
+    }
+
+    public boolean checkRepeatPassword(String password, String repeatPassword){
+        return password.equals(repeatPassword);
     }
 
     // sort

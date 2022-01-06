@@ -5,6 +5,7 @@ import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
+import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ public class LoginCommand implements Command {
 
     private static final Command INSTANCE = new LoginCommand();
     private static final UserServiceImpl user = new UserServiceImpl();
+    private static final AccountServiceImpl accountService = new AccountServiceImpl();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
     private static final String FAIL_PAGE_PATH = "/WEB-INF/jsp/login.jsp";
@@ -73,6 +75,7 @@ public class LoginCommand implements Command {
         HttpSession session;
         if (context.getCurrentSession().isPresent()) {
             session = context.getCurrentSession().get();
+            session.removeAttribute("error");
         } else {
             return ERROR_CONTEXT;
         }
@@ -82,14 +85,14 @@ public class LoginCommand implements Command {
             if (userDto.getPassword().equals(password)) {
                 session.setAttribute(CURRENT_USER, userDto);
                 session.setAttribute(CURRENT_USER_NAME, userDto.getLogin());
-                context.addAttributeToJsp("message", "Log in is successfully completed");
+                session.setAttribute("account", accountService.getAccountByUserId(userDto.getId()));
+//                context.addAttributeToJsp("message", "Log in is successfully completed");  // Log in is successfully completed
             } else {
                return ERROR_CONTEXT;
             }
         } catch (ServiceException e) {
             return ERROR_CONTEXT;
         }
-
 
 
 //        session.setAttribute(CURRENT_USER, user);

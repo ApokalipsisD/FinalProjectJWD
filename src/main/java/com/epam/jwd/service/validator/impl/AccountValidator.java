@@ -20,11 +20,11 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
     public void validate(AccountDto value) throws ServiceException {
         validateId(value.getId());
         validateFirstName(value.getFirstName());
-        if(value.getLastName()!=null){
+        if (value.getLastName() != null) {
             validateLastName(value.getLastName());
         }
 
-        if(value.getEmail()!=null){
+        if (value.getEmail() != null) {
             validateEmail(value.getEmail());
         }
         validateDate(value.getBirthDate().toString());
@@ -75,15 +75,4 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
         }
     }
 
-    private void validateRoleId(Integer id) {
-//        if (Objects.isNull(id)) {
-//            throw new ServiceException(MessageException.ROLE_ID_IS_NULL_EXCEPTION);
-//        }
-    }
-
-    private void validateUserId(Integer id) {
-//        if (Objects.isNull(id)) {
-//            throw new ServiceException(MessageException.USER_ID_IS_NULL_EXCEPTION);
-//        }
-    }
 }

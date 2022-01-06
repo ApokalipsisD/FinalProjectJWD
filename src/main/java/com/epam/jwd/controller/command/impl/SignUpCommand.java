@@ -6,6 +6,8 @@ import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.impl.UserServiceImpl;
 
+import javax.servlet.http.HttpSession;
+
 public class SignUpCommand implements Command {
 
     private static final UserServiceImpl userService = new UserServiceImpl();
@@ -64,24 +66,27 @@ public class SignUpCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
+        HttpSession session;
+
+        if (context.getCurrentSession().isPresent()) {
+            session = context.getCurrentSession().get();
+            session.removeAttribute("error");
+        } else {
+            return ERROR_CONTEXT;
+        }
 
         String login = context.getParameterByName(LOGIN_ATTRIBUTE);
         String password = context.getParameterByName(PASSWORD_ATTRIBUTE);
         String repeatPassword = context.getParameterByName(REPEAT_PASSWORD_ATTRIBUTE);
 
-
-        if(!password.equals(repeatPassword) || !userService.checkIfLoginFree(login)){
-            return ERROR_CONTEXT;
+        if(!userService.checkRepeatPassword(password, repeatPassword) || !userService.checkIfLoginFree(login)){
+                context.getCurrentSession().get().setAttribute("errors", "login is used already or password is wrong");
+                context.addAttributeToJsp("errors", "login is used already or password is wrong");
+                return SIGN_UP_FAILED_CONTEXT;
         }
 
         UserDto user = userService.create(new UserDto(login, password));
-//        HttpSession session;
 
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
 
         return SUCCESSFUL_SIGN_UP_CONTEXT;
     }

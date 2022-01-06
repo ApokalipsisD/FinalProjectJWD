@@ -3,7 +3,7 @@ package com.epam.jwd.dao.entity;
 import java.util.Arrays;
 
 public enum Status {
-    Coming(1), Finished(2), Started(3);
+    Coming(1), Started(2), Finished(3);
 
     private final Integer id;
 

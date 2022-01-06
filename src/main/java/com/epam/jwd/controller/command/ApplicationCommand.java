@@ -19,7 +19,12 @@ public enum ApplicationCommand {
     LOGOUT(LogoutCommand.getInstance()),
     SHOW_PROFILE_PAGE(ShowProfilePageCommand.getInstance()),
     SHOW_EDIT_PROFILE(ShowEditProfileCommand.getInstance()),
-    EDIT_PROFILE(EditProfileCommand.getInstance());
+    EDIT_PROFILE(EditProfileCommand.getInstance()),
+    SHOW_COURSES(ShowCoursesPageCommand.getInstance()),
+    CREATE_COURSE(CreateCourseCommand.getInstance(), Role.ADMIN),
+
+    CATALOG(CatalogCommand.getInstance()),
+    COURSE(CourseCommand.getInstance());
 
 
     private final Command command;
@@ -28,7 +33,6 @@ public enum ApplicationCommand {
     ApplicationCommand(Command command, Role... roles) {
         this.command = command;
         this.allowRoles = roles != null && roles.length > 0 ? Arrays.asList(roles) : Role.valuesAsList();
-
     }
 
     public static Command getCommandByString(String name) {

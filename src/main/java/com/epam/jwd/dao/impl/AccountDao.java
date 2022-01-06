@@ -16,12 +16,11 @@ public class AccountDao implements Dao<Account, Integer> {
     private static final String SQL_UPDATE_ACCOUNT = "UPDATE account SET first_name=?, last_name=?, email=?, birth_date=?, role_id=? WHERE id=?";
     private static final String SQL_UPDATE_ROLE_ID = "UPDATE account SET role_id=? WHERE id=?";
 
-
-
     private static final String SQL_DELETE_ACCOUNT = "DELETE FROM account WHERE id=?";
     private static final String SQL_FIND_ACCOUNT_BY_ID = "SELECT id, first_name, last_name, email, birth_date, role_id, user_id FROM account WHERE id=?";
     private static final String SQL_FIND_ALL_ACCOUNTS = "SELECT id, first_name, last_name, email, birth_date, role_id, user_id FROM account";
     private static final String SQL_FIND_ACCOUNT_BY_USER_ID = "SELECT id, first_name, last_name, email, birth_date, role_id, user_id FROM account WHERE user_id=?";
+    private static final String SQL_FIND_ALL_TEACHERS = "SELECT id, first_name, last_name, email, birth_date, role_id, user_id FROM account WHERE role_id=2";
 
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
 
@@ -187,6 +186,24 @@ public class AccountDao implements Dao<Account, Integer> {
             pool.returnConnection(connection);
         }
         return account;
+    }
+
+    public List<Account> findAllTeachers() {
+        List<Account> accountList = new ArrayList<>();
+        Connection connection = pool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALL_TEACHERS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                accountList.add(new Account(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getDate(5), resultSet.getInt(6), resultSet.getInt(7)));
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            //
+        } finally {
+            pool.returnConnection(connection);
+        }
+        return accountList;
     }
 
 }
