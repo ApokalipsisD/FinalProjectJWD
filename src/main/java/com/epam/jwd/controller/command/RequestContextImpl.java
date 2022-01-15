@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 public class RequestContextImpl implements RequestContext {
+    private static final String REFERER = "referer";
     private final HttpServletRequest request;
 
     public RequestContextImpl(HttpServletRequest request) {
@@ -53,6 +54,6 @@ public class RequestContextImpl implements RequestContext {
 
     @Override
     public String getHeader(){
-        return request.getHeader("referer");
+        return request.getHeader(REFERER);
     }
 }

@@ -62,97 +62,101 @@
 
 </head>
 <body>
-<%--    <form action="${pageContext.request.contextPath}/controller?command=profile" method="post">--%>
-<div class="container bootdey flex-grow-1 container-p-y">
-    <div class="media align-items-center py-3 mb-3">
-        <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""
-             class="d-block ui-w-100 rounded-circle">
-        <div class="media-body ml-4">
-            <c:choose>
-                <c:when test="${not empty sessionScope.account.firstName && not empty sessionScope.account.lastName}">
-                <h4 class="font-weight-bold mb-0">${sessionScope.account.firstName} ${sessionScope.account.lastName}
-                    <span class="text-muted font-weight-normal">@${sessionScope.userName}</span> </h4>
-                </c:when>
-                <c:otherwise>
-                    <h4 class="font-weight-normal">@${sessionScope.userName}</h4>
-                </c:otherwise>
-            </c:choose>
+<%@include file="header.jsp"%>
+<main class="main">
+    <%--    <form action="${pageContext.request.contextPath}/controller?command=profile" method="post">--%>
+    <div class="container bootdey flex-grow-1 container-p-y">
+        <div class="media align-items-center py-3 mb-3">
+            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""
+                 class="d-block ui-w-100 rounded-circle">
+            <div class="media-body ml-4">
+                <c:choose>
+                    <c:when test="${not empty sessionScope.account.firstName && not empty sessionScope.account.lastName}">
+                        <h4 class="font-weight-bold mb-0">${sessionScope.account.firstName} ${sessionScope.account.lastName}
+                            <span class="text-muted font-weight-normal">@${sessionScope.userName}</span> </h4>
+                    </c:when>
+                    <c:otherwise>
+                        <h4 class="font-weight-normal">@${sessionScope.userName}</h4>
+                    </c:otherwise>
+                </c:choose>
 
-<%--            <h4 class="font-weight-bold mb-0">John Doe <span--%>
-<%--                    class="text-muted font-weight-normal">@${sessionScope.userName}</span>--%>
-<%--            </h4>--%>
-            <a href="controller?command=show_edit_profile" class="btn btn-primary btn-sm">${edit}</a>
-            <a href="javascript:void(0)" class="btn btn-default btn-sm">${delete}</a>
+                <%--            <h4 class="font-weight-bold mb-0">John Doe <span--%>
+                <%--                    class="text-muted font-weight-normal">@${sessionScope.userName}</span>--%>
+                <%--            </h4>--%>
+                <a href="controller?command=show_edit_profile" class="btn btn-primary btn-sm">${edit}</a>
+                <a href="javascript:void(0)" class="btn btn-default btn-sm">${delete}</a>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <table class="table user-view-table m-0">
+                    <tbody>
+                    <tr>
+                        <td>${userName}:</td>
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.user.login}">
+                                <td>${sessionScope.user.login}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>-</td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                    <tr>
+                        <td>${firstName}:</td>
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.account.firstName}">
+                                <td>${sessionScope.account.firstName}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>-</td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                    <tr>
+                        <td>${lastName}:</td>
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.account.lastName}">
+                                <td>${sessionScope.account.lastName}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>-</td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                    <tr>
+                        <td>${email}:</td>
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.account.email}">
+                                <td>${sessionScope.account.email}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>-</td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                    <tr>
+                        <td>${role}:</td>
+                        <td>${sessionScope.account.role}</td>
+                    </tr>
+                    <tr>
+                        <td>${birthDate}:</td>
+                        <c:choose>
+                            <c:when test="${not empty sessionScope.account.birthDate}">
+                                <td>${sessionScope.account.birthDate}</td>
+                            </c:when>
+                            <c:otherwise>
+                                <td>-</td>
+                            </c:otherwise>
+                        </c:choose>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+</main>
 
-    <div class="card mb-4">
-        <div class="card-body">
-            <table class="table user-view-table m-0">
-                <tbody>
-                <tr>
-                    <td>${userName}:</td>
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.user.login}">
-                            <td>${sessionScope.user.login}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>-</td>
-                        </c:otherwise>
-                    </c:choose>
-                </tr>
-                <tr>
-                    <td>${firstName}:</td>
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.account.firstName}">
-                            <td>${sessionScope.account.firstName}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>-</td>
-                        </c:otherwise>
-                    </c:choose>
-                </tr>
-                <tr>
-                    <td>${lastName}:</td>
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.account.lastName}">
-                            <td>${sessionScope.account.lastName}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>-</td>
-                        </c:otherwise>
-                    </c:choose>
-                </tr>
-                <tr>
-                    <td>${email}:</td>
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.account.email}">
-                            <td>${sessionScope.account.email}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>-</td>
-                        </c:otherwise>
-                    </c:choose>
-                </tr>
-                <tr>
-                    <td>${role}:</td>
-                    <td>${sessionScope.account.role}</td>
-                </tr>
-                <tr>
-                    <td>${birthDate}:</td>
-                    <c:choose>
-                        <c:when test="${not empty sessionScope.account.birthDate}">
-                            <td>${sessionScope.account.birthDate}</td>
-                        </c:when>
-                        <c:otherwise>
-                            <td>-</td>
-                        </c:otherwise>
-                    </c:choose>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 </body>
 </html>

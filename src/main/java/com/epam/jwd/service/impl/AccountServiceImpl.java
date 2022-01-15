@@ -58,14 +58,18 @@ public class AccountServiceImpl implements Service<AccountDto, Integer> {
     }
 
     //todo validation
-    public AccountDto getAccountByUserId(Integer id){
+    public AccountDto getAccountByUserId(Integer id) {
         return converter.convert(accountDao.getAccountByUserId(id));
     }
 
-    public List<AccountDto> getAllTeachers(){
+    public List<AccountDto> getAllTeachers() {
         List<Account> accountList = accountDao.findAllTeachers();
         List<AccountDto> accountDtoList = new ArrayList<>();
         accountList.forEach(account -> accountDtoList.add(converter.convert(account)));
         return accountDtoList;
+    }
+
+    public void updateRole(Integer accountId, Integer id) {
+        accountDao.updateRole(accountId, id);
     }
 }

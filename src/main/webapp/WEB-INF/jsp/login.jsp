@@ -6,22 +6,26 @@
     <title>Login</title>
 </head>
 <body>
-<c:choose>
-    <c:when test="${not empty requestScope.error}">
-        <p>${requestScope.error}</p>
-        <a href="${pageContext.request.contextPath}/controller?command=show_login">Try again</a>
-    </c:when>
-    <c:otherwise>
-        <form action="${pageContext.request.contextPath}/controller?command=login" method="post">
-            <label for="loginField">Login: </label>
-            <input type="text" id="loginField" name="login">
-            <br>
-            <label for="passwordField">Password: </label>
-            <input type="password" id="passwordField" name="password">
-            <br>
-            <input type="submit" value="Log In">
-        </form>
-    </c:otherwise>
-</c:choose>
+<%@include file="header.jsp"%>
+<main class="main">
+    <c:choose>
+        <c:when test="${not empty requestScope.error}">
+            <p>${requestScope.error}</p>
+            <a href="${pageContext.request.contextPath}/controller?command=show_login">Try again</a>
+        </c:when>
+        <c:otherwise>
+            <form action="${pageContext.request.contextPath}/controller?command=login" method="post">
+                <label for="loginField">Login: </label>
+                <input type="text" id="loginField" name="login">
+                <br>
+                <label for="passwordField">Password: </label>
+                <input type="password" id="passwordField" name="password">
+                <br>
+                <input type="submit" value="Log In">
+            </form>
+        </c:otherwise>
+    </c:choose>
+</main>
+
 </body>
 </html>

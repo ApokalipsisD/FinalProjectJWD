@@ -14,6 +14,7 @@ public class CourseDao implements Dao<Course, Integer> {
     private static final String SQL_UPDATE_COURSE = "UPDATE course SET title=?, description=?, start_date=?, end_date=?, course_status=?, teacher_id=? WHERE id=?";
     private static final String SQL_DELETE_COURSE = "DELETE FROM course WHERE id=?";
     private static final String SQL_FIND_COURSE_BY_ID = "SELECT id, title, description, start_date, end_date, course_status, teacher_id FROM course WHERE id=?";
+    private static final String SQL_FIND_COURSE_BY_TEACHER_ID = "SELECT id, title, description, start_date, end_date, course_status, teacher_id FROM course WHERE teacher_id=?";
     private static final String SQL_FIND_ALL_COURSES = "SELECT id, title, description, start_date, end_date, course_status, teacher_id FROM course";
 
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
@@ -23,11 +24,6 @@ public class CourseDao implements Dao<Course, Integer> {
         Connection connection = pool.takeConnection();
 
         List<Course> list = findAll();
-        for (int i = 0; i < list.size(); i++) {
-            if(course.getTitle().equals(list.get(i))){
-                System.out.println("fooooooo");
-            }
-        }
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, course.getTitle());
             preparedStatement.setString(2, course.getDescription());
@@ -61,7 +57,7 @@ public class CourseDao implements Dao<Course, Integer> {
             preparedStatement.setDate(4, course.getEndDate());
             preparedStatement.setInt(5, course.getCourseStatus().getId());
             preparedStatement.setInt(6, course.getTeacherId());
-            preparedStatement.setInt(7, 3);
+            preparedStatement.setInt(7, course.getId());
 
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -129,6 +125,49 @@ public class CourseDao implements Dao<Course, Integer> {
         }
         return courseList;
     }
+
+    public List<Course> findCoursesByTeacherId(Integer teacherId){
+        List<Course> courseList = new ArrayList<>();
+        Connection connection = pool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_TEACHER_ID)) {
+            preparedStatement.setInt(1, teacherId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                courseList.add(new Course(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3),
+                        resultSet.getDate(4), resultSet.getDate(5), resultSet.getInt(6), resultSet.getInt(7)));
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            //
+        } finally {
+            pool.returnConnection(connection);
+        }
+        return courseList;
+    }
+
+//    public Course findByTitle(String title){
+//        Connection connection = pool.takeConnection();
+//        Course course = null;
+//        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_COURSE_BY_ID)) {
+//            preparedStatement.setInt(1, id);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//            while (resultSet.next()) {
+//                course = new Course(resultSet.getInt(1),
+//                        resultSet.getString(2),
+//                        resultSet.getString(3),
+//                        resultSet.getDate(4),
+//                        resultSet.getDate(5),
+//                        resultSet.getInt(6),
+//                        resultSet.getInt(7));
+//            }
+//            resultSet.close();
+//        } catch (SQLException e) {
+//            //
+//        } finally {
+//            pool.returnConnection(connection);
+//        }
+//        return course;
+//    }
 
 }
 

@@ -206,4 +206,17 @@ public class AccountDao implements Dao<Account, Integer> {
         return accountList;
     }
 
+    public void updateRole(Integer accountId, Integer roleId) {
+        Connection connection = pool.takeConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ROLE_ID)) {
+            preparedStatement.setInt(1, roleId);
+            preparedStatement.setInt(2, accountId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            pool.returnConnection(connection);
+        }
+    }
+
 }

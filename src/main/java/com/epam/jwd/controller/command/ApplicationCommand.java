@@ -22,9 +22,14 @@ public enum ApplicationCommand {
     EDIT_PROFILE(EditProfileCommand.getInstance()),
     SHOW_COURSES(ShowCoursesPageCommand.getInstance()),
     CREATE_COURSE(CreateCourseCommand.getInstance(), Role.ADMIN),
-
-    CATALOG(CatalogCommand.getInstance()),
-    COURSE(CourseCommand.getInstance());
+    CATALOG(CourseCommand.getInstance()),
+    CHANGE_COURSE(ChangeCourseCommand.getInstance(), Role.ADMIN),
+    COURSE(CourseCommand.getInstance()),
+    DELETE_COURSE(DeleteCourseCommand.getInstance(), Role.ADMIN),
+    JOIN_COURSE(JoinCourseCommand.getInstance()),
+    DROP_COURSE(DropCourseCommand.getInstance()),
+    SHOW_MY_COURSES(ShowMyCoursesCommand.getInstance()),
+    SHOW_TEACHER_COURSES(ShowTeacherCoursesCommand.getInstance(), Role.TEACHER, Role.ADMIN);
 
 
     private final Command command;

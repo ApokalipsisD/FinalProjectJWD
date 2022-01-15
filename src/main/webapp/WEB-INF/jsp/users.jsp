@@ -14,6 +14,7 @@
     <title>Users Page</title>
 </head>
 <body>
+<%@include file="header.jsp"%>
 <h2>${listusers}</h2>
 <h2>${password}</h2>
 <c:if test="${not empty requestScope.users}">

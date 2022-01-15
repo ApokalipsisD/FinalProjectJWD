@@ -11,23 +11,38 @@
 <html>
 <head>
     <title>Main Page</title>
+    <style>
+        .under{
+            margin-top: 3%;
+            margin-bottom: 3%;
+            border-radius: 0.5rem;
+            background: #fff;
+            padding: 90px 3% 3%;
+        }
+    </style>
 </head>
 <body>
-<jwdt:welcomeText/>
+<%@include file="header.jsp"%>
 
-<br>
-<c:choose>
-    <c:when test="${empty sessionScope.user}">
-        <a href="${pageContext.request.contextPath}/controller?command=show_sign_up">SignUp page</a><br>
-        <a href="${pageContext.request.contextPath}/controller?command=show_login">Login page</a>
-    </c:when>
-    <c:otherwise>
-        <a href="${pageContext.request.contextPath}/controller?command=logout">Logout</a>
-        <a href="${pageContext.request.contextPath}/controller?command=show_profile_page">Profile</a>
-        <a href="${pageContext.request.contextPath}/controller?command=show_courses">Courses</a>
-    </c:otherwise>
-</c:choose>
-<jwdt:currentTime/>
+<main class="main">
+    <jwdt:welcomeText/>
+    <jwdt:currentTime/>
+</main>
+
+
+<%--<br>--%>
+<%--<c:choose>--%>
+<%--    <c:when test="${empty sessionScope.user}">--%>
+<%--        <a href="${pageContext.request.contextPath}/controller?command=show_sign_up">SignUp page</a><br>--%>
+<%--        <a href="${pageContext.request.contextPath}/controller?command=show_login">Login page</a>--%>
+<%--    </c:when>--%>
+<%--    <c:otherwise>--%>
+<%--        <a href="${pageContext.request.contextPath}/controller?command=logout">Logout</a>--%>
+<%--        <a href="${pageContext.request.contextPath}/controller?command=show_profile_page">Profile</a>--%>
+<%--        <a href="${pageContext.request.contextPath}/controller?command=show_courses">Catalog    </a>--%>
+<%--    </c:otherwise>--%>
+<%--</c:choose>--%>
+
 <%--${message}--%>
 </body>
 </html>

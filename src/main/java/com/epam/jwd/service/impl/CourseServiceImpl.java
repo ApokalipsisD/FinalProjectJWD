@@ -55,4 +55,11 @@ public class CourseServiceImpl implements Service<CourseDto, Integer> {
         courseList.forEach(course -> courseDtoList.add(converter.convert(course)));
         return courseDtoList;
     }
+
+    public List<CourseDto> getCoursesByTeacherId(Integer courseId){
+        List<Course> courseList = courseDao.findCoursesByTeacherId(courseId);
+        List<CourseDto> courseDtoList = new ArrayList<>();
+        courseList.forEach(course -> courseDtoList.add(converter.convert(course)));
+        return courseDtoList;
+    }
 }
