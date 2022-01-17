@@ -15,6 +15,10 @@ public class Account extends Entity<Integer> {
 
     }
 
+    public Account(Integer userId){
+        this.userId = userId;
+    }
+
     public Account(String firstName, String lastName, String email, Date birthDate, Integer roleId, Integer userId) {
         this.firstName = firstName;
         this.lastName = lastName;

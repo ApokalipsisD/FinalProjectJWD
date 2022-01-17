@@ -34,7 +34,7 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
 
     @Override
     public boolean delete(UserDto userDto) throws ServiceException {
-        validator.validate(userDto);
+//        validator.validate(userDto);
         return userDao.delete(converter.convert(userDto));
     }
 

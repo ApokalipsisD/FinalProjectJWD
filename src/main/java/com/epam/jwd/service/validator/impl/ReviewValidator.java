@@ -15,7 +15,7 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
 
     @Override
     public void validate(ReviewDto value) throws ServiceException {
-        validateId(value.getId());
+//        validateId(value.getId());
         validateCourseId(value.getCourseId());
         validateStudentId(value.getStudentId());
         validateGrade(value.getGrade());

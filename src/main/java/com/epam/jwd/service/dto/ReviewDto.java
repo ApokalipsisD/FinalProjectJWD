@@ -1,17 +1,19 @@
 package com.epam.jwd.service.dto;
 
+import java.util.Objects;
+
 public class ReviewDto extends AbstractDto<Integer> {
     private Integer courseId;
     private Integer studentId;
-    private int grade;
-    private int attendance;
+    private Integer grade;
+    private Integer attendance;
     private String review;
 
     public ReviewDto(){
 
     }
 
-    public ReviewDto(Integer courseId, Integer studentId, int grade, int attendance, String review) {
+    public ReviewDto(Integer courseId, Integer studentId, Integer grade, Integer attendance, String review) {
         this.courseId = courseId;
         this.studentId = studentId;
         this.grade = grade;
@@ -19,7 +21,7 @@ public class ReviewDto extends AbstractDto<Integer> {
         this.review = review;
     }
 
-    public ReviewDto(Integer id, Integer courseId, Integer studentId, int grade, int attendance, String review) {
+    public ReviewDto(Integer id, Integer courseId, Integer studentId, Integer grade, Integer attendance, String review) {
         this.id = id;
         this.courseId = courseId;
         this.studentId = studentId;
@@ -44,7 +46,7 @@ public class ReviewDto extends AbstractDto<Integer> {
         this.studentId = studentId;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
@@ -52,7 +54,7 @@ public class ReviewDto extends AbstractDto<Integer> {
         this.grade = grade;
     }
 
-    public int getAttendance() {
+    public Integer getAttendance() {
         return attendance;
     }
 
@@ -72,24 +74,13 @@ public class ReviewDto extends AbstractDto<Integer> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ReviewDto reviewDto = (ReviewDto) o;
-
-        if (grade != reviewDto.grade) return false;
-        if (attendance != reviewDto.attendance) return false;
-        if (!courseId.equals(reviewDto.courseId)) return false;
-        if (!studentId.equals(reviewDto.studentId)) return false;
-        return review.equals(reviewDto.review);
+        return courseId.equals(reviewDto.courseId) && studentId.equals(reviewDto.studentId) && Objects.equals(grade, reviewDto.grade) && Objects.equals(attendance, reviewDto.attendance) && Objects.equals(review, reviewDto.review);
     }
 
     @Override
     public int hashCode() {
-        int result = courseId.hashCode();
-        result = 31 * result + studentId.hashCode();
-        result = 31 * result + grade;
-        result = 31 * result + attendance;
-        result = 31 * result + review.hashCode();
-        return result;
+        return Objects.hash(courseId, studentId, grade, attendance, review);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class AccountServiceImpl implements Service<AccountDto, Integer> {
 
     @Override
     public boolean delete(AccountDto accountDto) throws ServiceException {
-        validator.validate(accountDto);
+//        validator.validate(accountDto);
         return accountDao.delete(converter.convert(accountDto));
     }
 

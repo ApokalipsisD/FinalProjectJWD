@@ -22,13 +22,13 @@ public class ReviewServiceImpl implements Service<ReviewDto, Integer> {
 
     @Override
     public ReviewDto create(ReviewDto reviewDto) throws ServiceException {
-        validator.validate(reviewDto);
+//        validator.validate(reviewDto);
         return converter.convert(reviewDao.save(converter.convert(reviewDto)));
     }
 
     @Override
     public boolean update(ReviewDto reviewDto) throws ServiceException {
-        validator.validate(reviewDto);
+//        validator.validate(reviewDto);
         return reviewDao.update(converter.convert(reviewDto));
     }
 
@@ -51,6 +51,17 @@ public class ReviewServiceImpl implements Service<ReviewDto, Integer> {
     @Override
     public List<ReviewDto> getAll() {
         List<Review> reviewList = reviewDao.findAll();
+        List<ReviewDto> reviewDtoList = new ArrayList<>();
+        reviewList.forEach(review -> reviewDtoList.add(converter.convert(review)));
+        return reviewDtoList;
+    }
+
+    public boolean findReviewByCourseIdAndStudentId(Integer courseId, Integer studentId) {
+        return reviewDao.findReviewByCourseIdAndStudentId(courseId, studentId);
+    }
+
+    public List<ReviewDto> getReviewsByCourseId(Integer courseId) {
+        List<Review> reviewList = reviewDao.getReviewsByCourseId(courseId);
         List<ReviewDto> reviewDtoList = new ArrayList<>();
         reviewList.forEach(review -> reviewDtoList.add(converter.convert(review)));
         return reviewDtoList;

@@ -40,7 +40,4 @@ public interface MessageException {
     String REVIEW_IS_NULL_EXCEPTION = "Review is null";
     String REVIEW_NOT_FOUND_EXCEPTION = "Review not found";
 
-
-
-
 }

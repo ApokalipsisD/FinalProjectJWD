@@ -4,17 +4,17 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.CourseDto;
+import com.epam.jwd.service.dto.ReviewDto;
 import com.epam.jwd.service.dto.StudentHasCourseDto;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountServiceImpl;
-import com.epam.jwd.service.impl.CourseServiceImpl;
-import com.epam.jwd.service.impl.StudentHasCourseServiceImpl;
-import com.epam.jwd.service.impl.UserServiceImpl;
+import com.epam.jwd.service.impl.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CourseCommand implements Command {
     private static final Command INSTANCE = new CourseCommand();
@@ -22,6 +22,7 @@ public class CourseCommand implements Command {
     private static final CourseServiceImpl catalog = new CourseServiceImpl();
     private static final AccountServiceImpl account = new AccountServiceImpl();
     private static final StudentHasCourseServiceImpl record = new StudentHasCourseServiceImpl();
+    private static final ReviewServiceImpl review = new ReviewServiceImpl();
 
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/course.jsp";
@@ -69,8 +70,11 @@ public class CourseCommand implements Command {
         Integer id = Integer.valueOf(context.getParameterByName("course"));
         CourseDto courseDto;
         boolean isRecordExists = false;
+        boolean isReviewExists;
         List<StudentHasCourseDto> studentsOnCourse;
         List<UserDto> students = new ArrayList<>();
+        Map<UserDto, Boolean> mapUsers = new HashMap<>();
+        Map<Integer, ReviewDto> reviews = new HashMap<>();
 
         try {
             courseDto = catalog.getById(id);
@@ -86,15 +90,23 @@ public class CourseCommand implements Command {
                 isRecordExists = true;
             }
             context.addAttributeToJsp("record", isRecordExists);
+
             studentsOnCourse = record.getRecordsByCourseId(courseDto.getId());
-            for(StudentHasCourseDto student: studentsOnCourse){
-                students.add(user.getById(student.getStudentId()));
+
+            for(StudentHasCourseDto student: studentsOnCourse) {
+                UserDto userOnCourse = user.getById(student.getStudentId());
+                isReviewExists = !review.findReviewByCourseIdAndStudentId(courseDto.getId(), userOnCourse.getId());
+                mapUsers.put(userOnCourse, isReviewExists);
             }
-            context.addAttributeToJsp("studentsOnCourse", students);
-//            studentsOnCourse.forEach(student -> students.add(user.getById(student.getStudentId())));
+            context.addAttributeToJsp("studentsOnCourse", mapUsers);
+
+            List<ReviewDto> reviewDtoList = review.getReviewsByCourseId(courseDto.getId());
+            reviewDtoList.forEach(review -> reviews.put(review.getStudentId(), review));
+            context.addAttributeToJsp("reviews", reviews);
+
 
         } catch (ServiceException e) {
-            e.printStackTrace();
+            return ERROR_CONTEXT;
         }
 
         return SUCCESSFUL_COURSE_CONTEXT;

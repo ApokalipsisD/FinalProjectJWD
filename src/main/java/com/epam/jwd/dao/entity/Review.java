@@ -1,17 +1,19 @@
 package com.epam.jwd.dao.entity;
 
+import java.util.Objects;
+
 public class Review extends Entity<Integer> {
     private Integer courseId;
     private Integer studentId;
-    private int grade;
-    private int attendance;
+    private Integer grade;
+    private Integer attendance;
     private String review;
 
     public Review(){
 
     }
 
-    public Review(Integer courseId, Integer studentId, int grade, int attendance, String review) {
+    public Review(Integer courseId, Integer studentId, Integer grade, Integer attendance, String review) {
         this.courseId = courseId;
         this.studentId = studentId;
         this.grade = grade;
@@ -19,7 +21,7 @@ public class Review extends Entity<Integer> {
         this.review = review;
     }
 
-    public Review(Integer id, Integer courseId, Integer studentId, int grade, int attendance, String review) {
+    public Review(Integer id, Integer courseId, Integer studentId, Integer grade, Integer attendance, String review) {
         this.id = id;
         this.courseId = courseId;
         this.studentId = studentId;
@@ -44,7 +46,7 @@ public class Review extends Entity<Integer> {
         this.studentId = studentId;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
@@ -52,7 +54,7 @@ public class Review extends Entity<Integer> {
         this.grade = grade;
     }
 
-    public int getAttendance() {
+    public Integer getAttendance() {
         return attendance;
     }
 
@@ -72,24 +74,13 @@ public class Review extends Entity<Integer> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Review review1 = (Review) o;
-
-        if (grade != review1.grade) return false;
-        if (attendance != review1.attendance) return false;
-        if (!courseId.equals(review1.courseId)) return false;
-        if (!studentId.equals(review1.studentId)) return false;
-        return review.equals(review1.review);
+        return courseId.equals(review1.courseId) && studentId.equals(review1.studentId) && Objects.equals(grade, review1.grade) && Objects.equals(attendance, review1.attendance) && Objects.equals(review, review1.review);
     }
 
     @Override
     public int hashCode() {
-        int result = courseId.hashCode();
-        result = 31 * result + studentId.hashCode();
-        result = 31 * result + grade;
-        result = 31 * result + attendance;
-        result = 31 * result + review.hashCode();
-        return result;
+        return Objects.hash(courseId, studentId, grade, attendance, review);
     }
 
     @Override

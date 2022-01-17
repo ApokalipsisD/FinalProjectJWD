@@ -24,6 +24,9 @@
             background-color: yellow;
             color: black;
         }
+        .users{
+            margin-top: 40px;
+        }
 
     </style>
 
@@ -47,30 +50,197 @@
                         <c:otherwise>
                             <a class="btn btn-primary btn-lg" href="controller?command=join_course&id=${id}"
                                role="button" type="submit">Join</a>
+
                         </c:otherwise>
                     </c:choose>
                 </c:when>
             </c:choose>
             <c:choose>
                 <c:when test="${sessionScope.account.role eq Role.ADMIN or sessionScope.account eq teacher}">
-                    <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#staticBackdrop1"
+                    <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#changeCourse"
                        role="button">Change</a>
                     <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#deleteCourse"
                        role="button">Delete</a>
                     <c:if test="${not empty studentsOnCourse}">
-                        <div class="users">
-                            <p>Users:</p>
+                              <div class="users">
+                            <h4>Users:</h4>
                             <ul class="list-group">
-                                <c:forEach var="i" begin="0" end="${studentsOnCourse.size()-1}">
-                                    <li class="list-group-item">${studentsOnCourse.get(i).login}
-                                        <button type="button" class="btn btn-primary pull-right">Review</button>
+                                <c:forEach items="${studentsOnCourse}" var="entry">
+                                    <div>
+                                        <form action="${pageContext.request.contextPath}/controller?command=review"
+                                              method="post">
+                                            <div class="modal fade" id="review${entry.key.id}"
+                                                 data-backdrop="static" data-keyboard="false"
+                                                 tabindex="-1" aria-labelledby="staticBackdropLabel1"
+                                                 aria-hidden="true">
+                                                <input type="hidden" name="studentIdOnCourse" value="${entry.key.id}">
+
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="review">Review </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="grade">Grade:${entry.key.id}</label>
+                                                                <input type="text" name="grade" class="form-control"
+                                                                       id="grade"
+                                                                       aria-label="Grade"
+                                                                       aria-describedby="basic-addon1" required>
+                                                            </div>
+                                                            <input type="hidden" name="id" value="${id}">
+                                                            <div class="form-group">
+                                                                <label for="attendance">Attendance:</label>
+                                                                <input type="text" name="attendance"
+                                                                       class="form-control"
+                                                                       id="attendance"
+                                                                    <%--                                           value="${startDated}"--%>
+                                                                       aria-label="attendance"
+                                                                       aria-describedby="basic-addon1" required>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="reviewText">Review</label>
+                                                                <textarea class="form-control" name="reviewText"
+                                                                          id="reviewText"
+                                                                          rows="3"><%--${description}--%></textarea>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Save
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <form action="${pageContext.request.contextPath}/controller?command=change_review"
+                                              method="post">
+                                            <div class="modal fade" id="changeReview${entry.key.id}"
+                                                 data-backdrop="static" data-keyboard="false"
+                                                 tabindex="-1" aria-labelledby="staticBackdropLabel1"
+                                                 aria-hidden="true">
+                                                <input type="hidden" name="studentIdOnCourse" value="${entry.key.id}">
+                                                <input type="hidden" name="reviewId" value="${reviews.get(entry.key.id).id}">
+
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="review1">Change Review</h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="modal-body">
+                                                            <div class="form-group">
+                                                                <label for="grade">Grade:${entry.key.id}</label>
+                                                                <input type="text" name="gradeChange" class="form-control"
+                                                                       id="grade1"
+                                                                       aria-label="Grade"
+                                                                       aria-describedby="basic-addon1"
+                                                                       value="${reviews.get(entry.key.id).grade}" required>
+                                                            </div>
+                                                            <input type="hidden" name="id" value="${id}">
+                                                            <div class="form-group">
+                                                                <label for="attendance">Attendance %:</label>
+                                                                <input type="text" name="attendanceChange"
+                                                                       class="form-control"
+                                                                       id="attendance1"
+                                                                       value="${reviews.get(entry.key.id).attendance}"
+                                                                       aria-label="attendance"
+                                                                       aria-describedby="basic-addon1" required>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label for="reviewText">Review</label>
+                                                                <textarea class="form-control" name="reviewTextChange"
+                                                                          id="reviewText1"
+                                                                          rows="3">${reviews.get(entry.key.id).review}</textarea>
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close
+                                                            </button>
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <form action="${pageContext.request.contextPath}/controller?command=delete_review" method="post">
+                                            <div class="modal fade" tabindex="-1" id="deleteReview${entry.key.id}">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Delete review</h5>
+                                                            <input type="hidden" name="id" value="${id}">
+                                                            <input type="hidden" name="reviewId" value="${reviews.get(entry.key.id).id}">
+
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to delete this review?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" class="btn btn-primary">Delete review</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <li class="list-group-item">${entry.key.login}
+                                        <c:choose>
+                                            <c:when test="${entry.value eq true}">
+                                                <div class="pull-right">
+                                                    <a class="btn btn-primary" href="#"
+                                                       data-toggle="modal"
+                                                       data-target="#changeReview${entry.key.id}"
+                                                       role="button">Change Review</a>
+                                                    <a class="btn btn-primary" href="#"
+                                                       data-toggle="modal"
+                                                       data-target="#deleteReview${entry.key.id}"
+                                                       role="button">Delete Review</a>
+                                                </div>
+
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button class="btn btn-primary pull-right" role="button"
+                                                        type="button"
+                                                        data-toggle="modal"
+                                                        data-target="#review${entry.key.id}"
+                                                        name="studentIdOnCourse" value="${entry.key.id}">
+                                                    Review
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </li>
+
                                 </c:forEach>
-                                    <%--                            <li class="list-group-item">Cras justo odio</li>--%>
-                                    <%--                            <li class="list-group-item">Dapibus ac facilisis in</li>--%>
-                                    <%--                            <li class="list-group-item">Morbi leo risus</li>--%>
-                                    <%--                            <li class="list-group-item">Porta ac consectetur ac</li>--%>
-                                    <%--                            <li class="list-group-item">Vestibulum at eros</li>--%>
+
                             </ul>
                         </div>
                     </c:if>
@@ -80,7 +250,7 @@
             <input type="hidden" name="id" value="${id}">
 
             <form action="${pageContext.request.contextPath}/controller?command=change_course" method="post">
-                <div class="modal fade" id="staticBackdrop1" data-backdrop="static" data-keyboard="false"
+                <div class="modal fade" id="changeCourse" data-backdrop="static" data-keyboard="false"
                      tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
 
                     <div class="modal-dialog">
@@ -179,6 +349,8 @@
                 </div>
             </form>
 
+
+
         </div>
     </div>
 
@@ -205,7 +377,7 @@
     <hr>
 </main>
 
-
+<%@include file="footer.jsp"%>
 
 </body>
 </html>

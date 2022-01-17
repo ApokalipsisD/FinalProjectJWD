@@ -83,6 +83,6 @@
         </c:otherwise>
     </c:choose>
 </main>
-
+<%@include file="footer.jsp"%>
 </body>
 </html>

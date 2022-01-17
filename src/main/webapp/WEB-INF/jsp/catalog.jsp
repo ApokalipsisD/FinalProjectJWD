@@ -29,6 +29,7 @@
 </head>
 <body>
 <%@include file="header.jsp"%>
+<div class="wrapper">
 <main class="main">
     <c:choose>
         <c:when test="${sessionScope.account.role eq Role.ADMIN}">
@@ -130,6 +131,8 @@
         </div>
     </div>
 </main>
+    <%@include file="footer.jsp"%>
+</div>
 
 
 </body>

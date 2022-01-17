@@ -17,11 +17,13 @@
 <head>
     <title>Profile</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <style>
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
-    </style>
 
-    <style>
         body {
             margin-top: 20px;
             background: #f5f5f5;
@@ -80,13 +82,35 @@
                     </c:otherwise>
                 </c:choose>
 
-                <%--            <h4 class="font-weight-bold mb-0">John Doe <span--%>
-                <%--                    class="text-muted font-weight-normal">@${sessionScope.userName}</span>--%>
-                <%--            </h4>--%>
                 <a href="controller?command=show_edit_profile" class="btn btn-primary btn-sm">${edit}</a>
-                <a href="javascript:void(0)" class="btn btn-default btn-sm">${delete}</a>
+                <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteAccount"
+                   role="button">${delete}</a>
             </div>
         </div>
+
+        <form action="${pageContext.request.contextPath}/controller?command=delete_account" method="post">
+            <div class="modal fade" tabindex="-1" id="deleteAccount">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete account</h5>
+<%--                            <input type="hidden" name="id" value="${id}">--%>
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete this account?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Delete review</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 
         <div class="card mb-4">
             <div class="card-body">
@@ -157,6 +181,6 @@
         </div>
     </div>
 </main>
-
+<%@include file="footer.jsp"%>
 </body>
 </html>

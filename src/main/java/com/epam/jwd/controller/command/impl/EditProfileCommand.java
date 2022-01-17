@@ -97,17 +97,6 @@ public class EditProfileCommand implements Command {
 
             return ERROR_CONTEXT;
         }
-
-        System.out.println(session.getAttribute(CURRENT_ACCOUNT));
-
-//        String userName = context.getParameterByName(USERNAME_ATTRIBUTE);
-
-
-//
-//        session.setAttribute(CURRENT_USER, userDto);
-//        session.setAttribute(USERNAME_ATTRIBUTE, userName);
-//        context.addAttributeToJsp(USERNAME_ATTRIBUTE, userName);
-
         return SUCCESSFUL_PROFILE_CONTEXT;
     }
 }

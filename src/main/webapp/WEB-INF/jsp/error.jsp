@@ -9,6 +9,6 @@ Something went wrong.
 
     <p>${sessionScope.error}</p>
 ${error}
-
+<%@include file="footer.jsp"%>
 </body>
 </html>
