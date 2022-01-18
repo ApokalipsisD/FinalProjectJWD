@@ -4,28 +4,41 @@
 <html>
 <head>
     <title>Login</title>
+
+    <style>
+        <%@include file="/WEB-INF/css/bootstrap.min.css" %>
+        <%@include file="/WEB-INF/css/signUp.css" %>
+
+    </style>
+
 </head>
 <body>
 <%@include file="header.jsp"%>
 <main class="main">
-    <c:choose>
-        <c:when test="${not empty requestScope.error}">
-            <p>${requestScope.error}</p>
-            <a href="${pageContext.request.contextPath}/controller?command=show_login">Try again</a>
-        </c:when>
-        <c:otherwise>
-            <form action="${pageContext.request.contextPath}/controller?command=login" method="post">
-                <label for="loginField">Login: </label>
-                <input type="text" id="loginField" name="login">
-                <br>
-                <label for="passwordField">Password: </label>
-                <input type="password" id="passwordField" name="password">
-                <br>
-                <input type="submit" value="Log In">
+
+    <div class="container">
+        <div class="card card-container">
+            <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
+            <form action="${pageContext.request.contextPath}/controller?command=login" method="post"
+                  class="form-signin">
+                <h4 style="margin-bottom: 20px; text-align: center;">Log In</h4>
+                <p style="color: red; text-align: center;">${error}</p>
+                <div class="input-container">
+                    <input name="login" id="login" type="text" class="form-control" placeholder="Login"
+                           aria-label="Login" aria-describedby="basic-addon1" required>
+                </div>
+
+                <div class="input-container">
+                    <input type="password" name="password" id="inputPassword" class="form-control" aria-label="Password" placeholder="Password" required>
+                </div>
+
+                <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Log In</button>
             </form>
-        </c:otherwise>
-    </c:choose>
+            <a href="${pageContext.request.contextPath}/controller?command=show_sign_up" class="forgot-password"
+               style="text-align: center">Create an account</a>
+        </div>
+    </div>
 </main>
-<%@include file="footer.jsp"%>
+<%@include file="footer.jsp" %>
 </body>
 </html>

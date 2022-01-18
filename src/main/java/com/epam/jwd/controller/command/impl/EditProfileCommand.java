@@ -18,6 +18,7 @@ public class EditProfileCommand implements Command {
     private static final AccountValidator validator = new AccountValidator();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/profile.jsp";
+    private static final String FAIL_PAGE_PATH = "/WEB-INF/jsp/editProfile.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String CURRENT_USER = "user";
@@ -52,6 +53,18 @@ public class EditProfileCommand implements Command {
         }
     };
 
+    private static final ResponseContext EDIT_PROFILE_FAILED_CONTEXT = new ResponseContext() {
+        @Override
+        public String getPage() {
+            return FAIL_PAGE_PATH;
+        }
+
+        @Override
+        public boolean isRedirect() {
+            return false;
+        }
+    };
+
     public static Command getInstance() {
         return INSTANCE;
     }
@@ -77,25 +90,27 @@ public class EditProfileCommand implements Command {
         String email = context.getParameterByName(EMAIL_ATTRIBUTE).equals("")
                 ? accountDto.getEmail() : context.getParameterByName(EMAIL_ATTRIBUTE);
 
-        String birthDateString = context.getParameterByName(BIRTH_DATE_ATTRIBUTE);
+        Date birthDate = context.getParameterByName(BIRTH_DATE_ATTRIBUTE).isBlank()
+                ? accountDto.getBirthDate() : Date.valueOf(context.getParameterByName(BIRTH_DATE_ATTRIBUTE));
 
 
 
         try {
-            validator.validateDate(birthDateString);
-            Date birthDate = Date.valueOf(birthDateString);
+//            validator.validateDate(birthDateString);
+//            Date birthDate = Date.valueOf(birthDateString);
 
             AccountDto accountDto1 = new AccountDto(accountDto.getId(), firstName, lastName, email, birthDate, accountDto.getRole().getId(), accountDto.getUserId());
 
             accountService.update(accountDto1);
             session.setAttribute(CURRENT_ACCOUNT, accountDto1);
         } catch (ServiceException e) {
+            context.addAttributeToJsp("error", e.getMessage());
             //
 //            System.out.println(e.getMessage());
 //            session.setAttribute("error", e.getMessage());
 //            context.addAttributeToJsp("error", e.getMessage());
 
-            return ERROR_CONTEXT;
+            return EDIT_PROFILE_FAILED_CONTEXT;
         }
         return SUCCESSFUL_PROFILE_CONTEXT;
     }

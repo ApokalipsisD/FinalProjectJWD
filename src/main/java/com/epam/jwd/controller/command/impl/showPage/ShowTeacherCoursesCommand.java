@@ -6,6 +6,7 @@ import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.AccountDto;
 import com.epam.jwd.service.dto.CourseDto;
 import com.epam.jwd.service.dto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.CourseServiceImpl;
 import com.epam.jwd.service.impl.StudentHasCourseServiceImpl;
@@ -56,10 +57,15 @@ public class ShowTeacherCoursesCommand implements Command {
 
         UserDto userDto = (UserDto) session.getAttribute("user");
 
-        AccountDto accountDto = account.getAccountByUserId(userDto.getId());
-        Integer teacherId = accountDto.getId();
-        List<CourseDto> list = catalog.getCoursesByTeacherId(teacherId);
-        session.setAttribute("teacherCourses", list);
+        AccountDto accountDto = null;
+        try {
+            accountDto = account.getAccountByUserId(userDto.getId());
+            Integer teacherId = accountDto.getId();
+            List<CourseDto> list = catalog.getCoursesByTeacherId(teacherId);
+            session.setAttribute("teacherCourses", list);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
 
         return SHOW_TEACHER_COURSES_PAGE_CONTEXT;
     }

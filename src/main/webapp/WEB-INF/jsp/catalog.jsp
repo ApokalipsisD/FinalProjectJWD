@@ -102,7 +102,6 @@
             </form>
         </c:when>
     </c:choose>
-
     <div class="container justify-content-center mt-50 mb-50">
         <div class="row">
             <div class="col-md-10">

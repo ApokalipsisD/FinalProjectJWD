@@ -32,7 +32,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
 
     @Override
-    public StudentHasCourse save(StudentHasCourse student) {
+    public StudentHasCourse save(StudentHasCourse student) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_RECORD, Statement.RETURN_GENERATED_KEYS)) {
@@ -56,7 +56,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
     }
 
     @Override
-    public boolean update(StudentHasCourse student) {
+    public boolean update(StudentHasCourse student) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_RECORD)) {
             preparedStatement.setInt(1, student.getCourseId());
@@ -74,7 +74,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
     }
 
     @Override
-    public boolean delete(StudentHasCourse student) {
+    public boolean delete(StudentHasCourse student) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_RECORD)) {
             preparedStatement.setInt(1, student.getId());
@@ -88,7 +88,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
     }
 
     @Override
-    public StudentHasCourse findById(Integer id) {
+    public StudentHasCourse findById(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         StudentHasCourse record = null;
         ResultSet resultSet = null;
@@ -112,7 +112,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
     }
 
     @Override
-    public List<StudentHasCourse> findAll() {
+    public List<StudentHasCourse> findAll() throws DaoException {
         List<StudentHasCourse> studentList = new ArrayList<>();
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -134,7 +134,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         return studentList;
     }
 
-    public boolean findRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) {
+    public boolean findRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_RECORD_BY_COURSE_AND_STUDENT_ID)) {
@@ -151,7 +151,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         }
     }
 
-    public StudentHasCourse getRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) {
+    public StudentHasCourse getRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         StudentHasCourse record = null;
         ResultSet resultSet = null;
@@ -175,7 +175,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         return record;
     }
 
-    public List<StudentHasCourse> getRecordsByStudentId(Integer studentId) {
+    public List<StudentHasCourse> getRecordsByStudentId(Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         List<StudentHasCourse> studentList = new ArrayList<>();
         ResultSet resultSet = null;
@@ -198,7 +198,7 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         return studentList;
     }
 
-    public List<StudentHasCourse> getRecordsByCourseId(Integer courseId) {
+    public List<StudentHasCourse> getRecordsByCourseId(Integer courseId) throws DaoException {
         Connection connection = pool.takeConnection();
         List<StudentHasCourse> studentList = new ArrayList<>();
         ResultSet resultSet = null;

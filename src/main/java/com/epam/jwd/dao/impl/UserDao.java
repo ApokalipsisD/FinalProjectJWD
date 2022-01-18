@@ -38,7 +38,7 @@ public class UserDao implements Dao<User, Integer> {
 
     //todo transactions and add to account
     @Override
-    public User save(User user) {
+    public User save(User user) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
@@ -66,7 +66,7 @@ public class UserDao implements Dao<User, Integer> {
     }
 
     @Override
-    public boolean update(User user) {
+    public boolean update(User user) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_USER)) {
             preparedStatement.setString(1, user.getLogin());
@@ -83,7 +83,7 @@ public class UserDao implements Dao<User, Integer> {
     }
 
     @Override
-    public boolean delete(User user) {
+    public boolean delete(User user) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER)) {
             preparedStatement.setInt(1, user.getId());
@@ -97,7 +97,7 @@ public class UserDao implements Dao<User, Integer> {
     }
 
     @Override
-    public User findById(Integer id) {
+    public User findById(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         User user = null;
         ResultSet resultSet = null;
@@ -120,7 +120,7 @@ public class UserDao implements Dao<User, Integer> {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll() throws DaoException {
         List<User> userList = new ArrayList<>();
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -128,7 +128,8 @@ public class UserDao implements Dao<User, Integer> {
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 userList.add(new User(resultSet.getInt(1),
-                        resultSet.getString(2), passwordManager.decode(resultSet.getString(3))));
+                        resultSet.getString(2),
+                        passwordManager.decode(resultSet.getString(3))));
             }
         } catch (SQLException e) {
             logger.error(DaoMessageException.FIND_ALL_USERS_EXCEPTION + e);
@@ -140,7 +141,7 @@ public class UserDao implements Dao<User, Integer> {
         return userList;
     }
 
-    public User findByLogin(String login) {
+    public User findByLogin(String login) throws DaoException {
         Connection connection = pool.takeConnection();
         User user = null;
         ResultSet resultSet = null;
@@ -162,7 +163,7 @@ public class UserDao implements Dao<User, Integer> {
         return user;
     }
 
-    public boolean checkIfLoginFree(String login) {
+    public boolean checkIfLoginFree(String login) throws DaoException {
         Connection connection = pool.takeConnection();
         boolean isLoginFree = false;
         ResultSet resultSet = null;

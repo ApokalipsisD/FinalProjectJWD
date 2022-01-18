@@ -31,7 +31,7 @@ public class ReviewDao implements Dao<Review, Integer> {
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
 
     @Override
-    public Review save(Review review) {
+    public Review save(Review review) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_REVIEW, Statement.RETURN_GENERATED_KEYS)) {
@@ -57,7 +57,7 @@ public class ReviewDao implements Dao<Review, Integer> {
     }
 
     @Override
-    public boolean update(Review review) {
+    public boolean update(Review review) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_REVIEW)) {
             preparedStatement.setInt(1, review.getCourseId());
@@ -76,7 +76,7 @@ public class ReviewDao implements Dao<Review, Integer> {
     }
 
     @Override
-    public boolean delete(Review review) {
+    public boolean delete(Review review) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_REVIEW)) {
             preparedStatement.setInt(1, review.getId());
@@ -90,7 +90,7 @@ public class ReviewDao implements Dao<Review, Integer> {
     }
 
     @Override
-    public Review findById(Integer id) {
+    public Review findById(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         Review review = null;
         ResultSet resultSet = null;
@@ -116,7 +116,7 @@ public class ReviewDao implements Dao<Review, Integer> {
     }
 
     @Override
-    public List<Review> findAll() {
+    public List<Review> findAll() throws DaoException {
         List<Review> reviewList = new ArrayList<>();
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -140,7 +140,7 @@ public class ReviewDao implements Dao<Review, Integer> {
         return reviewList;
     }
 
-    public boolean findReviewByCourseIdAndStudentId(Integer courseId, Integer studentId) {
+    public boolean findReviewByCourseIdAndStudentId(Integer courseId, Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_REVIEW_BY_COURSE_AND_STUDENT_ID)) {
@@ -157,7 +157,7 @@ public class ReviewDao implements Dao<Review, Integer> {
         }
     }
 
-    public List<Review> getReviewsByCourseId(Integer courseId) {
+    public List<Review> getReviewsByCourseId(Integer courseId) throws DaoException {
         Connection connection = pool.takeConnection();
         List<Review> reviewList = new ArrayList<>();
         ResultSet resultSet = null;

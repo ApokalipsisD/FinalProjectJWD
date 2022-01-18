@@ -67,7 +67,7 @@ public class JoinCourseCommand implements Command {
         }
 
         UserDto userDto = (UserDto) session.getAttribute("user");
-        AccountDto accountDto = account.getAccountByUserId(userDto.getId());
+        AccountDto accountDto = null;
 
         Integer courseId = Integer.valueOf(context.getParameterByName("id"));
         Integer studentId = userDto.getId();
@@ -76,6 +76,7 @@ public class JoinCourseCommand implements Command {
         Date applicationDate = Date.valueOf(format.format(new GregorianCalendar().getTime()));
 
         try {
+            accountDto = account.getAccountByUserId(userDto.getId());
             if (record.findRecordByCourseIdAndStudentId(courseId, studentId)) {
                 record.create(new StudentHasCourseDto(courseId, studentId, applicationDate));
                 if (accountDto.getRole().equals(Role.USER)) {

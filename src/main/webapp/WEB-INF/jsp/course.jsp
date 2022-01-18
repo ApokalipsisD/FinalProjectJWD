@@ -50,11 +50,11 @@
                         <c:otherwise>
                             <a class="btn btn-primary btn-lg" href="controller?command=join_course&id=${id}"
                                role="button" type="submit">Join</a>
-
                         </c:otherwise>
                     </c:choose>
                 </c:when>
             </c:choose>
+
             <c:choose>
                 <c:when test="${sessionScope.account.role eq Role.ADMIN or sessionScope.account eq teacher}">
                     <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#changeCourse"

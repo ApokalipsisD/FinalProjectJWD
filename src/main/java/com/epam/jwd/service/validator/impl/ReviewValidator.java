@@ -12,10 +12,11 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
     private static final Integer MAX_GRADE = 10;
     private static final Integer MIN_ATTENDANCE = 0;
     private static final Integer MAX_ATTENDANCE = 100;
+    private static final Integer MIN_ID = 1;
+
 
     @Override
     public void validate(ReviewDto value) throws ServiceException {
-//        validateId(value.getId());
         validateCourseId(value.getCourseId());
         validateStudentId(value.getStudentId());
         validateGrade(value.getGrade());
@@ -27,11 +28,17 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
         if (Objects.isNull(id)) {
             throw new ServiceException(MessageException.COURSE_ID_IS_NULL_EXCEPTION);
         }
+        if (id < MIN_ID) {
+            throw new ServiceException(MessageException.INCORRECT_COURSE_ID_EXCEPTION);
+        }
     }
 
     private void validateStudentId(Integer id) throws ServiceException {
         if (Objects.isNull(id)) {
             throw new ServiceException(MessageException.STUDENT_ID_IS_NULL_EXCEPTION);
+        }
+        if (id < MIN_ID) {
+            throw new ServiceException(MessageException.INCORRECT_STUDENT_ID_EXCEPTION);
         }
     }
 
@@ -55,7 +62,6 @@ public class ReviewValidator implements Validator<ReviewDto, Integer> {
         }
     }
 
-    // check for null in db
     private void validateReview(String review) throws ServiceException {
         if (Objects.isNull(review)) {
             throw new ServiceException(MessageException.REVIEW_IS_NULL_EXCEPTION);

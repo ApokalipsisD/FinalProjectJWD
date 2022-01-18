@@ -32,7 +32,7 @@ public class AccountDao implements Dao<Account, Integer> {
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
 
     @Override
-    public Account save(Account account) {
+    public Account save(Account account) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS)) {
@@ -58,7 +58,7 @@ public class AccountDao implements Dao<Account, Integer> {
     }
 
     @Override
-    public boolean update(Account account) {
+    public boolean update(Account account) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ACCOUNT)) {
             preparedStatement.setString(1, account.getFirstName());
@@ -79,7 +79,7 @@ public class AccountDao implements Dao<Account, Integer> {
     }
 
     @Override
-    public boolean delete(Account account) {
+    public boolean delete(Account account) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ACCOUNT)) {
             preparedStatement.setInt(1, account.getId());
@@ -93,7 +93,7 @@ public class AccountDao implements Dao<Account, Integer> {
     }
 
     @Override
-    public Account findById(Integer id) {
+    public Account findById(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         Account account = null;
         ResultSet resultSet = null;
@@ -120,7 +120,7 @@ public class AccountDao implements Dao<Account, Integer> {
     }
 
     @Override
-    public List<Account> findAll() {
+    public List<Account> findAll() throws DaoException {
         List<Account> accountList = new ArrayList<>();
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -145,7 +145,7 @@ public class AccountDao implements Dao<Account, Integer> {
         return accountList;
     }
 
-    public Account getAccountByUserId(Integer id) {
+    public Account getAccountByUserId(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         Account account = null;
         ResultSet resultSet = null;
@@ -171,7 +171,7 @@ public class AccountDao implements Dao<Account, Integer> {
         return account;
     }
 
-    public List<Account> findAllTeachers() {
+    public List<Account> findAllTeachers() throws DaoException {
         List<Account> accountList = new ArrayList<>();
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -196,7 +196,7 @@ public class AccountDao implements Dao<Account, Integer> {
         return accountList;
     }
 
-    public void updateRole(Integer accountId, Integer roleId) {
+    public void updateRole(Integer accountId, Integer roleId) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ROLE_ID)) {
             preparedStatement.setInt(1, roleId);

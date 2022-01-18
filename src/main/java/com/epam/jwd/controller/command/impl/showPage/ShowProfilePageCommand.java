@@ -5,6 +5,7 @@ import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.AccountDto;
 import com.epam.jwd.service.dto.UserDto;
+import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 
 import javax.servlet.http.HttpSession;
@@ -57,7 +58,11 @@ public class ShowProfilePageCommand implements Command {
 
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
-        AccountDto accountDto = accountService.getAccountByUserId(userDto.getId());
+        try {
+            AccountDto accountDto = accountService.getAccountByUserId(userDto.getId());
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
 //        System.out.println(accountDto);
 
 //        session.setAttribute(CURRENT_ACCOUNT, accountDto);

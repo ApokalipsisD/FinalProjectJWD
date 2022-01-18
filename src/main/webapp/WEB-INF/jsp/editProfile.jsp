@@ -104,49 +104,59 @@
                         </div>
                         <div class="form-group">
                             <label for="inputAddress5">${birthDate}</label>
-                            <input type="date" name="birthDate" class="form-control" id="inputAddress5"
-                            <c:choose>
-                            <c:when test="${not empty sessionScope.account.birthDate}">
+                            <input type="date" name="birthDate" class="form-control" id="inputAddress5" title="Aaaaaa"
+                            <c:if test="${not empty sessionScope.account.birthDate}">
                                    value="${sessionScope.account.birthDate}"
-                            </c:when>
-                            </c:choose>>
+                            </c:if>
+
                         </div>
+                        <p style="color: red;">${error}</p>
                         <hr class="my-4"/>
-                        <%--                    <div class="row mb-4">--%>
-                        <%--                        <div class="col-md-6">--%>
-                        <%--                            <div class="form-group">--%>
-                        <%--                                <label for="inputPassword4">Old Password</label>--%>
-                        <%--                                <input type="password" class="form-control" id="inputPassword5" />--%>
-                        <%--                            </div>--%>
-                        <%--                            <div class="form-group">--%>
-                        <%--                                <label for="inputPassword5">New Password</label>--%>
-                        <%--                                <input type="password" class="form-control" id="inputPassword5" />--%>
-                        <%--                            </div>--%>
-                        <%--                            <div class="form-group">--%>
-                        <%--                                <label for="inputPassword6">Confirm Password</label>--%>
-                        <%--                                <input type="password" class="form-control" id="inputPassword6" />--%>
-                        <%--                            </div>--%>
-                        <%--                        </div>--%>
-                        <%--                        <div class="col-md-6">--%>
-                        <%--                            <p class="mb-2">Password requirements</p>--%>
-                        <%--                            <p class="small text-muted mb-2">To create a new password, you have to meet all of the following requirements:</p>--%>
-                        <%--                            <ul class="small text-muted pl-4 mb-0">--%>
-                        <%--                                <li>Minimum 8 character</li>--%>
-                        <%--                                <li>At least one special character</li>--%>
-                        <%--                                <li>At least one number</li>--%>
-                        <%--                                <li>Can’t be the same as a previous password</li>--%>
-                        <%--                            </ul>--%>
-                        <%--                        </div>--%>
-                        <%--                    </div>--%>
+<%--                                            <div class="row mb-4">--%>
+<%--                                                <div class="col-md-6">--%>
+<%--                                                    <div class="form-group">--%>
+<%--                                                        <label for="inputPassword4">Old Password</label>--%>
+<%--                                                        <input type="password" class="form-control" id="inputPassword4" />--%>
+<%--                                                    </div>--%>
+<%--                                                    <div class="form-group">--%>
+<%--                                                        <label for="inputPassword5">New Password</label>--%>
+<%--                                                        <input type="password" class="form-control" id="inputPassword5" />--%>
+<%--                                                    </div>--%>
+<%--                                                    <div class="form-group">--%>
+<%--                                                        <label for="inputPassword6">Confirm Password</label>--%>
+<%--                                                        <input type="password" class="form-control" id="inputPassword6" />--%>
+<%--                                                    </div>--%>
+<%--                                                </div>--%>
+<%--                                                <div class="col-md-6">--%>
+<%--                                                    <p class="mb-2">Password requirements</p>--%>
+<%--                                                    <p class="small text-muted mb-2">To create a new password, you have to meet all of the following requirements:</p>--%>
+<%--                                                    <ul class="small text-muted pl-4 mb-0">--%>
+<%--                                                        <li>Minimum 8 character</li>--%>
+<%--                                                        <li>At least one special character</li>--%>
+<%--                                                        <li>At least one number</li>--%>
+<%--                                                        <li>Can’t be the same as a previous password</li>--%>
+<%--                                                    </ul>--%>
+<%--                                                </div>--%>
+<%--                                            </div>--%>
                         <button type="submit" class="btn btn-primary">${saveChanges}</button>
+                        <button type="button" class="btn btn-primary" href="/controller?command=change_password">${changePassword}</button>
                     </form>
-                    <form action="${pageContext.request.contextPath}/controller?command=change_password" method="post">
-                        <button type="submit" class="btn btn-primary">${changePassword}</button>
-                    </form>
+
                 </div>
             </div>
         </div>
     </div>
+
+<%--    <c:choose>--%>
+<%--        <c:when test="${not empty error}">--%>
+<%--            <p style="color: red;">${error}</p>--%>
+<%--        </c:when>--%>
+
+<%--        <c:when test="${not empty message}">--%>
+<%--            <p style="color: red;">${message}</p>--%>
+<%--        </c:when>--%>
+<%--    </c:choose>--%>
+
 </main>
 <%@include file="footer.jsp"%>
 </body>

@@ -11,6 +11,7 @@ public class UserValidator implements Validator<UserDto, Integer> {
 
     private static final Integer MIN_LOGIN_LENGTH = 3;
     private static final Integer MAX_LOGIN_LENGTH = 20;
+    private static final String LOGIN_PATTERN = "^[\\w.-]{3,20}[0-9a-zA-Z]$";
 
     private static final Integer MIN_PASSWORD_LENGTH = 8;
     private static final Integer MAX_PASSWORD_LENGTH = 20;
@@ -18,7 +19,6 @@ public class UserValidator implements Validator<UserDto, Integer> {
 
     @Override
     public void validate(UserDto userDto) throws ServiceException {
-        validateId(userDto.getId());
         validateLogin(userDto.getLogin());
         validatePassword(userDto.getPassword());
     }
@@ -26,6 +26,10 @@ public class UserValidator implements Validator<UserDto, Integer> {
     private void validateLogin(String login) throws ServiceException {
         if (Objects.isNull(login)) {
             throw new ServiceException(MessageException.LOGIN_IS_NULL_EXCEPTION);
+        }
+
+        if(!login.matches(LOGIN_PATTERN)){
+            throw new ServiceException(MessageException.INCORRECT_LOGIN_EXCEPTION);
         }
 
         if (login.length() < MIN_LOGIN_LENGTH
@@ -44,7 +48,7 @@ public class UserValidator implements Validator<UserDto, Integer> {
                 || password.length() > MAX_PASSWORD_LENGTH) {
             throw new ServiceException(MessageException.INCORRECT_PASSWORD_LENGTH_EXCEPTION);
         }
-        //todo check password pattern
+
         if (!password.matches(PASSWORD_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_PASSWORD_EXCEPTION);
         }

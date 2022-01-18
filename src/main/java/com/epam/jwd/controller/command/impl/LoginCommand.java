@@ -4,6 +4,7 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.UserDto;
+import com.epam.jwd.service.exception.MessageException;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
@@ -17,14 +18,14 @@ public class LoginCommand implements Command {
     private static final AccountServiceImpl accountService = new AccountServiceImpl();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
-    private static final String FAIL_PAGE_PATH = "/WEB-INF/jsp/login.jsp";
+    private static final String FAIL_PAGE_PATH = "/controller?command=show_login";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String LOGIN_ATTRIBUTE = "login";
     private static final String PASSWORD_ATTRIBUTE = "password";
     private static final String ERROR_ATTRIBUTE = "error";
     private static final String CURRENT_USER = "user";
-
+    private static final String CURRENT_ACCOUNT = "account";
     private static final String CURRENT_USER_NAME = "userName";
 
     private static final ResponseContext SUCCESSFUL_LOG_IN_CONTEXT = new ResponseContext() {
@@ -69,29 +70,30 @@ public class LoginCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-
+        HttpSession session = context.getCurrentSession().get();
         String login = context.getParameterByName(LOGIN_ATTRIBUTE);
         String password = context.getParameterByName(PASSWORD_ATTRIBUTE);
-        HttpSession session;
-        if (context.getCurrentSession().isPresent()) {
-            session = context.getCurrentSession().get();
-            session.removeAttribute("error");
-        } else {
-            return ERROR_CONTEXT;
-        }
+
+//        if (context.getCurrentSession().isPresent()) {
+//            session = context.getCurrentSession().get();
+////            session.removeAttribute("error");
+//        } else {
+//            return ERROR_CONTEXT;
+//        }
         UserDto userDto;
         try {
             userDto = user.getByLogin(login);
             if (userDto.getPassword().equals(password)) {
                 session.setAttribute(CURRENT_USER, userDto);
                 session.setAttribute(CURRENT_USER_NAME, userDto.getLogin());
-                session.setAttribute("account", accountService.getAccountByUserId(userDto.getId()));
+                session.setAttribute(CURRENT_ACCOUNT, accountService.getAccountByUserId(userDto.getId()));
 //                context.addAttributeToJsp("message", "Log in is successfully completed");  // Log in is successfully completed
             } else {
-               return ERROR_CONTEXT;
+               throw new ServiceException(MessageException.USER_NOT_FOUND_EXCEPTION);
             }
         } catch (ServiceException e) {
-            return ERROR_CONTEXT;
+            context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
+            return LOG_IN_FAILED_CONTEXT;
         }
 
 

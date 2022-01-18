@@ -7,6 +7,7 @@ import com.epam.jwd.service.validator.api.Validator;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class AccountValidator implements Validator<AccountDto, Integer> {
     private static final Integer MIN_NAME_LENGTH = 2;
@@ -18,18 +19,21 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
 
     @Override
     public void validate(AccountDto value) throws ServiceException {
-        validateId(value.getId());
-        validateFirstName(value.getFirstName());
-        if (value.getLastName() != null) {
+        if (Objects.nonNull(value.getFirstName())) {
+            validateFirstName(value.getFirstName());
+        }
+
+        if (Objects.nonNull(value.getLastName())) {
             validateLastName(value.getLastName());
         }
 
-        if (value.getEmail() != null) {
+        if (Objects.nonNull(value.getEmail())) {
             validateEmail(value.getEmail());
         }
-        validateDate(value.getBirthDate().toString());
-//        validateRoleId(value.getRoleId());
-//        validateUserId(value.getUserId());
+
+        if (Objects.nonNull(value.getBirthDate())) {
+            validateDate(value.getBirthDate().toString());
+        }
     }
 
     private void validateFirstName(String firstName) throws ServiceException {
@@ -65,7 +69,7 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
         }
     }
 
-    public void validateDate(String birthDate) throws ServiceException {
+    private void validateDate(String birthDate) throws ServiceException {
 //        if (Objects.isNull(birthDate)) {
 //            throw new ServiceException(MessageException.BIRTH_DATE_IS_NULL_EXCEPTION);
 //        }

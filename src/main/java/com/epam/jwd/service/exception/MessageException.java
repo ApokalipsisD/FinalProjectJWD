@@ -2,12 +2,14 @@ package com.epam.jwd.service.exception;
 
 public interface MessageException {
     String INCORRECT_LOGIN_LENGTH_EXCEPTION = "Incorrect login length (login must be greater than 3 and less than 20)";
+    String INCORRECT_LOGIN_EXCEPTION = "Incorrect login (login must be greater than 3 and less than 20 and must not contain inaccessible characters)";
     String LOGIN_IS_NULL_EXCEPTION = "Login is null";
     String PASSWORD_IS_NULL_EXCEPTION = "Password is null";
     String INCORRECT_PASSWORD_LENGTH_EXCEPTION = "Incorrect password length (password must be greater than 8 and less than 20)";
     String INCORRECT_PASSWORD_EXCEPTION = "Incorrect password (password must contain at least one number, one lowercase and one uppercase letter, minimum password length 8)";
     String ID_IS_NULL_EXCEPTION = "Id is null";
     String USER_NOT_FOUND_EXCEPTION = "User not found";
+    String INCORRECT_ID_EXCEPTION = "Incorrect id";
 
     String FIRST_NAME_IS_NULL_EXCEPTION = "First name is null";
     String INCORRECT_FIRST_NAME_EXCEPTION = "First name must start with an uppercase letter and contain letters of only one language";
@@ -30,6 +32,9 @@ public interface MessageException {
     String COURSE_STATUS_IS_NULL = "Course status is null";
     String TEACHER_ID_IS_NULL = "Teacher id is null";
     String COURSE_NOT_FOUND_EXCEPTION = "Course not found";
+    String START_AND_END_DATE_EXCEPTION = "Incorrect start or end date";
+    String INCORRECT_TEACHER_ID_EXCEPTION = "Incorrect teacher id";
+    String INCORRECT_COURSE_STATUS_EXCEPTION = "Incorrect course status";
 
     String COURSE_ID_IS_NULL_EXCEPTION = "Course id is null";
     String STUDENT_ID_IS_NULL_EXCEPTION = "Student id is null";
@@ -39,5 +44,10 @@ public interface MessageException {
     String INCORRECT_ATTENDANCE_EXCEPTION = "Incorrect attendance";
     String REVIEW_IS_NULL_EXCEPTION = "Review is null";
     String REVIEW_NOT_FOUND_EXCEPTION = "Review not found";
+    String INCORRECT_COURSE_ID_EXCEPTION = "Incorrect course id";
+    String INCORRECT_STUDENT_ID_EXCEPTION = "Incorrect student id";
+
+    String APPLICATION_DATE_IS_NULL_EXCEPTION = "Application date is null";
+
 
 }

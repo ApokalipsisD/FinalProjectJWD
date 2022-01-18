@@ -14,6 +14,7 @@ public class LogoutCommand implements Command {
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String CURRENT_USER = "userName";
+    private static final String CURRENT_ACCOUNT = "account";
 
     private static final ResponseContext SUCCESSFUL_LOG_OUT_CONTEXT = new ResponseContext() {
         @Override
@@ -54,6 +55,7 @@ public class LogoutCommand implements Command {
         }
 
         session.removeAttribute(CURRENT_USER);
+        session.removeAttribute(CURRENT_ACCOUNT);
         context.invalidateCurrentSession();
 
         return SUCCESSFUL_LOG_OUT_CONTEXT;

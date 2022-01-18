@@ -14,5 +14,5 @@ public interface Service<T extends AbstractDto<K>, K> {
 
     T getById(K id) throws ServiceException;
 
-    List<T> getAll();
+    List<T> getAll() throws ServiceException;
 }

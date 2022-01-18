@@ -30,7 +30,7 @@ public class CourseDao implements Dao<Course, Integer> {
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
 
     @Override
-    public Course save(Course course) {
+    public Course save(Course course) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_COURSE, Statement.RETURN_GENERATED_KEYS)) {
@@ -78,7 +78,7 @@ public class CourseDao implements Dao<Course, Integer> {
     }
 
     @Override
-    public boolean delete(Course course) {
+    public boolean delete(Course course) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_COURSE)) {
             preparedStatement.setInt(1, course.getId());
@@ -92,7 +92,7 @@ public class CourseDao implements Dao<Course, Integer> {
     }
 
     @Override
-    public Course findById(Integer id) {
+    public Course findById(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         Course course = null;
         ResultSet resultSet = null;
@@ -119,7 +119,7 @@ public class CourseDao implements Dao<Course, Integer> {
     }
 
     @Override
-    public List<Course> findAll() {
+    public List<Course> findAll() throws DaoException {
         List<Course> courseList = new ArrayList<>();
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -144,7 +144,7 @@ public class CourseDao implements Dao<Course, Integer> {
         return courseList;
     }
 
-    public List<Course> findCoursesByTeacherId(Integer teacherId) {
+    public List<Course> findCoursesByTeacherId(Integer teacherId) throws DaoException {
         List<Course> courseList = new ArrayList<>();
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;

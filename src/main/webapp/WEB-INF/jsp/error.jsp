@@ -5,10 +5,12 @@
     <title>Error</title>
 </head>
 <body>
-Something went wrong.
-
+<%@include file="header.jsp" %>
+<main class="main">
+    Something went wrong.
     <p>${sessionScope.error}</p>
-${error}
-<%@include file="footer.jsp"%>
+    ${error}
+</main>
+<%@include file="footer.jsp" %>
 </body>
 </html>

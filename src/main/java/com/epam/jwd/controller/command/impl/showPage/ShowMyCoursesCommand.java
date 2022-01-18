@@ -60,9 +60,9 @@ public class ShowMyCoursesCommand implements Command {
 //        AccountDto accountDto = account.getAccountByUserId(userDto.getId());
 
         Integer studentId = userDto.getId();
-        List<StudentHasCourseDto> list = record.getRecordsByStudentId(studentId);
         List<CourseDto> myCourses = new ArrayList<>();
         try {
+            List<StudentHasCourseDto> list = record.getRecordsByStudentId(studentId);
             for (StudentHasCourseDto record : list) {
                 myCourses.add(catalog.getById(record.getCourseId()));
             }

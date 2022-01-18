@@ -68,8 +68,10 @@ public class DropCourseCommand implements Command {
         Integer courseId = Integer.valueOf(context.getParameterByName("id"));
         Integer studentId = userDto.getId();
 
-        StudentHasCourseDto recordStudent = record.getRecordByCourseIdAndStudentId(courseId, studentId);
+        StudentHasCourseDto recordStudent;
+
         try {
+            recordStudent = record.getRecordByCourseIdAndStudentId(courseId, studentId);
             record.delete(recordStudent);
         } catch (ServiceException e) {
             e.printStackTrace();
