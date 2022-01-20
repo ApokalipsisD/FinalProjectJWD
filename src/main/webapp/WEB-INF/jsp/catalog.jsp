@@ -28,81 +28,100 @@
     </style>
 </head>
 <body>
-<%@include file="header.jsp"%>
-<div class="wrapper">
+<%@include file="header.jsp" %>
 <main class="main">
-    <c:choose>
-        <c:when test="${sessionScope.account.role eq Role.ADMIN}">
-            <form action="${pageContext.request.contextPath}/controller?command=create_course" method="post">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
-                    Create course
-                </button>
+    <%--        <c:choose>--%>
+    <%--            <c:when test="${not empty requestScope.error}">--%>
 
-                <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-                     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+    <%--                <a href="${pageContext.request.contextPath}/controller?command=show_main_page">Try again</a>--%>
+    <%--            </c:when>--%>
+    <%--            <c:otherwise>--%>
+    <%--    <script>--%>
+    <%--        function myFunction() {--%>
+    <%--            alert(${requestScope.message});--%>
+    <%--        }--%>
+    <%--    </script>--%>
+    <div class="container justify-content-center mt-50 mb-50">
+        <p style="font-size: 20px; color: red;">${requestScope.error}</p>
+<%--        <p style="font-size: 20px; color: green;">${requestScope.message}</p>--%>
 
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Create course</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+        <c:choose>
+            <c:when test="${sessionScope.account.role eq Role.ADMIN}">
+                <form action="${pageContext.request.contextPath}/controller?command=create_course"
+                      method="post">
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#staticBackdrop">
+                        Create course
+                    </button>
+
+                    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
+                         tabindex="-1"
+                         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Create course</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="title">Title</label>
+                                        <input type="text" name="title" class="form-control" id="title"
+                                               placeholder="Input title"
+                                               aria-label="Title" aria-describedby="basic-addon1" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="startDate">Beginning</label>
+                                        <input type="date" name="startDate" class="form-control" id="startDate"
+                                               placeholder="Input start date"
+                                               aria-label="startDate" aria-describedby="basic-addon1" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="endDate">Ending</label>
+                                        <input type="date" name="endDate" class="form-control" id="endDate"
+                                               placeholder="Input end date"
+                                               aria-label="endDate" aria-describedby="basic-addon1" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="teacher">Teacher</label>
+                                        <select class="form-control" name="teacher" id="teacher" required>
+                                            <option selected disabled>Select teacher</option>
+                                            <c:forEach var="i" begin="0"
+                                                       end="${sessionScope.teachers.size()-1}">
+                                                <option value="${sessionScope.teachers.get(i).id}">${sessionScope.teachers.get(i).firstName} ${sessionScope.teachers.get(i).lastName}</option>
+                                            </c:forEach>
+
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <textarea class="form-control" name="description" id="description"
+                                                  rows="3"></textarea>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    </button>
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </div>
+
                             </div>
-
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="title">Title</label>
-                                    <input type="text" name="title" class="form-control" id="title"
-                                           placeholder="Input title"
-                                           aria-label="Title" aria-describedby="basic-addon1" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="startDate">Beginning</label>
-                                    <input type="date" name="startDate" class="form-control" id="startDate"
-                                           placeholder="Input start date"
-                                           aria-label="startDate" aria-describedby="basic-addon1" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="endDate">Ending</label>
-                                    <input type="date" name="endDate" class="form-control" id="endDate"
-                                           placeholder="Input end date"
-                                           aria-label="endDate" aria-describedby="basic-addon1" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="teacher">Teacher</label>
-                                    <select class="form-control" name="teacher" id="teacher" required>
-                                        <option selected disabled>Select teacher</option>
-                                        <c:forEach var="i" begin="0" end="${sessionScope.teachers.size()-1}">
-                                            <option value="${sessionScope.teachers.get(i).id}">${sessionScope.teachers.get(i).firstName} ${sessionScope.teachers.get(i).lastName}</option>
-                                        </c:forEach>
-
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea class="form-control" name="description" id="description" rows="3"></textarea>
-                                </div>
-
-                            </div>
-
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </div>
-
                         </div>
                     </div>
-                </div>
-            </form>
-        </c:when>
-    </c:choose>
-    <div class="container justify-content-center mt-50 mb-50">
+                </form>
+            </c:when>
+        </c:choose>
         <div class="row">
             <div class="col-md-10">
                 <c:forEach var="i" begin="0" end="${sessionScope.catalog.size()-1}">
@@ -129,10 +148,13 @@
             </div>
         </div>
     </div>
+    <c:if test="${not empty message}">
+        <script>
+            alert("${message}");
+        </script>
+    </c:if>
+
 </main>
-    <%@include file="footer.jsp"%>
-</div>
-
-
+<%@include file="footer.jsp" %>
 </body>
 </html>

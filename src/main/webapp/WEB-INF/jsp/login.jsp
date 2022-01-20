@@ -15,7 +15,6 @@
 <body>
 <%@include file="header.jsp"%>
 <main class="main">
-
     <div class="container">
         <div class="card card-container">
             <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"/>
@@ -38,6 +37,11 @@
                style="text-align: center">Create an account</a>
         </div>
     </div>
+    <c:if test="${not empty message}">
+        <script>
+            alert("${message}");
+        </script>
+    </c:if>
 </main>
 <%@include file="footer.jsp" %>
 </body>

@@ -8,10 +8,14 @@ import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
 public class DeleteAccountCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(DeleteAccountCommand.class);
+
     private static final Command INSTANCE = new DeleteAccountCommand();
     private static final UserServiceImpl userService = new UserServiceImpl();
     private static final AccountServiceImpl accountService = new AccountServiceImpl();
@@ -22,6 +26,8 @@ public class DeleteAccountCommand implements Command {
     private static final String CURRENT_USER = "user";
     private static final String CURRENT_ACCOUNT = "account";
     private static final String USERNAME = "userName";
+    private static final String DELIMITER = ":";
+    private static final String ERROR_ATTRIBUTE = "error";
 
     private static final ResponseContext SUCCESSFUL_DELETE_ACCOUNT_CONTEXT = new ResponseContext() {
         @Override
@@ -31,7 +37,7 @@ public class DeleteAccountCommand implements Command {
 
         @Override
         public boolean isRedirect() {
-            return true;
+            return false;
         }
     };
 
@@ -55,7 +61,6 @@ public class DeleteAccountCommand implements Command {
     public ResponseContext execute(RequestContext context) {
 
         HttpSession session = context.getCurrentSession().get();
-
         AccountDto accountDto = (AccountDto) session.getAttribute(CURRENT_ACCOUNT);
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
@@ -65,11 +70,12 @@ public class DeleteAccountCommand implements Command {
             session.removeAttribute(CURRENT_ACCOUNT);
             session.removeAttribute(CURRENT_USER);
             session.removeAttribute(USERNAME);
+            context.addAttributeToJsp("message", "Account has been deleted");
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
+            context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
 
-//        pagePath = context.getContextPath() + context.getHeader();
         return SUCCESSFUL_DELETE_ACCOUNT_CONTEXT;
     }
 }

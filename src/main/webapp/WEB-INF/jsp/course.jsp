@@ -6,6 +6,7 @@
 <fmt:setBundle basename="locale" var="loc"/>
 
 <%@ page import="com.epam.jwd.dao.entity.Role" %>
+<%@ page import="com.epam.jwd.dao.entity.Status" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -33,15 +34,22 @@
 </head>
 <body>
 <%@include file="header.jsp"%>
-<main class="main">
+<main class="main" style="background-color: #e9ecef">
+<%--    <c:choose>--%>
+<%--    <c:when test="${not empty requestScope.error}">--%>
+<%--        <p>${requestScope.error}</p>--%>
+<%--        <a href="${pageContext.request.contextPath}/controller?command=show_main_page">Try again</a>--%>
+<%--    </c:when>--%>
+<%--    <c:otherwise>--%>
     <div class="jumbotron">
         <div class="container">
+            <p style="font-size: 20px; color: red;">${requestScope.error}</p>
             <h1>${title}</h1>
             <p>${description}</p>
             <p>Start: ${startDate} End: ${endDate} Status: ${status}</p>
             <p>Teacher: ${teacher.firstName} ${teacher.lastName}</p>
             <c:choose>
-                <c:when test="${sessionScope.account ne teacher}">
+                <c:when test="${sessionScope.account ne teacher and status ne Status.Finished}">
                     <c:choose>
                         <c:when test="${record eq true}">
                             <a class="drop btn btn-primary btn-lg" href="controller?command=drop_course&id=${id}"
@@ -56,13 +64,13 @@
             </c:choose>
 
             <c:choose>
-                <c:when test="${sessionScope.account.role eq Role.ADMIN or sessionScope.account eq teacher}">
+                <c:when test="${sessionScope.account.role eq Role.ADMIN or sessionScope.account.role eq Role.TEACHER}">
                     <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#changeCourse"
                        role="button">Change</a>
                     <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#deleteCourse"
                        role="button">Delete</a>
                     <c:if test="${not empty studentsOnCourse}">
-                              <div class="users">
+                        <div class="users">
                             <h4>Users:</h4>
                             <ul class="list-group">
                                 <c:forEach items="${studentsOnCourse}" var="entry">
@@ -87,28 +95,31 @@
 
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <label for="grade">Grade:${entry.key.id}</label>
-                                                                <input type="text" name="grade" class="form-control"
+                                                                <label for="grade">Grade:</label>
+                                                                <input type="number" name="grade" class="form-control"
                                                                        id="grade"
                                                                        aria-label="Grade"
-                                                                       aria-describedby="basic-addon1" required>
+                                                                       aria-describedby="basic-addon1" required pattern="^[0-9]+$"
+                                                                       min="1" max="10"
+                                                                       title="Enter grade">
                                                             </div>
                                                             <input type="hidden" name="id" value="${id}">
                                                             <div class="form-group">
-                                                                <label for="attendance">Attendance:</label>
-                                                                <input type="text" name="attendance"
+                                                                <label for="attendance">Attendance %:</label>
+                                                                <input type="number" name="attendance"
                                                                        class="form-control"
                                                                        id="attendance"
-                                                                    <%--                                           value="${startDated}"--%>
                                                                        aria-label="attendance"
-                                                                       aria-describedby="basic-addon1" required>
+                                                                       aria-describedby="basic-addon1" required pattern="^[0-9]+$"
+                                                                       min="1" max="100"
+                                                                       title="Enter attendance">
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label for="reviewText">Review</label>
                                                                 <textarea class="form-control" name="reviewText"
                                                                           id="reviewText"
-                                                                          rows="3"><%--${description}--%></textarea>
+                                                                          rows="3" required></textarea>
                                                             </div>
                                                         </div>
 
@@ -348,9 +359,6 @@
                     </div>
                 </div>
             </form>
-
-
-
         </div>
     </div>
 
@@ -374,10 +382,13 @@
     <%--        </div>--%>
     <%--    </div>--%>
 
-    <hr>
+<%--    <hr>--%>
+    <c:if test="${not empty message}">
+        <script>
+            alert("${message}");
+        </script>
+    </c:if>
 </main>
-
 <%@include file="footer.jsp"%>
-
 </body>
 </html>

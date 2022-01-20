@@ -3,13 +3,15 @@ package com.epam.jwd.controller.command.impl;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
 public class LogoutCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(LogoutCommand.class);
 
     private static final Command INSTANCE = new LogoutCommand();
-
     private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
@@ -47,12 +49,13 @@ public class LogoutCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext context) {
 
-        HttpSession session;
-        if (context.getCurrentSession().isPresent()) {
-            session = context.getCurrentSession().get();
-        } else {
-            return ERROR_CONTEXT;
-        }
+        HttpSession session = context.getCurrentSession().get();
+
+//        if (context.getCurrentSession().isPresent()) {
+//            session = context.getCurrentSession().get();
+//        } else {
+//            return ERROR_CONTEXT;
+//        }
 
         session.removeAttribute(CURRENT_USER);
         session.removeAttribute(CURRENT_ACCOUNT);

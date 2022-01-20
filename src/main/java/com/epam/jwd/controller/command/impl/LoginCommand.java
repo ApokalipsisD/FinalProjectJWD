@@ -8,16 +8,19 @@ import com.epam.jwd.service.exception.MessageException;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.UserServiceImpl;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(LoginCommand.class);
 
     private static final Command INSTANCE = new LoginCommand();
     private static final UserServiceImpl user = new UserServiceImpl();
     private static final AccountServiceImpl accountService = new AccountServiceImpl();
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
+    private static final String PAGE_PATH = "/controller?command=show_main";
     private static final String FAIL_PAGE_PATH = "/controller?command=show_login";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
@@ -27,6 +30,8 @@ public class LoginCommand implements Command {
     private static final String CURRENT_USER = "user";
     private static final String CURRENT_ACCOUNT = "account";
     private static final String CURRENT_USER_NAME = "userName";
+    private static final String DELIMITER = ":";
+
 
     private static final ResponseContext SUCCESSFUL_LOG_IN_CONTEXT = new ResponseContext() {
         @Override
@@ -36,7 +41,7 @@ public class LoginCommand implements Command {
 
         @Override
         public boolean isRedirect() {
-            return false;
+            return true;
         }
     };
 
@@ -92,6 +97,7 @@ public class LoginCommand implements Command {
                throw new ServiceException(MessageException.USER_NOT_FOUND_EXCEPTION);
             }
         } catch (ServiceException e) {
+            logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
             return LOG_IN_FAILED_CONTEXT;
         }
@@ -104,3 +110,4 @@ public class LoginCommand implements Command {
         return SUCCESSFUL_LOG_IN_CONTEXT;
     }
 }
+

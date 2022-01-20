@@ -30,6 +30,15 @@
 <body>
 <%@include file="header.jsp"%>
 <main class="main">
+<%--    <c:choose>--%>
+<%--        <c:when test="${not empty error}">--%>
+<%--            <p style="color: red;">${error}</p>--%>
+<%--        </c:when>--%>
+
+<%--        <c:when test="${not empty message}">--%>
+<%--            <p style="color: red;">${message}</p>--%>
+<%--        </c:when>--%>
+<%--    </c:choose>--%>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-lg-10 col-xl-8 mx-auto">
@@ -67,6 +76,7 @@
                                 </div>
                             </div>
                         </div>
+                        <p style="font-size: 20px; color: red;">${requestScope.error}</p>
                         <hr class="my-4"/>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -76,7 +86,9 @@
                                 <c:when test="${not empty sessionScope.account.firstName}">
                                        value="${sessionScope.account.firstName}"
                                 </c:when>
-                                </c:choose>>
+                                </c:choose>
+                                pattern="^([А-Я][а-яё]{2,20}|[A-Z][a-z]{2,20})$"
+                                       title="First name must start with an uppercase letter and contain letters of only one language">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="lastname">${lastName}</label>
@@ -85,13 +97,15 @@
                                 <c:when test="${not empty sessionScope.account.lastName}">
                                        value="${sessionScope.account.lastName}"
                                 </c:when>
-                                </c:choose>>
+                                </c:choose>
+                                       pattern="^([А-Я][а-яё]{2,20}|[A-Z][a-z]{2,20})$"
+                                title="Last name must start with an uppercase letter and contain letters of only one language">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail4">${userName}</label>
                             <input type="text" name="userName" class="form-control" id="inputUsername"
-                                   value="${sessionScope.user.login}">
+                                   aria-label="inputEmail4" value="${sessionScope.user.login}">
                         </div>
                         <div class="form-group">
                             <label for="inputEmail4">${email}</label>
@@ -100,7 +114,8 @@
                             <c:when test="${not empty sessionScope.account.email}">
                                    value="${sessionScope.account.email}"
                             </c:when>
-                            </c:choose>>
+                            </c:choose>
+                            pattern="^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$">
                         </div>
                         <div class="form-group">
                             <label for="inputAddress5">${birthDate}</label>
@@ -110,7 +125,7 @@
                             </c:if>
 
                         </div>
-                        <p style="color: red;">${error}</p>
+<%--                        <p style="color: red;">${error}</p>--%>
                         <hr class="my-4"/>
 <%--                                            <div class="row mb-4">--%>
 <%--                                                <div class="col-md-6">--%>

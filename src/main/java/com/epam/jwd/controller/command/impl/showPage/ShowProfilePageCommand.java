@@ -7,10 +7,14 @@ import com.epam.jwd.service.dto.AccountDto;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
 public class ShowProfilePageCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(ShowCoursesPageCommand.class);
+
     private static final Command INSTANCE = new ShowProfilePageCommand();
     private static final AccountServiceImpl accountService = new AccountServiceImpl();
 
@@ -19,6 +23,8 @@ public class ShowProfilePageCommand implements Command {
 
     private static final String CURRENT_USER = "user";
     private static final String CURRENT_ACCOUNT = "account";
+    private static final String ERROR_ATTRIBUTE = "error";
+    private static final String DELIMITER = ":";
 
     private static final ResponseContext SHOW_PROFILE_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -49,23 +55,23 @@ public class ShowProfilePageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        HttpSession session;
-        if (context.getCurrentSession().isPresent()) {
-            session = context.getCurrentSession().get();
-        } else {
-            return ERROR_CONTEXT;
-        }
+        HttpSession session = context.getCurrentSession().get();
+//        if (context.getCurrentSession().isPresent()) {
+//            session = context.getCurrentSession().get();
+//        } else {
+//            return ERROR_CONTEXT;
+//        }
 
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
-
+        AccountDto accountDto;
         try {
-            AccountDto accountDto = accountService.getAccountByUserId(userDto.getId());
+            accountDto = accountService.getAccountByUserId(userDto.getId());
+            session.setAttribute(CURRENT_ACCOUNT, accountDto);
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
+            context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
-//        System.out.println(accountDto);
 
-//        session.setAttribute(CURRENT_ACCOUNT, accountDto);
         return SHOW_PROFILE_PAGE_CONTEXT;
     }
 }

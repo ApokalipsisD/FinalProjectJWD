@@ -11,7 +11,6 @@ public class AccountDto extends AbstractDto<Integer>{
     private String email;
     private Date birthDate;
     private Role role;
-//    private Integer roleId;
     private Integer userId;
 
     public AccountDto(){

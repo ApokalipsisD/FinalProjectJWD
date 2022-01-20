@@ -5,18 +5,15 @@ import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.ReviewDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountServiceImpl;
-import com.epam.jwd.service.impl.CourseServiceImpl;
 import com.epam.jwd.service.impl.ReviewServiceImpl;
-
-import javax.servlet.http.HttpSession;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 public class ReviewCommand implements Command {
-    private static final Command INSTANCE = new ReviewCommand();
-    private static final CourseServiceImpl catalog = new CourseServiceImpl();
-    private static final AccountServiceImpl account = new AccountServiceImpl();
-    private static final ReviewServiceImpl review = new ReviewServiceImpl();
+    private static final Logger logger = LogManager.getLogger(ReviewCommand.class);
 
+    private static final Command INSTANCE = new ReviewCommand();
+    private static final ReviewServiceImpl review = new ReviewServiceImpl();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/catalog.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
@@ -26,6 +23,8 @@ public class ReviewCommand implements Command {
     private static final String REVIEW_TEXT_ATTRIBUTE = "reviewText";
     private static final String STUDENT_ID_ON_COURSE_ATTRIBUTE = "studentIdOnCourse";
     private static final String COURSE_ID = "id";
+    private static final String DELIMITER = ":";
+    private static final String ERROR_ATTRIBUTE = "error";
 
 
     private static String pagePath = null;
@@ -38,7 +37,7 @@ public class ReviewCommand implements Command {
 
         @Override
         public boolean isRedirect() {
-            return true;
+            return false;
         }
     };
 
@@ -61,7 +60,7 @@ public class ReviewCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext context) {
 
-        HttpSession session = context.getCurrentSession().get();
+//        HttpSession session = context.getCurrentSession().get();
 
         Integer grade = Integer.valueOf(context.getParameterByName(GRADE_ATTRIBUTE));
         Integer attendance = Integer.valueOf(context.getParameterByName(ATTENDANCE_ATTRIBUTE));
@@ -71,10 +70,13 @@ public class ReviewCommand implements Command {
 
         try {
             review.create(new ReviewDto(courseId, studentId, grade, attendance, reviewText));
+            context.addAttributeToJsp("message", "Review added");
         } catch (ServiceException e) {
-            return ERROR_CONTEXT;
+            logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
+            context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
-        pagePath = context.getContextPath() + context.getHeader();
+//        pagePath = context.getContextPath() + context.getHeader();
+        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(COURSE_ID);
 
         return SUCCESSFUL_CREATE_REVIEW_CONTEXT;
     }

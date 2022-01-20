@@ -12,7 +12,7 @@ import java.util.Objects;
 public class AccountValidator implements Validator<AccountDto, Integer> {
     private static final Integer MIN_NAME_LENGTH = 2;
     private static final Integer MAX_FIRST_NAME_LENGTH = 20;
-    private static final Integer MAX_LAST_NAME_LENGTH = 25;
+    private static final Integer MAX_LAST_NAME_LENGTH = 20;
     private static final String NAME_PATTERN = "^([А-Я][а-яё]{2,20}|[A-Z][a-z]{2,20})$";
     private static final String EMAIL_PATTERN = "^([a-zA-Z0-9_-]+\\.)*[a-zA-Z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
     private static final String DATE_PATTERN = "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])";
@@ -37,9 +37,6 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
     }
 
     private void validateFirstName(String firstName) throws ServiceException {
-//        if (Objects.isNull(firstName)) {
-//            throw new ServiceException(MessageException.FIRST_NAME_IS_NULL_EXCEPTION);
-//        }
         if (!firstName.matches(NAME_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_FIRST_NAME_EXCEPTION);
         }
@@ -49,9 +46,6 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
     }
 
     private void validateLastName(String lastName) throws ServiceException {
-//        if (Objects.isNull(lastName)) {
-//            throw new ServiceException(MessageException.LAST_NAME_IS_NULL_EXCEPTION);
-//        }
         if (!lastName.matches(NAME_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_LAST_NAME_EXCEPTION);
         }
@@ -61,18 +55,12 @@ public class AccountValidator implements Validator<AccountDto, Integer> {
     }
 
     private void validateEmail(String email) throws ServiceException {
-//        if (Objects.isNull(email)) {
-//            throw new ServiceException(MessageException.EMAIL_IS_NULL_EXCEPTION);
-//        }
         if (!email.matches(EMAIL_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_EMAIL_EXCEPTION);
         }
     }
 
     private void validateDate(String birthDate) throws ServiceException {
-//        if (Objects.isNull(birthDate)) {
-//            throw new ServiceException(MessageException.BIRTH_DATE_IS_NULL_EXCEPTION);
-//        }
         if (!birthDate.matches(DATE_PATTERN)
                 || !Date.valueOf(birthDate).toLocalDate().isBefore(LocalDate.now())) {
             throw new ServiceException(MessageException.INCORRECT_DATE_EXCEPTION);

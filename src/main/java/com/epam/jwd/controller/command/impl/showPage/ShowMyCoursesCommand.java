@@ -7,22 +7,29 @@ import com.epam.jwd.service.dto.CourseDto;
 import com.epam.jwd.service.dto.StudentHasCourseDto;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.CourseServiceImpl;
 import com.epam.jwd.service.impl.StudentHasCourseServiceImpl;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShowMyCoursesCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(ShowMyCoursesCommand.class);
+
     private static final Command INSTANCE = new ShowMyCoursesCommand();
     private static final CourseServiceImpl catalog = new CourseServiceImpl();
-    private static final AccountServiceImpl account = new AccountServiceImpl();
     private static final StudentHasCourseServiceImpl record = new StudentHasCourseServiceImpl();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/myCourses.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
+    private static final String ERROR_ATTRIBUTE = "error";
+    private static final String USER_ATTRIBUTE = "user";
+    private static final String MY_COURSES_ATTRIBUTE = "myCourses";
+    private static final String DELIMITER = ":";
+
 
     private static final ResponseContext SHOW_MY_COURSES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -56,8 +63,7 @@ public class ShowMyCoursesCommand implements Command {
     public ResponseContext execute(RequestContext context) {
         HttpSession session = context.getCurrentSession().get();
 
-        UserDto userDto = (UserDto) session.getAttribute("user");
-//        AccountDto accountDto = account.getAccountByUserId(userDto.getId());
+        UserDto userDto = (UserDto) session.getAttribute(USER_ATTRIBUTE);
 
         Integer studentId = userDto.getId();
         List<CourseDto> myCourses = new ArrayList<>();
@@ -67,12 +73,11 @@ public class ShowMyCoursesCommand implements Command {
                 myCourses.add(catalog.getById(record.getCourseId()));
             }
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
+            context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
 
-//        List<CourseDto> myCourses = list.stream().map(records -> catalog.getById(records.)).collect(Collectors.toList())
-        session.setAttribute("myCourses", myCourses);
-
+        session.setAttribute(MY_COURSES_ATTRIBUTE, myCourses);
         return SHOW_MY_COURSES_PAGE_CONTEXT;
     }
 }

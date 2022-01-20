@@ -6,10 +6,13 @@ import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.UserServiceImpl;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
 public class SignUpCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(SignUpCommand.class);
 
     private static final UserServiceImpl userService = new UserServiceImpl();
     private static final Command INSTANCE = new SignUpCommand();
@@ -22,8 +25,7 @@ public class SignUpCommand implements Command {
     private static final String PASSWORD_ATTRIBUTE = "password";
     private static final String REPEAT_PASSWORD_ATTRIBUTE = "repeat_password";
     private static final String ERROR_ATTRIBUTE = "error";
-
-    private static final String CURRENT_USER = "currentUserSignUp";
+    private static final String DELIMITER = ":";
 
     private static final ResponseContext SUCCESSFUL_SIGN_UP_CONTEXT = new ResponseContext() {
         @Override
@@ -88,7 +90,9 @@ public class SignUpCommand implements Command {
                 throw new ServiceException("Login is already taken");
             }
             userService.create(new UserDto(login, password));
+            context.addAttributeToJsp("message", "User successfully created");
         } catch (ServiceException e) {
+            logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
             return SIGN_UP_FAILED_CONTEXT;
         }

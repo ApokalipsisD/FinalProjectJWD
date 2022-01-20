@@ -3,22 +3,30 @@ package com.epam.jwd.controller.command.impl.showPage;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
-import com.epam.jwd.service.dto.AccountDto;
 import com.epam.jwd.service.dto.CourseDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.CourseServiceImpl;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowCoursesPageCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(ShowCoursesPageCommand.class);
+
     private static final Command INSTANCE = new ShowCoursesPageCommand();
     private static final CourseServiceImpl catalog = new CourseServiceImpl();
     private static final AccountServiceImpl accountService = new AccountServiceImpl();
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/catalog.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
+    private static final String ERROR_ATTRIBUTE = "error";
+    private static final String TEACHERS_ATTRIBUTE = "teachers";
+    private static final String CATALOG_ATTRIBUTE = "catalog";
+    private static final String DELIMITER = ":";
+
 
     private static final ResponseContext SHOW_COURSES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -50,24 +58,23 @@ public class ShowCoursesPageCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-
-        HttpSession session;
-        if (context.getCurrentSession().isPresent()) {
-            session = context.getCurrentSession().get();
-//            session.removeAttribute("error");
-        } else {
-            return ERROR_CONTEXT;
-        }
-
-        AccountDto accountDto = (AccountDto) session.getAttribute("account");
+        HttpSession session = context.getCurrentSession().get();
+//        HttpSession session;
+//        if (context.getCurrentSession().isPresent()) {
+//            session = context.getCurrentSession().get();
+//        } else {
+//            return ERROR_CONTEXT;
+//        }
+//        AccountDto accountDto = (AccountDto) session.getAttribute("account");
 
         List<CourseDto> list;
         try {
             list = catalog.getAll();
-            session.setAttribute("catalog", list);
-            session.setAttribute("teachers", accountService.getAllTeachers());
+            session.setAttribute(TEACHERS_ATTRIBUTE, accountService.getAllTeachers());
+            session.setAttribute(CATALOG_ATTRIBUTE, list);
         } catch (ServiceException e) {
-            e.printStackTrace();
+            logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
+            context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
 
         return SHOW_COURSES_PAGE_CONTEXT;

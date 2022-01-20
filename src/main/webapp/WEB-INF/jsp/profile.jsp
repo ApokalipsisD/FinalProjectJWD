@@ -49,16 +49,8 @@
             border: 0;
         }
 
-        .text-light {
-            color: #babbbc !important;
-        }
-
         .card .row-bordered > [class*=" col-"]::after {
             border-color: rgba(24, 28, 33, 0.075);
-        }
-
-        .text-xlarge {
-            font-size: 170% !important;
         }
     </style>
 
@@ -66,7 +58,15 @@
 <body>
 <%@include file="header.jsp"%>
 <main class="main">
-    <%--    <form action="${pageContext.request.contextPath}/controller?command=profile" method="post">--%>
+<%--    <c:choose>--%>
+<%--        <c:when test="${not empty error}">--%>
+<%--            <p style="color: red;">${error}</p>--%>
+<%--        </c:when>--%>
+
+<%--        <c:when test="${not empty message}">--%>
+<%--            <p style="color: red;">${message}</p>--%>
+<%--        </c:when>--%>
+<%--    </c:choose>--%>
     <div class="container bootdey flex-grow-1 container-p-y">
         <div class="media align-items-center py-3 mb-3">
             <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""
@@ -81,10 +81,12 @@
                         <h4 class="font-weight-normal">@${sessionScope.userName}</h4>
                     </c:otherwise>
                 </c:choose>
+                <div style="padding-top: 15px">
+                    <a href="controller?command=show_edit_profile" class="btn btn-primary btn-sm">${edit}</a>
+                    <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteAccount"
+                       role="button">${delete}</a>
+                </div>
 
-                <a href="controller?command=show_edit_profile" class="btn btn-primary btn-sm">${edit}</a>
-                <a href="#" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#deleteAccount"
-                   role="button">${delete}</a>
             </div>
         </div>
 
@@ -180,6 +182,11 @@
             </div>
         </div>
     </div>
+    <c:if test="${not empty message}">
+        <script>
+            alert("${message}");
+        </script>
+    </c:if>
 </main>
 <%@include file="footer.jsp"%>
 </body>
