@@ -5,8 +5,10 @@ import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.api.Service;
 import com.epam.jwd.service.dto.AccountDto;
+import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
+import com.epam.jwd.service.impl.UserServiceImpl;
 import com.epam.jwd.service.validator.impl.AccountValidator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -19,6 +21,7 @@ public class EditProfileCommand implements Command {
 
     private static final Command INSTANCE = new EditProfileCommand();
     private static final Service<AccountDto, Integer> accountService = new AccountServiceImpl();
+    private static final Service<UserDto, Integer> userService = new UserServiceImpl();
     private static final AccountValidator validator = new AccountValidator();
 
     private static final String PAGE_PATH = "/controller?command=show_profile_page";
@@ -77,15 +80,15 @@ public class EditProfileCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         HttpSession session = context.getCurrentSession().get();
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
 
+        UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
         AccountDto accountDto = (AccountDto) session.getAttribute(CURRENT_ACCOUNT);
+
+        String login = context.getParameterByName(USERNAME_ATTRIBUTE);
 
         String firstName = context.getParameterByName(FIRST_NAME_ATTRIBUTE).isBlank()
                 ? accountDto.getFirstName() : context.getParameterByName(FIRST_NAME_ATTRIBUTE);
@@ -100,6 +103,12 @@ public class EditProfileCommand implements Command {
                 ? accountDto.getBirthDate() : Date.valueOf(context.getParameterByName(BIRTH_DATE_ATTRIBUTE));
 
         try {
+            if (!login.trim().equals(userDto.getLogin())) {
+                UserDto currentUser = new UserDto(userDto.getId(), login, userDto.getPassword());
+                userService.update(currentUser);
+                session.setAttribute(CURRENT_USER, currentUser);
+                session.setAttribute(USERNAME_ATTRIBUTE, currentUser.getLogin());
+            }
             AccountDto accountDto1 = new AccountDto(accountDto.getId(), firstName, lastName, email, birthDate, accountDto.getRole().getId(), accountDto.getUserId());
             accountService.update(accountDto1);
             session.setAttribute(CURRENT_ACCOUNT, accountDto1);

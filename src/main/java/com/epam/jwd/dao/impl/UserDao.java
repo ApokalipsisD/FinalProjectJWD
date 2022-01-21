@@ -34,14 +34,15 @@ public class UserDao implements Dao<User, Integer> {
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
     private final PasswordManager passwordManager = new PasswordManagerImpl();
 
-    private static final Dao<Account, Integer> accountDao = new AccountDao();
+    private static final AccountDao accountDao = new AccountDao();
 
-    //todo transactions and add to account
     @Override
     public User save(User user) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_USER, Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
             preparedStatement.setString(1, user.getLogin());
             preparedStatement.setString(2, passwordManager.encode(user.getPassword()));
             preparedStatement.executeUpdate();
@@ -50,12 +51,25 @@ public class UserDao implements Dao<User, Integer> {
                 user.setId(resultSet.getInt(1));
             }
             Account account = new Account(user.getId());
-            accountDao.save(account);
-
+            accountDao.saveAccountAfterUser(account, connection);
+            connection.commit();
+            connection.setAutoCommit(true);
         } catch (DaoException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage() + ex);
+                throw new DaoException(DaoMessageException.SAVE_USER_EXCEPTION);
+            }
             logger.error(e.getMessage() + e);
             throw new DaoException(e.getMessage());
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage() + ex);
+                throw new DaoException(DaoMessageException.SAVE_USER_EXCEPTION);
+            }
             logger.error(DaoMessageException.SAVE_USER_EXCEPTION + e);
             throw new DaoException(DaoMessageException.SAVE_USER_EXCEPTION);
         } finally {
@@ -86,6 +100,7 @@ public class UserDao implements Dao<User, Integer> {
     public boolean delete(User user) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER)) {
+            accountDao.delete(accountDao.getAccountByUserId(user.getId()));
             preparedStatement.setInt(1, user.getId());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {

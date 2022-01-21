@@ -3,6 +3,10 @@ package com.epam.jwd.controller.servlet;
 import com.epam.jwd.controller.command.RequestContextImpl;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.ResponseContext;
+import com.epam.jwd.service.connectionPoolService.ConnectionPoolService;
+import com.epam.jwd.service.exception.ServiceException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +18,8 @@ import java.io.IOException;
 
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
-
+    private static final Logger logger = LogManager.getLogger(Controller.class);
+    private final ConnectionPoolService pool = ConnectionPoolService.getInstance();
     public static final String COMMAND_PARAMETER_NAME = "command";
 
     @Override
@@ -35,6 +40,25 @@ public class Controller extends HttpServlet {
         } else {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(commandResult.getPage());
             requestDispatcher.forward(request, response);
+        }
+    }
+
+    @Override
+    public void init() {
+        try {
+            pool.initialize();
+        } catch (ServiceException e) {
+            logger.error(e.getMessage() + e);
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        try {
+            pool.shutDown();
+        } catch (ServiceException e) {
+            logger.error(e.getMessage() + e);
         }
     }
 }

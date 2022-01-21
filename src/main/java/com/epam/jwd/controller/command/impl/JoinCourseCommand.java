@@ -26,7 +26,7 @@ public class JoinCourseCommand implements Command {
     private static final StudentHasCourseServiceImpl record = new StudentHasCourseServiceImpl();
     private static String pagePath;
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/course.jsp";
+    private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
     private static final String DELIMITER = ":";
     private static final String ERROR_ATTRIBUTE = "error";
@@ -64,9 +64,12 @@ public class JoinCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-//        pagePath = context.getContextPath() + context.getHeader();
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         HttpSession session = context.getCurrentSession().get();
-
+//        pagePath = context.getContextPath() + context.getHeader();
+        pagePath = PAGE_PATH + context.getParameterByName(ID_ATTRIBUTE);
 
         UserDto userDto = (UserDto) session.getAttribute(USER_ATTRIBUTE);
 
@@ -90,7 +93,6 @@ public class JoinCourseCommand implements Command {
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
 
-        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(ID_ATTRIBUTE);
         return SUCCESSFUL_JOIN_COURSE_CONTEXT;
     }
 }

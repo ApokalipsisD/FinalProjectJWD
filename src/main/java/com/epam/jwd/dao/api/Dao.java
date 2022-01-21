@@ -17,7 +17,6 @@ import java.util.Objects;
  */
 public interface Dao<T extends Entity<K>, K>  {
     Logger logger = LogManager.getLogger(Dao.class);
-    String CLOSE_RESULT_SET = "CloseResultSet method";
 
     T save(T entity) throws DaoException;
 

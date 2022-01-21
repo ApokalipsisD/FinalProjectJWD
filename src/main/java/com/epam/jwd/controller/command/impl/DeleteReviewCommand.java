@@ -15,7 +15,7 @@ public class DeleteReviewCommand implements Command {
     private static final Command INSTANCE = new DeleteReviewCommand();
     private static final ReviewServiceImpl review = new ReviewServiceImpl();
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/catalog.jsp";
+    private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String DELIMITER = ":";
@@ -56,6 +56,9 @@ public class DeleteReviewCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         Integer reviewId = Integer.valueOf(context.getParameterByName(REVIEW_ID_ATTRIBUTE));
         ReviewDto reviewDto;
         try {
@@ -67,7 +70,7 @@ public class DeleteReviewCommand implements Command {
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
 //        pagePath = context.getContextPath() + context.getHeader();
-        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(ID_ATTRIBUTE);
+        pagePath = PAGE_PATH + context.getParameterByName(ID_ATTRIBUTE);
 
         return SUCCESSFUL_DELETE_REVIEW_CONTEXT;
     }

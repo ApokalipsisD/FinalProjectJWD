@@ -19,7 +19,7 @@ public class DropCourseCommand implements Command {
     private static final StudentHasCourseServiceImpl record = new StudentHasCourseServiceImpl();
     private static String pagePath;
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/course.jsp";
+    private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
     private static final String CURRENT_USER = "user";
     private static final String DELIMITER = ":";
@@ -56,9 +56,12 @@ public class DropCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         HttpSession session = context.getCurrentSession().get();
 //        pagePath = context.getContextPath() + context.getHeader();
-
+        pagePath = PAGE_PATH + context.getParameterByName(ID_ATTRIBUTE);
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
         Integer courseId = Integer.valueOf(context.getParameterByName(ID_ATTRIBUTE));
@@ -73,7 +76,6 @@ public class DropCourseCommand implements Command {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
-        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(ID_ATTRIBUTE);
         return SUCCESSFUL_DROP_COURSE_CONTEXT;
     }
 }

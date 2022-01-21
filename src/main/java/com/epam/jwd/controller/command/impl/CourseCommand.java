@@ -80,12 +80,10 @@ public class CourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         HttpSession session = context.getCurrentSession().get();
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
 
         UserDto userDto = (UserDto) session.getAttribute(USER_ATTRIBUTE);
         Integer id = Integer.valueOf(context.getParameterByName(COURSE_ATTRIBUTE));
@@ -93,7 +91,6 @@ public class CourseCommand implements Command {
         boolean isRecordExists = false;
         boolean isReviewExists;
         List<StudentHasCourseDto> studentsOnCourse;
-//        List<UserDto> students = new ArrayList<>();
         Map<UserDto, Boolean> mapUsers = new HashMap<>();
         Map<Integer, ReviewDto> reviews = new HashMap<>();
 

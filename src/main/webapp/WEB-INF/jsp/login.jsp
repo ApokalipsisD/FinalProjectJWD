@@ -37,9 +37,10 @@
                style="text-align: center">Create an account</a>
         </div>
     </div>
-    <c:if test="${not empty message}">
+    <c:if test="${not empty requestScope.message}">
         <script>
-            alert("${message}");
+            alert("${requestScope.message}")
+            window.location = '${pageContext.request.contextPath}/controller?command=show_login';
         </script>
     </c:if>
 </main>

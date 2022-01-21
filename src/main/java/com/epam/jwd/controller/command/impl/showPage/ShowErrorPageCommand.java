@@ -1,13 +1,18 @@
-package com.epam.jwd.controller.command.impl;
+package com.epam.jwd.controller.command.impl.showPage;
 
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 
-public class DefaultCommand implements Command {
-    private static final Command INSTANCE = new DefaultCommand();
-    private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
-    private static final ResponseContext SHOW_DEFAULT_PAGE_CONTEXT = new ResponseContext() {
+public class ShowErrorPageCommand implements Command {
+
+    private static final Command INSTANCE = new ShowErrorPageCommand();
+    private static final String PAGE_PATH = "/WEB-INF/jsp/error.jsp";
+
+    private ShowErrorPageCommand() {
+    }
+
+    private static final ResponseContext SHOW_ERROR_PAGE_CONTEXT = new ResponseContext() {
         @Override
         public String getPage() {
             return PAGE_PATH;
@@ -25,7 +30,6 @@ public class DefaultCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-//        HttpSession session = context.getCurrentSession().orElse(context.createSession());
-        return SHOW_DEFAULT_PAGE_CONTEXT;
+        return SHOW_ERROR_PAGE_CONTEXT;
     }
 }

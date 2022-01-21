@@ -10,12 +10,6 @@
     <uri>jwdTags</uri>
 
     <tag>
-        <name>currentTime</name>
-        <tag-class>com.epam.jwd.controller.tag.CurrentDateTimeTag</tag-class>
-        <body-content>empty</body-content>
-    </tag>
-
-    <tag>
         <name>welcomeText</name>
         <tag-class>com.epam.jwd.controller.tag.GreetingTag</tag-class>
         <body-content>empty</body-content>

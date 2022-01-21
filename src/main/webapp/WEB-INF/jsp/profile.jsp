@@ -58,15 +58,6 @@
 <body>
 <%@include file="header.jsp"%>
 <main class="main">
-<%--    <c:choose>--%>
-<%--        <c:when test="${not empty error}">--%>
-<%--            <p style="color: red;">${error}</p>--%>
-<%--        </c:when>--%>
-
-<%--        <c:when test="${not empty message}">--%>
-<%--            <p style="color: red;">${message}</p>--%>
-<%--        </c:when>--%>
-<%--    </c:choose>--%>
     <div class="container bootdey flex-grow-1 container-p-y">
         <div class="media align-items-center py-3 mb-3">
             <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt=""
@@ -107,7 +98,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Delete review</button>
+                            <button type="submit" class="btn btn-primary">Delete account</button>
                         </div>
                     </div>
                 </div>
@@ -182,9 +173,10 @@
             </div>
         </div>
     </div>
-    <c:if test="${not empty message}">
+    <c:if test="${not empty requestScope.message}">
         <script>
-            alert("${message}");
+            alert("${requestScope.message}")
+            window.location = '${pageContext.request.contextPath}/controller?command=show_profile_page';
         </script>
     </c:if>
 </main>

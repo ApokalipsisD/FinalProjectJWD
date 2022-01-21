@@ -15,7 +15,7 @@ public class ChangeReviewCommand implements Command {
     private static final Command INSTANCE = new ChangeReviewCommand();
     private static final ReviewServiceImpl review = new ReviewServiceImpl();
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/catalog.jsp";
+    private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String GRADE_ATTRIBUTE = "gradeChange";
@@ -60,7 +60,9 @@ public class ChangeReviewCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
 //        HttpSession session = context.getCurrentSession().get();
 
         Integer grade = Integer.valueOf(context.getParameterByName(GRADE_ATTRIBUTE));
@@ -78,7 +80,7 @@ public class ChangeReviewCommand implements Command {
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
 //        pagePath = context.getContextPath() + context.getHeader();
-        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(ID_ATTRIBUTE);
+        pagePath = PAGE_PATH + context.getParameterByName(ID_ATTRIBUTE);
 
         return SUCCESSFUL_CHANGE_REVIEW_CONTEXT;
     }

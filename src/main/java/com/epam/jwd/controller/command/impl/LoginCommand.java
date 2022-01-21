@@ -12,6 +12,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
@@ -75,18 +76,20 @@ public class LoginCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        HttpSession session = context.getCurrentSession().get();
+
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
+        HttpSession session = context.getCurrentSession().orElse(context.createSession());
+
         String login = context.getParameterByName(LOGIN_ATTRIBUTE);
         String password = context.getParameterByName(PASSWORD_ATTRIBUTE);
 
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-////            session.removeAttribute("error");
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
         UserDto userDto;
         try {
+            if(Objects.isNull(login) || Objects.isNull(password)){
+                throw new ServiceException("Enter data");
+            }
             userDto = user.getByLogin(login);
             if (userDto.getPassword().equals(password)) {
                 session.setAttribute(CURRENT_USER, userDto);
@@ -101,11 +104,6 @@ public class LoginCommand implements Command {
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
             return LOG_IN_FAILED_CONTEXT;
         }
-
-
-//        session.setAttribute(CURRENT_USER, user);
-//        context.addAttributeToJsp("message", "Registration is successfully completed");
-
 
         return SUCCESSFUL_LOG_IN_CONTEXT;
     }

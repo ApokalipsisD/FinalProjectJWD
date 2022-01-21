@@ -12,7 +12,7 @@ public class LogoutCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LogoutCommand.class);
 
     private static final Command INSTANCE = new LogoutCommand();
-    private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
+    private static final String PAGE_PATH = "/controller?command=show_main";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String CURRENT_USER = "userName";
@@ -26,7 +26,7 @@ public class LogoutCommand implements Command {
 
         @Override
         public boolean isRedirect() {
-            return false;
+            return true;
         }
     };
 
@@ -48,7 +48,9 @@ public class LogoutCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-
+//        if(context.getHeader() == null){
+//            return ERROR_CONTEXT;
+//        }
         HttpSession session = context.getCurrentSession().get();
 
 //        if (context.getCurrentSession().isPresent()) {

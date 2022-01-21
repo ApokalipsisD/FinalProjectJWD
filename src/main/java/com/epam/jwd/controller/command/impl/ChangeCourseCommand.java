@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class ChangeCourseCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeCourseCommand.class);
@@ -22,7 +23,7 @@ public class ChangeCourseCommand implements Command {
     private static final AccountServiceImpl account = new AccountServiceImpl();
     private static String pagePath;
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/catalog.jsp";
+    private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String TITLE_ATTRIBUTE = "title";
@@ -64,34 +65,47 @@ public class ChangeCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-//        HttpSession session;
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-////            session.removeAttribute("error");
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
-//        pagePath = context.getContextPath() + context.getHeader();
-
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         String title = context.getParameterByName(TITLE_ATTRIBUTE);
         String description = context.getParameterByName(DESCRIPTION_ATTRIBUTE);
-        Date startDate = Date.valueOf(context.getParameterByName(START_DATE_ATTRIBUTE));
-        Date endDate = Date.valueOf(context.getParameterByName(END_DATE_ATTRIBUTE));
-        Integer teacherId = Integer.valueOf(context.getParameterByName(TEACHER_ATTRIBUTE));
-        Integer id = Integer.valueOf(context.getParameterByName(ID_ATTRIBUTE));
-        Integer status = getStatus(startDate, endDate);
+        String startDate = context.getParameterByName(START_DATE_ATTRIBUTE);
+        String endDate = context.getParameterByName(END_DATE_ATTRIBUTE);
+        String teacherId = context.getParameterByName(TEACHER_ATTRIBUTE);
+        String id = context.getParameterByName(ID_ATTRIBUTE);
 
-        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(ID_ATTRIBUTE);
+//        Date startDate = Objects.nonNull(context.getParameterByName(START_DATE_ATTRIBUTE)) ?
+//                Date.valueOf(context.getParameterByName(START_DATE_ATTRIBUTE)) : null;
+//
+//        Date endDate = Objects.nonNull(context.getParameterByName(END_DATE_ATTRIBUTE)) ?
+//                Date.valueOf(context.getParameterByName(END_DATE_ATTRIBUTE)) : null;
+//
+//        Integer teacherId = Objects.nonNull(context.getParameterByName(TEACHER_ATTRIBUTE)) ?
+//                Integer.valueOf(context.getParameterByName(TEACHER_ATTRIBUTE)) : null;
+//
+//        Integer id = Objects.nonNull(context.getParameterByName(ID_ATTRIBUTE)) ?
+//                Integer.valueOf(context.getParameterByName(ID_ATTRIBUTE)) : null;
+//        Integer status = getStatus(startDate, endDate);
 
-        CourseDto courseDto = new CourseDto(id, title, description, startDate, endDate, status, teacherId);
+//        CourseDto courseDto = new CourseDto(id, title, description, startDate, endDate, status, teacherId);
         try {
+            if (Objects.isNull(startDate) || Objects.isNull(endDate) || Objects.isNull(title)
+                    || Objects.isNull(description) || Objects.isNull(teacherId) || Objects.isNull(id)) {
+                throw new ServiceException("Enter data");
+            }
+            Integer status = getStatus(Date.valueOf(startDate), Date.valueOf(endDate));
+            CourseDto courseDto = new CourseDto(Integer.valueOf(id), title, description,
+                    Date.valueOf(startDate), Date.valueOf(endDate), status, Integer.valueOf(teacherId));
             catalog.update(courseDto);
             context.addAttributeToJsp("message", "Course successfully updated");
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
-
+        pagePath = PAGE_PATH + id;
+//        pagePath = context.getContextPath() + context.getHeader();
+//        pagePath = PAGE_PATH + context.getParameterByName(ID_ATTRIBUTE);
         return SUCCESSFUL_CHANGE_COURSE_CONTEXT;
     }
 

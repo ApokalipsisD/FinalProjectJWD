@@ -60,6 +60,9 @@ public class DeleteCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         Integer id = Integer.valueOf(context.getParameterByName(ID_ATTRIBUTE));
         CourseDto courseDto;
         List<StudentHasCourseDto> list;

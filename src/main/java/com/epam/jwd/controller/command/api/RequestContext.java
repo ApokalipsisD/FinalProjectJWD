@@ -19,4 +19,6 @@ public interface RequestContext {
     String getContextPath();
 
     String getHeader();
+
+    String getPath();
 }

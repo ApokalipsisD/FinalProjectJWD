@@ -145,6 +145,28 @@ public class AccountDao implements Dao<Account, Integer> {
         return accountList;
     }
 
+    public void saveAccountAfterUser(Account account, Connection connection) throws DaoException {
+        ResultSet resultSet = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, account.getFirstName());
+            preparedStatement.setString(2, account.getLastName());
+            preparedStatement.setString(3, account.getEmail());
+            preparedStatement.setDate(4, account.getBirthDate());
+            preparedStatement.setInt(5, account.getUserId());
+            preparedStatement.executeUpdate();
+
+            resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                account.setId(resultSet.getInt(1));
+            }
+        } catch (SQLException e) {
+            logger.error(DaoMessageException.SAVE_ACCOUNT_EXCEPTION + e);
+            throw new DaoException(DaoMessageException.SAVE_ACCOUNT_EXCEPTION);
+        } finally {
+            closeResultSet(resultSet);
+        }
+    }
+
     public Account getAccountByUserId(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         Account account = null;

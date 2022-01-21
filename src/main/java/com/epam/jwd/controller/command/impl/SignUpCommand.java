@@ -6,10 +6,11 @@ import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.UserServiceImpl;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 public class SignUpCommand implements Command {
     private static final Logger logger = LogManager.getLogger(SignUpCommand.class);
@@ -17,7 +18,7 @@ public class SignUpCommand implements Command {
     private static final UserServiceImpl userService = new UserServiceImpl();
     private static final Command INSTANCE = new SignUpCommand();
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/login.jsp";
+    private static final String PAGE_PATH = "/controller?command=show_login";
     private static final String FAIL_PAGE_PATH = "/controller?command=show_sign_up";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
@@ -69,20 +70,19 @@ public class SignUpCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        HttpSession session;
 
-        if (context.getCurrentSession().isPresent()) {
-            session = context.getCurrentSession().get();
-//            session.removeAttribute("error");
-        } else {
+//        if(context.getCurrentSession().get().getAttribute())
+        if(context.getHeader() == null){
             return ERROR_CONTEXT;
         }
-
         String login = context.getParameterByName(LOGIN_ATTRIBUTE);
         String password = context.getParameterByName(PASSWORD_ATTRIBUTE);
         String repeatPassword = context.getParameterByName(REPEAT_PASSWORD_ATTRIBUTE);
 
         try {
+            if(Objects.isNull(login) || Objects.isNull(password) || Objects.isNull(repeatPassword)){
+                throw new ServiceException("Enter data");
+            }
             if (!userService.checkRepeatPassword(password, repeatPassword)) {
                 throw new ServiceException("Password mismatch");
             }
@@ -92,6 +92,7 @@ public class SignUpCommand implements Command {
             userService.create(new UserDto(login, password));
             context.addAttributeToJsp("message", "User successfully created");
         } catch (ServiceException e) {
+            BasicConfigurator.configure();
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
             return SIGN_UP_FAILED_CONTEXT;

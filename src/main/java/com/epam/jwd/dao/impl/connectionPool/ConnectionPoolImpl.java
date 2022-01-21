@@ -1,7 +1,9 @@
 package com.epam.jwd.dao.impl.connectionPool;
 
 import com.epam.jwd.dao.api.ConnectionPool;
-import com.epam.jwd.dao.exception.ConnectionPoolException;
+import com.epam.jwd.dao.exception.DaoException;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,7 +13,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 public final class ConnectionPoolImpl implements ConnectionPool {
-//    private static final Logger logger = LogManager.getLogger(ConnectionPoolImpl.class);
+    private static final Logger logger = LogManager.getLogger(ConnectionPoolImpl.class);
 
     private static final int POOL_SIZE = 5;
     private static final String DB_URL = "jdbc:mysql://localhost:3306/jwd";
@@ -20,57 +22,53 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String CONNECTION_FAILED = "Connection has been failed";
 
-    private final BlockingQueue<ProxyConnection> availableConnections = new ArrayBlockingQueue<>(POOL_SIZE);
-    private final BlockingQueue<ProxyConnection> usedConnections = new ArrayBlockingQueue<>(POOL_SIZE);
+    private final BlockingQueue<ProxyConnection> availableConnections;
+    private final BlockingQueue<ProxyConnection> usedConnections;
 
     private static ConnectionPool instance;
     private boolean initialized;
 
     private ConnectionPoolImpl() {
-        initialize();
+        availableConnections = new ArrayBlockingQueue<>(POOL_SIZE);
+        usedConnections = new ArrayBlockingQueue<>(POOL_SIZE);
     }
-    //todo check synchronized methods
-    public synchronized static ConnectionPool getInstance() {
-        if (Objects.isNull(instance)) {
-            instance = new ConnectionPoolImpl();
+
+    public static ConnectionPool getInstance() {
+        synchronized (ConnectionPool.class) {
+            if (Objects.isNull(instance)) {
+                instance = new ConnectionPoolImpl();
+            }
         }
         return instance;
     }
 
-    // todo boolean method if it needs
     @Override
-    public synchronized void initialize() {
+    public synchronized void initialize() throws DaoException {
         if (!initialized) {
-            try {
-                Class.forName(DRIVER);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            // todo try catch?
-            for (int i = 0; i < POOL_SIZE; i++) {
-                try {
-                    createConnection();
-                } catch (ConnectionPoolException e) {
-                    // log
-                }
-            }
+            createConnection();
             initialized = true;
         }
     }
 
-    private void createConnection() throws ConnectionPoolException {
+    private void createConnection() throws DaoException {
         try {
-            Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
-            ProxyConnection proxyConnection = new ProxyConnection(connection, this);
-            availableConnections.add(proxyConnection);
-        } catch (SQLException e) {
-//            logger.error(CONNECTION_FAILED);
-            throw new ConnectionPoolException(CONNECTION_FAILED);
+            for (int i = 0; i < POOL_SIZE; i++) {
+                Class.forName(DRIVER);
+                Connection connection = DriverManager.getConnection(DB_URL, USER, PASSWORD);
+                ProxyConnection proxyConnection = new ProxyConnection(connection, this);
+                availableConnections.put(proxyConnection);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            logger.error(CONNECTION_FAILED);
+            throw new DaoException(CONNECTION_FAILED);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logger.error(e.getMessage());
         }
     }
 
     @Override
-    public void shutdown() {
+    public void shutdown() throws DaoException {
         if (initialized) {
             closeConnections(availableConnections);
             closeConnections(usedConnections);
@@ -80,40 +78,41 @@ public final class ConnectionPoolImpl implements ConnectionPool {
         }
     }
 
-    private void closeConnections(BlockingQueue<ProxyConnection> connections) {
-        connections.forEach(this::closeConnection);
+    private void closeConnections(BlockingQueue<ProxyConnection> connections) throws DaoException {
+        for (ProxyConnection connection : connections) {
+            closeConnection(connection);
+        }
     }
 
-    private void closeConnection(ProxyConnection proxyConnection) {
+    private void closeConnection(ProxyConnection proxyConnection) throws DaoException {
         try {
             proxyConnection.realCloseConnection();
         } catch (SQLException e) {
-            // todo log and custom exception
+            logger.error(e.getMessage());
+            throw new DaoException(e.getMessage());
         }
     }
 
     @Override
     public synchronized Connection takeConnection() {
-        while (availableConnections.isEmpty()) {
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                //
-            }
+        ProxyConnection connection = null;
+        try {
+            connection = availableConnections.take();
+            usedConnections.put(connection);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logger.error(e.getMessage());
         }
-        final ProxyConnection connection = availableConnections.poll();
-        usedConnections.add(connection);
         return connection;
     }
 
     @Override
     public synchronized void returnConnection(Connection connection) {
-        if (usedConnections.remove((ProxyConnection) connection)) {
-            availableConnections.add((ProxyConnection) connection);
-            this.notifyAll();
-        } else {
-            System.out.println(1);
-            //todo log and something else
+        try {
+            availableConnections.put(usedConnections.take());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            logger.error(e.getMessage());
         }
     }
 }

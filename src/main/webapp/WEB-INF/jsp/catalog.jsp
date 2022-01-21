@@ -148,9 +148,10 @@
             </div>
         </div>
     </div>
-    <c:if test="${not empty message}">
+    <c:if test="${not empty requestScope.message}">
         <script>
-            alert("${message}");
+            alert("${requestScope.message}")
+            window.location = '${pageContext.request.contextPath}/controller?command=show_courses';
         </script>
     </c:if>
 

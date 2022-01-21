@@ -85,7 +85,9 @@ public class CreateCourseCommand implements Command {
 //        } else {
 //            return ERROR_CONTEXT;
 //        }
-
+        if(context.getHeader() == null){
+            return ERROR_CONTEXT;
+        }
         String title = context.getParameterByName(TITLE_ATTRIBUTE);
         String description = context.getParameterByName(DESCRIPTION_ATTRIBUTE);
         Date startDate = Date.valueOf(context.getParameterByName(START_DATE_ATTRIBUTE));

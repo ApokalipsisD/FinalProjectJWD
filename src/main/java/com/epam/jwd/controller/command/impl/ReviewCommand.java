@@ -15,7 +15,7 @@ public class ReviewCommand implements Command {
     private static final Command INSTANCE = new ReviewCommand();
     private static final ReviewServiceImpl review = new ReviewServiceImpl();
 
-    private static final String PAGE_PATH = "/WEB-INF/jsp/catalog.jsp";
+    private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
 
     private static final String GRADE_ATTRIBUTE = "grade";
@@ -61,7 +61,9 @@ public class ReviewCommand implements Command {
     public ResponseContext execute(RequestContext context) {
 
 //        HttpSession session = context.getCurrentSession().get();
-
+        if (context.getHeader() == null) {
+            return ERROR_CONTEXT;
+        }
         Integer grade = Integer.valueOf(context.getParameterByName(GRADE_ATTRIBUTE));
         Integer attendance = Integer.valueOf(context.getParameterByName(ATTENDANCE_ATTRIBUTE));
         String reviewText = context.getParameterByName(REVIEW_TEXT_ATTRIBUTE);
@@ -76,7 +78,7 @@ public class ReviewCommand implements Command {
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
 //        pagePath = context.getContextPath() + context.getHeader();
-        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(COURSE_ID);
+        pagePath = PAGE_PATH + context.getParameterByName(COURSE_ID);
 
         return SUCCESSFUL_CREATE_REVIEW_CONTEXT;
     }

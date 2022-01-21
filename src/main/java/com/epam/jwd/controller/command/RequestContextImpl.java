@@ -20,7 +20,7 @@ public class RequestContextImpl implements RequestContext {
     }
 
     @Override
-    public void removeAttributeFromJsp(String name){
+    public void removeAttributeFromJsp(String name) {
         request.removeAttribute(name);
     }
 
@@ -53,7 +53,15 @@ public class RequestContextImpl implements RequestContext {
     }
 
     @Override
-    public String getHeader(){
+    public String getHeader() {
         return request.getHeader(REFERER);
+    }
+    @Override
+    public String getPath() {
+        String url = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
+//            System.out.println(url + "?" + queryString);
+        return url + "?" + queryString;
+
     }
 }
