@@ -2,26 +2,32 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
 <fmt:message bundle="${loc}" key="userName" var="userName"/>
 <fmt:message bundle="${loc}" key="firstName" var="firstName"/>
 <fmt:message bundle="${loc}" key="lastName" var="lastName"/>
-<fmt:message bundle="${loc}" key="email" var="email"/>
-<fmt:message bundle="${loc}" key="role" var="role"/>
 <fmt:message bundle="${loc}" key="birthDate" var="birthDate"/>
 <fmt:message bundle="${loc}" key="settings" var="settings"/>
 <fmt:message bundle="${loc}" key="profile" var="profile"/>
 <fmt:message bundle="${loc}" key="saveChanges" var="saveChanges"/>
+<fmt:message bundle="${loc}" key="oldPassword" var="oldPassword"/>
+<fmt:message bundle="${loc}" key="newPassword" var="newPassword"/>
+<fmt:message bundle="${loc}" key="confirmPassword" var="confirmPassword"/>
+<fmt:message bundle="${loc}" key="passwordReq" var="passwordReq"/>
+<fmt:message bundle="${loc}" key="passReq" var="passReq"/>
+<fmt:message bundle="${loc}" key="passToCreate" var="passToCreate"/>
+<fmt:message bundle="${loc}" key="minChar" var="minChar"/>
+<fmt:message bundle="${loc}" key="oneLUl" var="oneLUl"/>
+<fmt:message bundle="${loc}" key="oneNumber" var="oneNumber"/>
+<fmt:message bundle="${loc}" key="samePass" var="samePass"/>
 <fmt:message bundle="${loc}" key="changePassword" var="changePassword"/>
 
 <html>
 <head>
-    <title>Profile</title>
-    <%--    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />--%>
+    <title>${profile}</title>
     <style>
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
-        <%--                <%@include file="/WEB-INF/css/jquery-1.10.2.min.js"%>--%>
-        <%--                <%@include file="/WEB-INF/css/bootstrap.bundle.min.js"%>--%>
         <%@include file="/WEB-INF/css/editProfile.css" %>
     </style>
 
@@ -45,7 +51,7 @@
                             <a class="nav-link active" id="changePass" data-toggle="tab"
                                href="${pageContext.request.contextPath}/controller?command=show_password_page"
                                role="tab"
-                               aria-controls="changePass" aria-selected="false">Change Password</a>
+                               aria-controls="changePass" aria-selected="false">${changePassword}</a>
                         </li>
                     </ul>
                     <form action="${pageContext.request.contextPath}/controller?command=edit_profile" method="post">
@@ -80,32 +86,31 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="inputOldPassword">Old Password</label>
+                                    <label for="inputOldPassword">${oldPassword}</label>
                                     <input name="oldPass" type="password" class="form-control" id="inputOldPassword"/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="inputNewPassword">New Password</label>
+                                    <label for="inputNewPassword">${newPassword}</label>
                                     <input name="newPass" type="password" class="form-control" id="inputNewPassword"
                                            required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,20}"
-                                           title="Password must contain at least one number, one lowercase and one uppercase letter, min password length 8"/>
+                                           title="${passwordReq}"/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="confirmNewPassword">Confirm Password</label>
+                                    <label for="confirmNewPassword">${confirmPassword}</label>
                                     <input name="confirmNewPass" type="password" class="form-control" id="confirmNewPassword"
                                            required pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,20}"
-                                           title="Password must contain at least one number, one lowercase and one uppercase letter, min password length 8"/>
+                                           title="${passwordReq}"/>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <p class="mb-2">Password requirements</p>
-                                <p class="small text-muted mb-2">To create a new password, you have to meet all of the
-                                    following requirements:</p>
+                                <p class="mb-2">${passReq}</p>
+                                <p class="small text-muted mb-2">${passToCreate}:</p>
                                 <ul class="small text-muted pl-4 mb-0">
-                                    <li>Minimum 8 character</li>
-                                    <li>At least one lowercase and one uppercase letter</li>
-                                    <li>At least one number</li>
-                                    <li>Can’t be the same as a previous password</li>
+                                    <li>${minChar}</li>
+                                    <li>${oneLUl}</li>
+                                    <li>${oneNumber}</li>
+                                    <li>${samePass}</li>
                                 </ul>
                             </div>
                         </div>
@@ -113,26 +118,10 @@
                     </form>
 
                     <hr class="my-4"/>
-
-
-                    <%--                        <button type="button" class="btn btn-primary" href="/controller?command=change_password">${changePassword}</button>--%>
-
-
                 </div>
             </div>
         </div>
     </div>
-
-    <%--    <c:choose>--%>
-    <%--        <c:when test="${not empty error}">--%>
-    <%--            <p style="color: red;">${error}</p>--%>
-    <%--        </c:when>--%>
-
-    <%--        <c:when test="${not empty message}">--%>
-    <%--            <p style="color: red;">${message}</p>--%>
-    <%--        </c:when>--%>
-    <%--    </c:choose>--%>
-
 </main>
 <%@include file="footer.jsp" %>
 </body>

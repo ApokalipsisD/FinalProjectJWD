@@ -35,7 +35,8 @@ public enum ApplicationCommand {
     DELETE_ACCOUNT(DeleteAccountCommand.getInstance(), Role.USER, Role.STUDENT, Role.TEACHER, Role.ADMIN),
     SHOW_PASSWORD_PAGE(ShowPasswordPageCommand.getInstance(), Role.USER, Role.STUDENT, Role.TEACHER, Role.ADMIN),
     CHANGE_PASSWORD(ChangePasswordCommand.getInstance(), Role.USER, Role.STUDENT, Role.TEACHER, Role.ADMIN),
-    SHOW_ERROR_PAGE(ShowErrorPageCommand.getInstance());
+    SHOW_ERROR_PAGE(ShowErrorPageCommand.getInstance()),
+    CHANGE_LANGUAGE(ChangeLanguageCommand.getInstance());
 
     private final Command command;
     private final List<Role> allowRoles;

@@ -48,6 +48,11 @@ public interface MessageException {
     String INCORRECT_STUDENT_ID_EXCEPTION = "Incorrect student id";
 
     String APPLICATION_DATE_IS_NULL_EXCEPTION = "Application date is null";
+    String ENTER_DATE_EXCEPTION = "Enter data";
+    String PASSWORD_MISMATCH_MESSAGE = "Password mismatch";
+    String INCORRECT_PASSWORD_MESSAGE = "Incorrect password";
+    String REPEATING_PASSWORD_MESSAGE = "The new password cannot be the same as the previous one";
+    String LOGIN_IS_TAKEN_EXCEPTION = "Login is already taken";
 
 
 }

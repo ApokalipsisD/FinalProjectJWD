@@ -1,5 +1,8 @@
 package com.epam.jwd.controller.tag;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -7,7 +10,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class GreetingTag extends TagSupport {
-
+    private static final Logger logger = LogManager.getLogger(GreetingTag.class);
     private static final String USER_WELCOME_MESSAGE = "Hello, %s";
     private static final String DEFAULT_WELCOME_MESSAGE = "Hello!";
     private static final String USER_NAME_SESSION_ATTRIB = "userName";
@@ -20,7 +23,7 @@ public class GreetingTag extends TagSupport {
     }
 
     @Override
-    public int doEndTag() throws JspException {
+    public int doEndTag() {
         return EVAL_PAGE;
     }
 
@@ -36,6 +39,7 @@ public class GreetingTag extends TagSupport {
         try {
             out.write(tagResultText);
         } catch (IOException e) {
+            logger.error(e.getMessage() + e);
             throw new JspException(e);
         }
     }

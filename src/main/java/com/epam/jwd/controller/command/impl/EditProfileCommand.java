@@ -16,6 +16,18 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
 
+import static com.epam.jwd.controller.command.Attributes.BIRTH_DATE_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_ACCOUNT;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.EMAIL_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.FIRST_NAME_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.LAST_NAME_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.PROFILE_UPDATED_MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.USERNAME;
+
 public class EditProfileCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditProfileCommand.class);
 
@@ -27,16 +39,6 @@ public class EditProfileCommand implements Command {
     private static final String PAGE_PATH = "/controller?command=show_profile_page";
     private static final String FAIL_PAGE_PATH = "/WEB-INF/jsp/editProfile.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-
-    private static final String CURRENT_USER = "user";
-    private static final String CURRENT_ACCOUNT = "account";
-    private static final String FIRST_NAME_ATTRIBUTE = "firstName";
-    private static final String LAST_NAME_ATTRIBUTE = "lastName";
-    private static final String EMAIL_ATTRIBUTE = "email";
-    private static final String BIRTH_DATE_ATTRIBUTE = "birthDate";
-    private static final String USERNAME_ATTRIBUTE = "userName";
-    private static final String DELIMITER = ":";
-    private static final String ERROR_ATTRIBUTE = "error";
 
     private static final ResponseContext SUCCESSFUL_PROFILE_CONTEXT = new ResponseContext() {
         @Override
@@ -80,7 +82,7 @@ public class EditProfileCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
         HttpSession session = context.getCurrentSession().get();
@@ -88,7 +90,7 @@ public class EditProfileCommand implements Command {
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
         AccountDto accountDto = (AccountDto) session.getAttribute(CURRENT_ACCOUNT);
 
-        String login = context.getParameterByName(USERNAME_ATTRIBUTE);
+        String login = context.getParameterByName(USERNAME);
 
         String firstName = context.getParameterByName(FIRST_NAME_ATTRIBUTE).isBlank()
                 ? accountDto.getFirstName() : context.getParameterByName(FIRST_NAME_ATTRIBUTE);
@@ -107,12 +109,12 @@ public class EditProfileCommand implements Command {
                 UserDto currentUser = new UserDto(userDto.getId(), login, userDto.getPassword());
                 userService.update(currentUser);
                 session.setAttribute(CURRENT_USER, currentUser);
-                session.setAttribute(USERNAME_ATTRIBUTE, currentUser.getLogin());
+                session.setAttribute(USERNAME, currentUser.getLogin());
             }
             AccountDto accountDto1 = new AccountDto(accountDto.getId(), firstName, lastName, email, birthDate, accountDto.getRole().getId(), accountDto.getUserId());
             accountService.update(accountDto1);
             session.setAttribute(CURRENT_ACCOUNT, accountDto1);
-            context.addAttributeToJsp("message", "Profile updated successfully");
+            context.addAttributeToJsp(MESSAGE, PROFILE_UPDATED_MESSAGE);
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());

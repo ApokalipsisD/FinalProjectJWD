@@ -2,8 +2,23 @@
 <%@ taglib prefix="jwdt" uri="jwdTags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="ru"/>
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
+<fmt:message bundle="${loc}" key="catalog" var="catalog"/>
+<fmt:message bundle="${loc}" key="createCourse" var="createCourse"/>
+<fmt:message bundle="${loc}" key="title" var="title"/>
+<fmt:message bundle="${loc}" key="inputTitle" var="inputTitle"/>
+<fmt:message bundle="${loc}" key="beginning" var="beginning"/>
+<fmt:message bundle="${loc}" key="inputStartDate" var="inputStartDate"/>
+<fmt:message bundle="${loc}" key="ending" var="ending"/>
+<fmt:message bundle="${loc}" key="inputEndDate" var="inputEndDate"/>
+<fmt:message bundle="${loc}" key="teacher" var="teacherN"/>
+<fmt:message bundle="${loc}" key="selectTeacher" var="selectTeacher"/>
+<fmt:message bundle="${loc}" key="description" var="descriptionS"/>
+<fmt:message bundle="${loc}" key="close" var="close"/>
+<fmt:message bundle="${loc}" key="save" var="save"/>
+<fmt:message bundle="${loc}" key="status" var="status"/>
+
 
 <%@ page import="com.epam.jwd.dao.entity.Role" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -11,11 +26,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-
-    <title>Courses</title>
+    <title>${catalog}</title>
     <style>
 
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
@@ -30,28 +41,15 @@
 <body>
 <%@include file="header.jsp" %>
 <main class="main">
-    <%--        <c:choose>--%>
-    <%--            <c:when test="${not empty requestScope.error}">--%>
-
-    <%--                <a href="${pageContext.request.contextPath}/controller?command=show_main_page">Try again</a>--%>
-    <%--            </c:when>--%>
-    <%--            <c:otherwise>--%>
-    <%--    <script>--%>
-    <%--        function myFunction() {--%>
-    <%--            alert(${requestScope.message});--%>
-    <%--        }--%>
-    <%--    </script>--%>
     <div class="container justify-content-center mt-50 mb-50">
         <p style="font-size: 20px; color: red;">${requestScope.error}</p>
-<%--        <p style="font-size: 20px; color: green;">${requestScope.message}</p>--%>
-
         <c:choose>
             <c:when test="${sessionScope.account.role eq Role.ADMIN}">
                 <form action="${pageContext.request.contextPath}/controller?command=create_course"
                       method="post">
                     <button type="button" class="btn btn-primary" data-toggle="modal"
                             data-target="#staticBackdrop">
-                        Create course
+                        ${createCourse}
                     </button>
 
                     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false"
@@ -61,7 +59,7 @@
                             <div class="modal-content">
 
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="staticBackdropLabel">Create course</h5>
+                                    <h5 class="modal-title" id="staticBackdropLabel">${createCourse}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -69,30 +67,30 @@
 
                                 <div class="modal-body">
                                     <div class="form-group">
-                                        <label for="title">Title</label>
+                                        <label for="title">${title}</label>
                                         <input type="text" name="title" class="form-control" id="title"
-                                               placeholder="Input title"
+                                               placeholder="${inputTitle}"
                                                aria-label="Title" aria-describedby="basic-addon1" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="startDate">Beginning</label>
+                                        <label for="startDate">${beginning}</label>
                                         <input type="date" name="startDate" class="form-control" id="startDate"
-                                               placeholder="Input start date"
+                                               placeholder="${inputStartDate}"
                                                aria-label="startDate" aria-describedby="basic-addon1" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="endDate">Ending</label>
+                                        <label for="endDate">${ending}</label>
                                         <input type="date" name="endDate" class="form-control" id="endDate"
-                                               placeholder="Input end date"
+                                               placeholder="${inputEndDate}"
                                                aria-label="endDate" aria-describedby="basic-addon1" required>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="teacher">Teacher</label>
+                                        <label for="teacher">${teacherN}</label>
                                         <select class="form-control" name="teacher" id="teacher" required>
-                                            <option selected disabled>Select teacher</option>
+                                            <option selected disabled>${selectTeacher}</option>
                                             <c:forEach var="i" begin="0"
                                                        end="${sessionScope.teachers.size()-1}">
                                                 <option value="${sessionScope.teachers.get(i).id}">${sessionScope.teachers.get(i).firstName} ${sessionScope.teachers.get(i).lastName}</option>
@@ -102,7 +100,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="description">Description</label>
+                                        <label for="description">${descriptionS}</label>
                                         <textarea class="form-control" name="description" id="description"
                                                   rows="3"></textarea>
                                     </div>
@@ -111,9 +109,9 @@
 
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">${close}
                                     </button>
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">${save}</button>
                                 </div>
 
                             </div>
@@ -139,7 +137,7 @@
                                     <li class="list-inline-item">${sessionScope.catalog.get(i).startDate}</li>
                                     <li class="list-inline-item">${sessionScope.catalog.get(i).endDate}</li>
                                     <li class="list-inline-item">
-                                        Status: ${sessionScope.catalog.get(i).courseStatus}</li>
+                                        ${status}: ${sessionScope.catalog.get(i).courseStatus}</li>
                                 </ul>
                             </div>
                         </div>

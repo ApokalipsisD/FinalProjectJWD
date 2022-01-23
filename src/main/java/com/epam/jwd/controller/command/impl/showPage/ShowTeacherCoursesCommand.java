@@ -15,6 +15,11 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.TEACHER_COURSES_ATTRIBUTE;
+
 public class ShowTeacherCoursesCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowTeacherCoursesCommand.class);
 
@@ -24,11 +29,6 @@ public class ShowTeacherCoursesCommand implements Command {
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/teacherCourses.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String USER_ATTRIBUTE = "user";
-    private static final String TEACHER_COURSES_ATTRIBUTE = "teacherCourses";
-    private static final String DELIMITER = ":";
-
 
     private static final ResponseContext SHOW_TEACHER_COURSES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -62,7 +62,7 @@ public class ShowTeacherCoursesCommand implements Command {
     public ResponseContext execute(RequestContext context) {
         HttpSession session = context.getCurrentSession().get();
 
-        UserDto userDto = (UserDto) session.getAttribute(USER_ATTRIBUTE);
+        UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
         AccountDto accountDto;
         try {

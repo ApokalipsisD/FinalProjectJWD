@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
 <fmt:message bundle="${loc}" key="userName" var="userName"/>
 <fmt:message bundle="${loc}" key="firstName" var="firstName"/>
@@ -11,16 +12,17 @@
 <fmt:message bundle="${loc}" key="birthDate" var="birthDate"/>
 <fmt:message bundle="${loc}" key="edit" var="edit"/>
 <fmt:message bundle="${loc}" key="delete" var="delete"/>
+<fmt:message bundle="${loc}" key="profile" var="profile"/>
+<fmt:message bundle="${loc}" key="deleteAccount" var="deleteAccount"/>
+<fmt:message bundle="${loc}" key="deleteAccountConfirm" var="deleteAccountConfirm"/>
+<fmt:message bundle="${loc}" key="close" var="close"/>
 
 
 <html>
 <head>
-    <title>Profile</title>
+    <title>${profile}</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <style>
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
 
@@ -86,19 +88,17 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Delete account</h5>
-<%--                            <input type="hidden" name="id" value="${id}">--%>
-
+                            <h5 class="modal-title">${deleteAccount}</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>Are you sure you want to delete this account?</p>
+                            <p>${deleteAccountConfirm}</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Delete account</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">${close}</button>
+                            <button type="submit" class="btn btn-primary">${deleteAccount}</button>
                         </div>
                     </div>
                 </div>

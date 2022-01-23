@@ -4,7 +4,6 @@ import com.epam.jwd.controller.command.ApplicationCommand;
 import com.epam.jwd.dao.entity.Role;
 import com.epam.jwd.service.dto.AccountDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountServiceImpl;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -29,12 +28,11 @@ public class PermissionFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(PermissionFilter.class);
 
     private static final String ERROR_PAGE = "/controller?command=show_error_page";
-    private static final String USER_ATTRIBUTE = "user";
     private static final String ACCOUNT_ATTRIBUTE = "account";
     private static final String COMMAND_ATTRIBUTE = "command";
+    private static final String CURRENT_USER = "user";
 
     private final Map<Role, Set<ApplicationCommand>> commandsByRole;
-    private static final AccountServiceImpl account = new AccountServiceImpl();
 
     public PermissionFilter() {
         this.commandsByRole = new EnumMap<>(Role.class);
@@ -60,7 +58,6 @@ public class PermissionFilter implements Filter {
         } catch (ServiceException e) {
             logger.error(e.getMessage() + e);
         }
-
         final Set<ApplicationCommand> allowedCommands = commandsByRole.get(currentRole);
         if (allowedCommands.contains(command)) {
             filterChain.doFilter(request, response);

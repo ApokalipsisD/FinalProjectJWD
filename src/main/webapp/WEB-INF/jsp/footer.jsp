@@ -2,13 +2,12 @@
 <%@ taglib prefix="jwdt" uri="jwdTags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="ru"/>
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-<%--    <title>Main Page</title>--%>
 <style>
     /** {*/
     /*    margin: 0;*/

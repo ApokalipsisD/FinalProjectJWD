@@ -4,12 +4,22 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.service.dto.UserDto;
+import com.epam.jwd.service.exception.MessageException;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.UserServiceImpl;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
+
+import static com.epam.jwd.controller.command.Attributes.CONFIRM_PASSWORD_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.NEW_PASSWORD_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.OLD_PASSWORD_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.PASSWORD_CHANGED_MESSAGE;
 
 public class ChangePasswordCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangePasswordCommand.class);
@@ -20,13 +30,6 @@ public class ChangePasswordCommand implements Command {
     private static final String PAGE_PATH = "/controller?command=show_profile_page";
     private static final String FAIL_PAGE_PATH = "/controller?command=show_password_page";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-
-    private static final String CURRENT_USER = "user";
-    private static final String OLD_PASSWORD_ATTRIBUTE = "oldPass";
-    private static final String NEW_PASSWORD_ATTRIBUTE = "newPass";
-    private static final String CONFIRM_PASSWORD_ATTRIBUTE = "confirmNewPass";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String DELIMITER = ":";
 
     private static final ResponseContext SUCCESSFUL_CHANGE_PASSWORD_CONTEXT = new ResponseContext() {
         @Override
@@ -82,18 +85,18 @@ public class ChangePasswordCommand implements Command {
 
         try {
             if (!userService.checkRepeatPassword(newPassword, confirmPassword)) {
-                throw new ServiceException("Password mismatch");
+                throw new ServiceException(MessageException.PASSWORD_MISMATCH_MESSAGE);
             }
             if(!oldPassword.equals(userDto.getPassword())){
-                throw new ServiceException("Incorrect password");
+                throw new ServiceException(MessageException.INCORRECT_PASSWORD_MESSAGE);
             }
             if(newPassword.equals(userDto.getPassword())){
-                throw new ServiceException("The new password cannot be the same as the previous one");
+                throw new ServiceException(MessageException.REPEATING_PASSWORD_MESSAGE);
             }
             UserDto currentUser = new UserDto(userDto.getId(), userDto.getLogin(), newPassword);
             userService.update(currentUser);
             session.setAttribute(CURRENT_USER, currentUser);
-            context.addAttributeToJsp("message", "Password successfully changed");
+            context.addAttributeToJsp(MESSAGE, PASSWORD_CHANGED_MESSAGE);
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());

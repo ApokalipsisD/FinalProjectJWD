@@ -12,6 +12,13 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.ID_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.LEFT_COURSE_MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.MESSAGE;
+
 public class DropCourseCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DropCourseCommand.class);
 
@@ -21,10 +28,6 @@ public class DropCourseCommand implements Command {
 
     private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-    private static final String CURRENT_USER = "user";
-    private static final String DELIMITER = ":";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String ID_ATTRIBUTE = "id";
 
     private static final ResponseContext SUCCESSFUL_DROP_COURSE_CONTEXT = new ResponseContext() {
         @Override
@@ -56,11 +59,10 @@ public class DropCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
         HttpSession session = context.getCurrentSession().get();
-//        pagePath = context.getContextPath() + context.getHeader();
         pagePath = PAGE_PATH + context.getParameterByName(ID_ATTRIBUTE);
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
@@ -71,7 +73,7 @@ public class DropCourseCommand implements Command {
         try {
             recordStudent = record.getRecordByCourseIdAndStudentId(courseId, studentId);
             record.delete(recordStudent);
-            context.addAttributeToJsp("message", "You left the course");
+            context.addAttributeToJsp(MESSAGE, LEFT_COURSE_MESSAGE);
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());

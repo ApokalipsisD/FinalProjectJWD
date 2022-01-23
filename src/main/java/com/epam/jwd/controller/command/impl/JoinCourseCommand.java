@@ -18,6 +18,13 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.ID_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.JOINED_COURSE_MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.MESSAGE;
+
 public class JoinCourseCommand implements Command {
     private static final Logger logger = LogManager.getLogger(JoinCourseCommand.class);
 
@@ -28,11 +35,6 @@ public class JoinCourseCommand implements Command {
 
     private static final String PAGE_PATH = "/controller?command=catalog&course=";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-    private static final String DELIMITER = ":";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String USER_ATTRIBUTE = "user";
-    private static final String ID_ATTRIBUTE = "id";
-
 
     private static final ResponseContext SUCCESSFUL_JOIN_COURSE_CONTEXT = new ResponseContext() {
         @Override
@@ -64,14 +66,13 @@ public class JoinCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
         HttpSession session = context.getCurrentSession().get();
-//        pagePath = context.getContextPath() + context.getHeader();
         pagePath = PAGE_PATH + context.getParameterByName(ID_ATTRIBUTE);
 
-        UserDto userDto = (UserDto) session.getAttribute(USER_ATTRIBUTE);
+        UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
         Integer courseId = Integer.valueOf(context.getParameterByName(ID_ATTRIBUTE));
         Integer studentId = userDto.getId();
@@ -87,7 +88,7 @@ public class JoinCourseCommand implements Command {
                     account.updateRole(accountDto.getId(), Role.STUDENT.getId());
                 }
             }
-            context.addAttributeToJsp("message", "Joined course successfully");
+            context.addAttributeToJsp(MESSAGE, JOINED_COURSE_MESSAGE);
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());

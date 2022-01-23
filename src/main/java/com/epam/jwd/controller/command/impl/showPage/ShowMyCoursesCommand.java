@@ -16,6 +16,11 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.MY_COURSES_ATTRIBUTE;
+
 public class ShowMyCoursesCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowMyCoursesCommand.class);
 
@@ -25,11 +30,6 @@ public class ShowMyCoursesCommand implements Command {
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/myCourses.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String USER_ATTRIBUTE = "user";
-    private static final String MY_COURSES_ATTRIBUTE = "myCourses";
-    private static final String DELIMITER = ":";
-
 
     private static final ResponseContext SHOW_MY_COURSES_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -63,7 +63,7 @@ public class ShowMyCoursesCommand implements Command {
     public ResponseContext execute(RequestContext context) {
         HttpSession session = context.getCurrentSession().get();
 
-        UserDto userDto = (UserDto) session.getAttribute(USER_ATTRIBUTE);
+        UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
         Integer studentId = userDto.getId();
         List<CourseDto> myCourses = new ArrayList<>();

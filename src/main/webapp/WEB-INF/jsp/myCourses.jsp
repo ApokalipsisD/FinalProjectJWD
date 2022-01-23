@@ -2,22 +2,20 @@
 <%@ taglib prefix="jwdt" uri="jwdTags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="ru"/>
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
+<fmt:message bundle="${loc}" key="myCourses" var="myCourses"/>
+<fmt:message bundle="${loc}" key="status" var="status"/>
+<fmt:message bundle="${loc}" key="noMyCourses" var="noMyCourses"/>
 
-<%@ page import="com.epam.jwd.dao.entity.Role" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-
-    <title>My Courses</title>
+    <title>${myCourses}</title>
     <style>
-
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
-        <%--        <%@include file="/WEB-INF/css/catalog.css" %>--%>
-
     </style>
 
 </head>
@@ -44,7 +42,7 @@
                                             <li class="list-inline-item">${sessionScope.myCourses.get(i).startDate}</li>
                                             <li class="list-inline-item">${sessionScope.myCourses.get(i).endDate}</li>
                                             <li class="list-inline-item">
-                                                Status: ${sessionScope.myCourses.get(i).courseStatus}</li>
+                                                ${status}: ${sessionScope.myCourses.get(i).courseStatus}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -52,10 +50,9 @@
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <h2 style="text-align: center; padding-top: 100px; padding-left: 100px">You don't have any courses yet</h2>
+                        <h2 style="text-align: center; padding-top: 100px; padding-left: 100px">${noMyCourses}</h2>
                     </c:otherwise>
                 </c:choose>
-
             </div>
         </div>
     </div>

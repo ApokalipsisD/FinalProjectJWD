@@ -2,8 +2,37 @@
 <%@ taglib prefix="jwdt" uri="jwdTags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="ru"/>
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
+<fmt:message bundle="${loc}" key="start" var="start"/>
+<fmt:message bundle="${loc}" key="end" var="end"/>
+<fmt:message bundle="${loc}" key="drop" var="drop"/>
+<fmt:message bundle="${loc}" key="join" var="join"/>
+<fmt:message bundle="${loc}" key="change" var="change"/>
+<fmt:message bundle="${loc}" key="users" var="users"/>
+<fmt:message bundle="${loc}" key="review" var="review"/>
+<fmt:message bundle="${loc}" key="grade" var="grade"/>
+<fmt:message bundle="${loc}" key="enterGrade" var="enterGrade"/>
+<fmt:message bundle="${loc}" key="attendance" var="attendance"/>
+<fmt:message bundle="${loc}" key="enterAttendance" var="enterAttendance"/>
+<fmt:message bundle="${loc}" key="changeReview" var="changeReview"/>
+<fmt:message bundle="${loc}" key="deleteReview" var="deleteReview"/>
+<fmt:message bundle="${loc}" key="deleteReviewMessage" var="deleteReviewMessage"/>
+<fmt:message bundle="${loc}" key="changeCourse" var="changeCourse"/>
+<fmt:message bundle="${loc}" key="deleteCourse" var="deleteCourse"/>
+<fmt:message bundle="${loc}" key="deleteCourseMessage" var="deleteCourseMessage"/>
+<fmt:message bundle="${loc}" key="status" var="statusS"/>
+<fmt:message bundle="${loc}" key="delete" var="delete"/>
+<fmt:message bundle="${loc}" key="close" var="close"/>
+<fmt:message bundle="${loc}" key="save" var="save"/>
+<fmt:message bundle="${loc}" key="title" var="titleS"/>
+<fmt:message bundle="${loc}" key="beginning" var="beginning"/>
+<fmt:message bundle="${loc}" key="inputStartDate" var="inputStartDate"/>
+<fmt:message bundle="${loc}" key="ending" var="ending"/>
+<fmt:message bundle="${loc}" key="inputEndDate" var="inputEndDate"/>
+<fmt:message bundle="${loc}" key="teacher" var="teacherN"/>
+<fmt:message bundle="${loc}" key="selectTeacher" var="selectTeacher"/>
+<fmt:message bundle="${loc}" key="description" var="descriptionS"/>
 
 <%@ page import="com.epam.jwd.dao.entity.Role" %>
 <%@ page import="com.epam.jwd.dao.entity.Status" %>
@@ -12,14 +41,10 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-    <title>Course</title>
+    <title>${title}</title>
     <style>
 
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
-        <%--        <%@include file="/WEB-INF/css/catalog.css" %>--%>
         .main .drop{
             border-color: yellow;
             background-color: yellow;
@@ -35,29 +60,23 @@
 <body>
 <%@include file="header.jsp"%>
 <main class="main" style="background-color: #e9ecef">
-<%--    <c:choose>--%>
-<%--    <c:when test="${not empty requestScope.error}">--%>
-<%--        <p>${requestScope.error}</p>--%>
-<%--        <a href="${pageContext.request.contextPath}/controller?command=show_main_page">Try again</a>--%>
-<%--    </c:when>--%>
-<%--    <c:otherwise>--%>
     <div class="jumbotron">
         <div class="container">
             <p style="font-size: 20px; color: red;">${requestScope.error}</p>
             <h1>${title}</h1>
             <p>${description}</p>
-            <p>Start: ${startDate} End: ${endDate} Status: ${status}</p>
-            <p>Teacher: ${teacher.firstName} ${teacher.lastName}</p>
+            <p>${start}: ${startDate} ${end}: ${endDate} ${statusS}: ${status}</p>
+            <p>${teacherN}: ${teacher.firstName} ${teacher.lastName}</p>
             <c:choose>
                 <c:when test="${sessionScope.account ne teacher and status ne Status.Finished}">
                     <c:choose>
                         <c:when test="${record eq true}">
                             <a class="drop btn btn-primary btn-lg" href="controller?command=drop_course&id=${id}"
-                               role="button" type="submit">Drop</a>
+                               role="button" type="submit">${drop}</a>
                         </c:when>
                         <c:otherwise>
                             <a class="btn btn-primary btn-lg" href="controller?command=join_course&id=${id}"
-                               role="button" type="submit">Join</a>
+                               role="button" type="submit">${join}</a>
                         </c:otherwise>
                     </c:choose>
                 </c:when>
@@ -66,12 +85,12 @@
             <c:choose>
                 <c:when test="${sessionScope.account.role eq Role.ADMIN or sessionScope.account.role eq Role.TEACHER}">
                     <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#changeCourse"
-                       role="button">Change</a>
+                       role="button">${change}</a>
                     <a class="btn btn-primary btn-lg" href="#" data-toggle="modal" data-target="#deleteCourse"
-                       role="button">Delete</a>
+                       role="button">${delete}</a>
                     <c:if test="${not empty studentsOnCourse}">
                         <div class="users">
-                            <h4>Users:</h4>
+                            <h4>${users}:</h4>
                             <ul class="list-group">
                                 <c:forEach items="${studentsOnCourse}" var="entry">
                                     <div>
@@ -86,7 +105,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="review">Review </h5>
+                                                            <h5 class="modal-title" id="review">${review}</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
@@ -95,28 +114,28 @@
 
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <label for="grade">Grade:</label>
+                                                                <label for="grade">${grade}:</label>
                                                                 <input type="number" name="grade" class="form-control"
                                                                        id="grade"
                                                                        aria-label="Grade"
                                                                        aria-describedby="basic-addon1" required pattern="^[0-9]+$"
                                                                        min="1" max="10"
-                                                                       title="Enter grade">
+                                                                       title="${enterGrade}">
                                                             </div>
                                                             <input type="hidden" name="id" value="${id}">
                                                             <div class="form-group">
-                                                                <label for="attendance">Attendance %:</label>
+                                                                <label for="attendance">${attendance} %:</label>
                                                                 <input type="number" name="attendance"
                                                                        class="form-control"
                                                                        id="attendance"
                                                                        aria-label="attendance"
                                                                        aria-describedby="basic-addon1" required pattern="^[0-9]+$"
                                                                        min="1" max="100"
-                                                                       title="Enter attendance">
+                                                                       title="${enterAttendance}">
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label for="reviewText">Review</label>
+                                                                <label for="reviewText">${review}</label>
                                                                 <textarea class="form-control" name="reviewText"
                                                                           id="reviewText"
                                                                           rows="3" required></textarea>
@@ -126,9 +145,9 @@
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close
+                                                                    data-dismiss="modal">${close}
                                                             </button>
-                                                            <button type="submit" class="btn btn-primary">Save
+                                                            <button type="submit" class="btn btn-primary">${save}
                                                             </button>
                                                         </div>
 
@@ -149,7 +168,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="review1">Change Review</h5>
+                                                            <h5 class="modal-title" id="review1">${changeReview}</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                     aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
@@ -158,7 +177,7 @@
 
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <label for="grade">Grade:${entry.key.id}</label>
+                                                                <label for="grade">${grade}:${entry.key.id}</label>
                                                                 <input type="text" name="gradeChange" class="form-control"
                                                                        id="grade1"
                                                                        aria-label="Grade"
@@ -177,7 +196,7 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label for="reviewText">Review</label>
+                                                                <label for="reviewText">${review}</label>
                                                                 <textarea class="form-control" name="reviewTextChange"
                                                                           id="reviewText1"
                                                                           rows="3">${reviews.get(entry.key.id).review}</textarea>
@@ -187,9 +206,9 @@
 
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
-                                                                    data-dismiss="modal">Close
+                                                                    data-dismiss="modal">${close}
                                                             </button>
-                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                            <button type="submit" class="btn btn-primary">${save}</button>
                                                         </div>
 
                                                     </div>
@@ -202,7 +221,7 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Delete review</h5>
+                                                            <h5 class="modal-title">${deleteReview}</h5>
                                                             <input type="hidden" name="id" value="${id}">
                                                             <input type="hidden" name="reviewId" value="${reviews.get(entry.key.id).id}">
 
@@ -211,11 +230,11 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <p>Are you sure you want to delete this review?</p>
+                                                            <p>${deleteReviewMessage}</p>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                            <button type="submit" class="btn btn-primary">Delete review</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">${close}</button>
+                                                            <button type="submit" class="btn btn-primary">${deleteReview}</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -230,11 +249,11 @@
                                                     <a class="btn btn-primary" href="#"
                                                        data-toggle="modal"
                                                        data-target="#changeReview${entry.key.id}"
-                                                       role="button">Change Review</a>
+                                                       role="button">${changeReview}</a>
                                                     <a class="btn btn-primary" href="#"
                                                        data-toggle="modal"
                                                        data-target="#deleteReview${entry.key.id}"
-                                                       role="button">Delete Review</a>
+                                                       role="button">${deleteReview}</a>
                                                 </div>
 
                                             </c:when>
@@ -244,7 +263,7 @@
                                                         data-toggle="modal"
                                                         data-target="#review${entry.key.id}"
                                                         name="studentIdOnCourse" value="${entry.key.id}">
-                                                    Review
+                                                        ${review}
                                                 </button>
                                             </c:otherwise>
                                         </c:choose>
@@ -267,7 +286,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel1">Change course</h5>
+                                <h5 class="modal-title" id="staticBackdropLabel1">${changeCourse}</h5>
                                 <button type="button" class="close" data-dismiss="modal"
                                         aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -276,34 +295,33 @@
 
                             <div class="modal-body">
                                 <div class="form-group">
-                                    <label for="title1">Title</label>
+                                    <label for="title1">${titleS}</label>
                                     <input type="text" name="title" class="form-control"
                                            id="title1"
-                                           aria-label="Title"
+                                           aria-label="${titleS}"
                                            aria-describedby="basic-addon1" value=${title} required>
                                 </div>
                                 <input type="hidden" name="id" value="${id}">
                                 <div class="form-group">
-                                    <label for="startDate1">Beginning</label>
+                                    <label for="startDate1">${start}</label>
                                     <input type="date" name="startDate" class="form-control"
-                                           id="startDate1" placeholder="Input start date"
+                                           id="startDate1" placeholder="${inputStartDate}"
                                            value=${startDate}
                                                    aria-label="startDate"
                                            aria-describedby="basic-addon1" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="endDate1">Ending</label>
+                                    <label for="endDate1">${end}</label>
                                     <input type="date" name="endDate" class="form-control"
-                                           id="endDate1" placeholder="Input end date"
+                                           id="endDate1" placeholder="${inputEndDate}"
                                            value=${endDate} aria-label="endDate"
                                            aria-describedby="basic-addon1" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="teacher1">Teacher</label>
+                                    <label for="teacher1">${teacherN}</label>
                                     <select class="form-control" name="teacher" id="teacher1">
-                                        <%--                                            <option selected>Select teacher</option>--%>
                                         <c:forEach var="i" begin="0" end="${sessionScope.teachers.size()-1}">
                                             <c:choose>
                                                 <c:when test="${sessionScope.teachers.get(i) eq teacher}">
@@ -319,7 +337,7 @@
 
 
                                 <div class="form-group">
-                                    <label for="description1">Description</label>
+                                    <label for="description1">${descriptionS}</label>
                                     <textarea class="form-control" name="description" id="description1"
                                               rows="3">${description}</textarea>
                                 </div>
@@ -328,8 +346,8 @@
 
 
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">${close}</button>
+                                <button type="submit" class="btn btn-primary">${save}</button>
                             </div>
 
                         </div>
@@ -342,18 +360,18 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Delete course</h5>
+                                <h5 class="modal-title">${deleteCourse}</h5>
                                 <input type="hidden" name="id" value="${id}">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Are you sure you want to delete this course?</p>
+                                <p>${deleteCourseMessage}</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Delete course</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">${close}</button>
+                                <button type="submit" class="btn btn-primary">${deleteCourse}</button>
                             </div>
                         </div>
                     </div>

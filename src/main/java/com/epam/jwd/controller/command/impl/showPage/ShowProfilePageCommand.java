@@ -12,6 +12,11 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
+import static com.epam.jwd.controller.command.Attributes.CURRENT_ACCOUNT;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+
 public class ShowProfilePageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowCoursesPageCommand.class);
 
@@ -20,11 +25,6 @@ public class ShowProfilePageCommand implements Command {
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/profile.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-
-    private static final String CURRENT_USER = "user";
-    private static final String CURRENT_ACCOUNT = "account";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String DELIMITER = ":";
 
     private static final ResponseContext SHOW_PROFILE_PAGE_CONTEXT = new ResponseContext() {
         @Override
@@ -56,12 +56,6 @@ public class ShowProfilePageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext context) {
         HttpSession session = context.getCurrentSession().get();
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
-
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
         AccountDto accountDto;
         try {

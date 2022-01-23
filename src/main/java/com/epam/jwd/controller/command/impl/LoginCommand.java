@@ -14,6 +14,14 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
+import static com.epam.jwd.controller.command.Attributes.CURRENT_ACCOUNT;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.LOGIN_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.PASSWORD_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.USERNAME;
+
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
 
@@ -24,15 +32,6 @@ public class LoginCommand implements Command {
     private static final String PAGE_PATH = "/controller?command=show_main";
     private static final String FAIL_PAGE_PATH = "/controller?command=show_login";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-
-    private static final String LOGIN_ATTRIBUTE = "login";
-    private static final String PASSWORD_ATTRIBUTE = "password";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String CURRENT_USER = "user";
-    private static final String CURRENT_ACCOUNT = "account";
-    private static final String CURRENT_USER_NAME = "userName";
-    private static final String DELIMITER = ":";
-
 
     private static final ResponseContext SUCCESSFUL_LOG_IN_CONTEXT = new ResponseContext() {
         @Override
@@ -77,7 +76,7 @@ public class LoginCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext context) {
 
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
         HttpSession session = context.getCurrentSession().orElse(context.createSession());
@@ -87,17 +86,16 @@ public class LoginCommand implements Command {
 
         UserDto userDto;
         try {
-            if(Objects.isNull(login) || Objects.isNull(password)){
-                throw new ServiceException("Enter data");
+            if (Objects.isNull(login) || Objects.isNull(password)) {
+                throw new ServiceException(MessageException.ENTER_DATE_EXCEPTION);
             }
             userDto = user.getByLogin(login);
             if (userDto.getPassword().equals(password)) {
                 session.setAttribute(CURRENT_USER, userDto);
-                session.setAttribute(CURRENT_USER_NAME, userDto.getLogin());
+                session.setAttribute(USERNAME, userDto.getLogin());
                 session.setAttribute(CURRENT_ACCOUNT, accountService.getAccountByUserId(userDto.getId()));
-//                context.addAttributeToJsp("message", "Log in is successfully completed");  // Log in is successfully completed
             } else {
-               throw new ServiceException(MessageException.USER_NOT_FOUND_EXCEPTION);
+                throw new ServiceException(MessageException.USER_NOT_FOUND_EXCEPTION);
             }
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());

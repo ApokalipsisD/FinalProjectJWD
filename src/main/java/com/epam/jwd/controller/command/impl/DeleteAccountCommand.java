@@ -3,7 +3,6 @@ package com.epam.jwd.controller.command.impl;
 import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
-import com.epam.jwd.service.dto.AccountDto;
 import com.epam.jwd.service.dto.StudentHasCourseDto;
 import com.epam.jwd.service.dto.UserDto;
 import com.epam.jwd.service.exception.ServiceException;
@@ -16,6 +15,14 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static com.epam.jwd.controller.command.Attributes.ACCOUNT_DELETED_MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_ACCOUNT;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.USERNAME;
+
 public class DeleteAccountCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteAccountCommand.class);
 
@@ -26,12 +33,6 @@ public class DeleteAccountCommand implements Command {
 
     private static final String PAGE_PATH = "/controller?command=logout";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-
-    private static final String CURRENT_USER = "user";
-    private static final String CURRENT_ACCOUNT = "account";
-    private static final String USERNAME = "userName";
-    private static final String DELIMITER = ":";
-    private static final String ERROR_ATTRIBUTE = "error";
 
     private static final ResponseContext SUCCESSFUL_DELETE_ACCOUNT_CONTEXT = new ResponseContext() {
         @Override
@@ -63,15 +64,13 @@ public class DeleteAccountCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
         HttpSession session = context.getCurrentSession().get();
-        AccountDto accountDto = (AccountDto) session.getAttribute(CURRENT_ACCOUNT);
         UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
 
         try {
-//            accountService.delete(accountDto);
             List<StudentHasCourseDto> list = records.getRecordsByStudentId(userDto.getId());
             for (StudentHasCourseDto record : list) {
                 records.delete(record);
@@ -80,7 +79,7 @@ public class DeleteAccountCommand implements Command {
             session.removeAttribute(CURRENT_ACCOUNT);
             session.removeAttribute(CURRENT_USER);
             session.removeAttribute(USERNAME);
-            context.addAttributeToJsp("message", "Account has been deleted");
+            context.addAttributeToJsp(MESSAGE, ACCOUNT_DELETED_MESSAGE);
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());

@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
 <fmt:message bundle="${loc}" key="userName" var="userName"/>
 <fmt:message bundle="${loc}" key="firstName" var="firstName"/>
@@ -13,15 +14,15 @@
 <fmt:message bundle="${loc}" key="profile" var="profile"/>
 <fmt:message bundle="${loc}" key="saveChanges" var="saveChanges"/>
 <fmt:message bundle="${loc}" key="changePassword" var="changePassword"/>
+<fmt:message bundle="${loc}" key="firstNameReq" var="firstNameReq"/>
+<fmt:message bundle="${loc}" key="lastNameReq" var="lastNameReq"/>
+<fmt:message bundle="${loc}" key="loginReq" var="loginReq"/>
 
 <html>
 <head>
-    <title>Profile</title>
-    <%--    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />--%>
+    <title>${profile}</title>
     <style>
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
-<%--                <%@include file="/WEB-INF/css/jquery-1.10.2.min.js"%>--%>
-<%--                <%@include file="/WEB-INF/css/bootstrap.bundle.min.js"%>--%>
         <%@include file="/WEB-INF/css/editProfile.css" %>
     </style>
 
@@ -42,7 +43,7 @@
                         </li>
                         <li>
                             <a class="nav-link active" id="changePass" data-toggle="tab" href="${pageContext.request.contextPath}/controller?command=show_password_page" role="tab"
-                               aria-controls="changePass" aria-selected="false">Change Password</a>
+                               aria-controls="changePass" aria-selected="false">${changePassword}</a>
                         </li>
                     </ul>
                     <form action="${pageContext.request.contextPath}/controller?command=edit_profile" method="post">
@@ -81,8 +82,8 @@
                                        value="${sessionScope.account.firstName}"
                                 </c:when>
                                 </c:choose>
-                                pattern="^([А-Я][а-яё]{2,20}|[A-Z][a-z]{2,20})$"
-                                       title="First name must start with an uppercase letter and contain letters of only one language">
+                                       pattern="^([А-Я][а-яё]{2,20}|[A-Z][a-z]{2,20})$"
+                                       title="${firstNameReq}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="lastname">${lastName}</label>
@@ -93,14 +94,14 @@
                                 </c:when>
                                 </c:choose>
                                        pattern="^([А-Я][а-яё]{2,20}|[A-Z][a-z]{2,20})$"
-                                title="Last name must start with an uppercase letter and contain letters of only one language">
+                                       title="${lastNameReq}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail4">${userName}</label>
                             <input type="text" name="userName" class="form-control" id="inputUsername"
                                    aria-label="inputEmail4" value="${sessionScope.user.login}" pattern="^[\w.-]{3,20}[0-9a-zA-Z]$"
-                                   title="Login must be greater than 3 and less than 20 and must not contain inaccessible characters">
+                                   title="${loginReq}">
                         </div>
                         <div class="form-group">
                             <label for="inputEmail4">${email}</label>
@@ -110,7 +111,7 @@
                                    value="${sessionScope.account.email}"
                             </c:when>
                             </c:choose>
-                            pattern="^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$">
+                                   pattern="^([a-zA-Z0-9_-]+\.)*[a-zA-Z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$">
                         </div>
                         <div class="form-group">
                             <label for="inputAddress5">${birthDate}</label>
@@ -123,26 +124,11 @@
                         <hr class="my-4"/>
 
                         <button type="submit" class="btn btn-primary">${saveChanges}</button>
-<%--                        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/controller?command=show_profile_page"--%>
-<%--                           role="button" type="submit">Join</a>--%>
-<%--                        <button type="button" class="btn btn-primary" href="/controller?command=change_password">${changePassword}</button>--%>
                     </form>
-
                 </div>
             </div>
         </div>
     </div>
-
-<%--    <c:choose>--%>
-<%--        <c:when test="${not empty error}">--%>
-<%--            <p style="color: red;">${error}</p>--%>
-<%--        </c:when>--%>
-
-<%--        <c:when test="${not empty message}">--%>
-<%--            <p style="color: red;">${message}</p>--%>
-<%--        </c:when>--%>
-<%--    </c:choose>--%>
-
 </main>
 <%@include file="footer.jsp"%>
 </body>

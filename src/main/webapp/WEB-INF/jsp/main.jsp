@@ -2,57 +2,78 @@
 <%@ taglib prefix="jwdt" uri="jwdTags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="ru"/>
+<fmt:setLocale value="${not empty sessionScope.language ? sessionScope.language : 'en'}"/>
 <fmt:setBundle basename="locale" var="loc"/>
+<fmt:message bundle="${loc}" key="catalog" var="catalog"/>
+<fmt:message bundle="${loc}" key="profile" var="profile"/>
+<fmt:message bundle="${loc}" key="login" var="login"/>
+<fmt:message bundle="${loc}" key="signUp" var="signUp"/>
 
 
-<%@ page import="com.epam.jwd.dao.entity.Role" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Main Page</title>
-    <style>
-        .under{
-            margin-top: 3%;
-            margin-bottom: 3%;
-            border-radius: 0.5rem;
-            background: #fff;
-            padding: 90px 3% 3%;
-        }
-    </style>
 </head>
 <body>
 <%@include file="header.jsp"%>
 
 <main class="main">
-    <jwdt:welcomeText/>
 
-<%--    <c:choose>--%>
-<%--        <c:when test="${not empty error}">--%>
-<%--            <p style="color: red;">${error}</p>--%>
-<%--        </c:when>--%>
+        <div class="container col-md-5">
+            <h1 style="text-align: center; font-size: 60px; padding-bottom: 20px; padding-top: 20px">Company name</h1>
+            <h3 style="text-align: center"><jwdt:welcomeText/></h3>
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <div class="row justify-content-between" style="margin-top: 50px">
+                        <div class="card card-body col-md-5 col-sm-5 col-lg-5">
+                            <div class="card-body align-items-center justify-content-center"
+                                 style="height: 150px; justify-content: center; text-align: center">
+                                <p style="text-align: center; font-size: 30px">${catalog}</p>
+                                <a class="btn btn-primary btn-lg"
+                                   href="${pageContext.request.contextPath}/controller?command=show_courses"
+                                   role="button" style="align-content: center; align-items: center" type="submit">${catalog}</a>
+                            </div>
+                        </div>
+                        <div class="card card-body col-md-5 col-sm-5 col-lg-5">
+                            <div class="card-body align-items-center justify-content-center"
+                                 style="height: 150px; justify-content: center; text-align: center">
+                                <p style="text-align: center; font-size: 30px">${profile}</p>
+                                <a class="btn btn-primary btn-lg"
+                                   href="${pageContext.request.contextPath}/controller?command=show_profile_page"
+                                   role="button" style="align-content: center; align-items: center" type="submit">${profile}</a>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="row justify-content-between" style="margin-top: 50px">
+                        <div class="card card-body col-md-5 col-sm-5 col-lg-5">
+                            <div class="card-body align-items-center justify-content-center"
+                                 style="height: 150px; justify-content: center; text-align: center">
+                                <p style="text-align: center; font-size: 30px">${login}</p>
+                                <a class="btn btn-primary btn-lg"
+                                   href="${pageContext.request.contextPath}/controller?command=show_login"
+                                   role="button" style="align-content: center; align-items: center" type="submit">${login}</a>
+                            </div>
+                        </div>
+                        <div class="card card-body col-md-5 col-sm-5 col-lg-5">
+                            <div class="card-body align-items-center justify-content-center"
+                                 style="height: 150px; justify-content: center; text-align: center">
+                                <p style="text-align: center; font-size: 30px">${signUp}</p>
+                                <a class="btn btn-primary btn-lg"
+                                   href="${pageContext.request.contextPath}/controller?command=show_sign_up"
+                                   role="button" style="align-content: center; align-items: center" type="submit">${signUp}</a>
+                            </div>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
 
-<%--        <c:when test="${not empty message}">--%>
-<%--            <p style="color: red;">${message}</p>--%>
-<%--        </c:when>--%>
-<%--    </c:choose>--%>
+        </div>
+
 </main>
 
-
-<%--<br>--%>
-<%--<c:choose>--%>
-<%--    <c:when test="${empty sessionScope.user}">--%>
-<%--        <a href="${pageContext.request.contextPath}/controller?command=show_sign_up">SignUp page</a><br>--%>
-<%--        <a href="${pageContext.request.contextPath}/controller?command=show_login">Login page</a>--%>
-<%--    </c:when>--%>
-<%--    <c:otherwise>--%>
-<%--        <a href="${pageContext.request.contextPath}/controller?command=logout">Logout</a>--%>
-<%--        <a href="${pageContext.request.contextPath}/controller?command=show_profile_page">Profile</a>--%>
-<%--        <a href="${pageContext.request.contextPath}/controller?command=show_courses">Catalog    </a>--%>
-<%--    </c:otherwise>--%>
-<%--</c:choose>--%>
-
-<%--${message}--%>
 <%@include file="footer.jsp"%>
 </body>
 </html>

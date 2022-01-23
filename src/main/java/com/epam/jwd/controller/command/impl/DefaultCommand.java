@@ -4,6 +4,8 @@ import com.epam.jwd.controller.command.api.Command;
 import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 
+import javax.servlet.http.HttpSession;
+
 public class DefaultCommand implements Command {
     private static final Command INSTANCE = new DefaultCommand();
     private static final String PAGE_PATH = "/WEB-INF/jsp/main.jsp";
@@ -25,7 +27,9 @@ public class DefaultCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-//        HttpSession session = context.getCurrentSession().orElse(context.createSession());
+        HttpSession session = context.getCurrentSession().get();
+//        String language = (String) session.getAttribute("language");
+
         return SHOW_DEFAULT_PAGE_CONTEXT;
     }
 }

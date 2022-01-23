@@ -8,15 +8,15 @@ import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpSession;
 
+import static com.epam.jwd.controller.command.Attributes.CURRENT_ACCOUNT;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+
 public class LogoutCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LogoutCommand.class);
 
     private static final Command INSTANCE = new LogoutCommand();
     private static final String PAGE_PATH = "/controller?command=show_main";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-
-    private static final String CURRENT_USER = "userName";
-    private static final String CURRENT_ACCOUNT = "account";
 
     private static final ResponseContext SUCCESSFUL_LOG_OUT_CONTEXT = new ResponseContext() {
         @Override
@@ -48,17 +48,7 @@ public class LogoutCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-//        if(context.getHeader() == null){
-//            return ERROR_CONTEXT;
-//        }
         HttpSession session = context.getCurrentSession().get();
-
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
-
         session.removeAttribute(CURRENT_USER);
         session.removeAttribute(CURRENT_ACCOUNT);
         context.invalidateCurrentSession();

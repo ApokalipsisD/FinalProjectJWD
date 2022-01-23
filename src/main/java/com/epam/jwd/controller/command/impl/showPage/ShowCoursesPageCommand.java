@@ -13,6 +13,11 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static com.epam.jwd.controller.command.Attributes.CATALOG_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.TEACHERS_ATTRIBUTE;
+
 public class ShowCoursesPageCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowCoursesPageCommand.class);
 
@@ -22,10 +27,7 @@ public class ShowCoursesPageCommand implements Command {
 
     private static final String PAGE_PATH = "/WEB-INF/jsp/catalog.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String TEACHERS_ATTRIBUTE = "teachers";
-    private static final String CATALOG_ATTRIBUTE = "catalog";
-    private static final String DELIMITER = ":";
+
 
 
     private static final ResponseContext SHOW_COURSES_PAGE_CONTEXT = new ResponseContext() {
@@ -59,14 +61,6 @@ public class ShowCoursesPageCommand implements Command {
     @Override
     public ResponseContext execute(RequestContext context) {
         HttpSession session = context.getCurrentSession().get();
-//        HttpSession session;
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
-//        AccountDto accountDto = (AccountDto) session.getAttribute("account");
-
         List<CourseDto> list;
         try {
             list = catalog.getAll();

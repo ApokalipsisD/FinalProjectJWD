@@ -15,6 +15,12 @@ import org.apache.log4j.Logger;
 
 import java.util.List;
 
+import static com.epam.jwd.controller.command.Attributes.COURSE_DELETED_MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.ID_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.MESSAGE;
+
 public class DeleteCourseCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowCoursesPageCommand.class);
 
@@ -25,10 +31,6 @@ public class DeleteCourseCommand implements Command {
 
     private static final String PAGE_PATH = "/controller?command=show_courses";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-    private static final String DELIMITER = ":";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String ID_ATTRIBUTE = "id";
-    private static String pagePath;
 
     private static final ResponseContext SUCCESSFUL_DELETE_COURSE_CONTEXT = new ResponseContext() {
         @Override
@@ -60,7 +62,7 @@ public class DeleteCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
         Integer id = Integer.valueOf(context.getParameterByName(ID_ATTRIBUTE));
@@ -73,13 +75,11 @@ public class DeleteCourseCommand implements Command {
                 record.delete(student);
             }
             catalog.delete(courseDto);
-            context.addAttributeToJsp("message", "Course was deleted");
+            context.addAttributeToJsp(MESSAGE, COURSE_DELETED_MESSAGE);
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
         }
-//        pagePath = "/controller?command=catalog&course=" + context.getParameterByName(ID_ATTRIBUTE);
-
         return SUCCESSFUL_DELETE_COURSE_CONTEXT;
     }
 }

@@ -22,6 +22,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.epam.jwd.controller.command.Attributes.COURSE_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.CURRENT_USER;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.DESCRIPTION_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.END_DATE_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.ID_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.RECORD_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.REVIEWS_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.START_DATE_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.STATUS_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.STUDENTS_ON_COURSE_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.TEACHER_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.TITLE_ATTRIBUTE;
+
 public class CourseCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ShowCoursesPageCommand.class);
 
@@ -32,23 +47,8 @@ public class CourseCommand implements Command {
     private static final StudentHasCourseServiceImpl record = new StudentHasCourseServiceImpl();
     private static final ReviewServiceImpl review = new ReviewServiceImpl();
 
-
     private static final String PAGE_PATH = "/WEB-INF/jsp/course.jsp";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String USER_ATTRIBUTE = "user";
-    private static final String COURSE_ATTRIBUTE = "course";
-    private static final String TITLE_ATTRIBUTE = "title";
-    private static final String DESCRIPTION_ATTRIBUTE = "description";
-    private static final String STATUS_ATTRIBUTE = "status";
-    private static final String START_DATE_ATTRIBUTE = "startDate";
-    private static final String END_DATE_ATTRIBUTE = "endDate";
-    private static final String TEACHER_ATTRIBUTE = "teacher";
-    private static final String ID_ATTRIBUTE = "id";
-    private static final String RECORD_ATTRIBUTE = "record";
-    private static final String STUDENTS_ON_COURSE_ATTRIBUTE = "studentsOnCourse";
-    private static final String REVIEWS_ATTRIBUTE = "reviews";
-    private static final String DELIMITER = ":";
 
     private static final ResponseContext SUCCESSFUL_COURSE_CONTEXT = new ResponseContext() {
         @Override
@@ -80,12 +80,12 @@ public class CourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
         HttpSession session = context.getCurrentSession().get();
 
-        UserDto userDto = (UserDto) session.getAttribute(USER_ATTRIBUTE);
+        UserDto userDto = (UserDto) session.getAttribute(CURRENT_USER);
         Integer id = Integer.valueOf(context.getParameterByName(COURSE_ATTRIBUTE));
         CourseDto courseDto;
         boolean isRecordExists = false;
@@ -111,7 +111,7 @@ public class CourseCommand implements Command {
 
             studentsOnCourse = record.getRecordsByCourseId(courseDto.getId());
 
-            for(StudentHasCourseDto student: studentsOnCourse) {
+            for (StudentHasCourseDto student : studentsOnCourse) {
                 UserDto userOnCourse = user.getById(student.getStudentId());
                 isReviewExists = !review.findReviewByCourseIdAndStudentId(courseDto.getId(), userOnCourse.getId());
                 mapUsers.put(userOnCourse, isReviewExists);

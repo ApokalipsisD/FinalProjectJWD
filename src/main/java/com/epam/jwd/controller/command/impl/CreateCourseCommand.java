@@ -10,9 +10,20 @@ import com.epam.jwd.service.impl.CourseServiceImpl;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
+
+import static com.epam.jwd.controller.command.Attributes.COURSE_CREATED_MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.DELIMITER;
+import static com.epam.jwd.controller.command.Attributes.DESCRIPTION_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.END_DATE_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.ERROR_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.MESSAGE;
+import static com.epam.jwd.controller.command.Attributes.START_DATE_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.TEACHER_ATTRIBUTE;
+import static com.epam.jwd.controller.command.Attributes.TITLE_ATTRIBUTE;
 
 public class CreateCourseCommand implements Command {
     private static final Logger logger = LogManager.getLogger(CreateCourseCommand.class);
@@ -23,15 +34,6 @@ public class CreateCourseCommand implements Command {
     private static final String PAGE_PATH = "/controller?command=show_courses";
     private static final String FAIL_PAGE_PATH = "/controller?command=show_courses";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
-
-    private static final String TITLE_ATTRIBUTE = "title";
-    private static final String DESCRIPTION_ATTRIBUTE = "description";
-    private static final String START_DATE_ATTRIBUTE = "startDate";
-    private static final String END_DATE_ATTRIBUTE = "endDate";
-    private static final String TEACHER_ATTRIBUTE = "teacher";
-    private static final String ERROR_ATTRIBUTE = "error";
-    private static final String MESSAGE_ATTRIBUTE = "message";
-    private static final String DELIMITER = ":";
 
     private static String pagePath = null;
 
@@ -77,17 +79,11 @@ public class CreateCourseCommand implements Command {
 
     @Override
     public ResponseContext execute(RequestContext context) {
-//        HttpSession session = context.getCurrentSession().get();
-
-//        if (context.getCurrentSession().isPresent()) {
-//            session = context.getCurrentSession().get();
-//            session.removeAttribute(ERROR_ATTRIBUTE);
-//        } else {
-//            return ERROR_CONTEXT;
-//        }
-        if(context.getHeader() == null){
+        if (context.getHeader() == null) {
             return ERROR_CONTEXT;
         }
+        HttpSession session = context.getCurrentSession().get();
+
         String title = context.getParameterByName(TITLE_ATTRIBUTE);
         String description = context.getParameterByName(DESCRIPTION_ATTRIBUTE);
         Date startDate = Date.valueOf(context.getParameterByName(START_DATE_ATTRIBUTE));
@@ -98,7 +94,7 @@ public class CreateCourseCommand implements Command {
 
         try {
             catalog.create(new CourseDto(title, description, startDate, endDate, status, teacherId));
-            context.addAttributeToJsp(MESSAGE_ATTRIBUTE, "Course created successfully");
+            context.addAttributeToJsp(MESSAGE, COURSE_CREATED_MESSAGE);
         } catch (ServiceException e) {
             logger.error(ERROR_ATTRIBUTE + DELIMITER + e.getMessage());
             context.addAttributeToJsp(ERROR_ATTRIBUTE, e.getMessage());
