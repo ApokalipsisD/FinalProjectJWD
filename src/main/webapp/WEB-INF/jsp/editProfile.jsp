@@ -25,8 +25,6 @@
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
         <%@include file="/WEB-INF/css/editProfile.css" %>
     </style>
-
-
 </head>
 <body>
 <%@include file="header.jsp"%>
@@ -38,12 +36,12 @@
                 <div class="my-4">
                     <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="home" data-toggle="tab" href="${pageContext.request.contextPath}/controller?command=show_edit_profile" role="tab"
-                               aria-controls="home" aria-selected="false">${profile}</a>
+                            <a class="nav-link active" id="home" href="${pageContext.request.contextPath}/controller?command=show_edit_profile"
+                               >${profile}</a>
                         </li>
                         <li>
-                            <a class="nav-link active" id="changePass" data-toggle="tab" href="${pageContext.request.contextPath}/controller?command=show_password_page" role="tab"
-                               aria-controls="changePass" aria-selected="false">${changePassword}</a>
+                            <a class="nav-link active"  href="${pageContext.request.contextPath}/controller?command=show_password_page"
+                               >${changePassword}</a>
                         </li>
                     </ul>
                     <form action="${pageContext.request.contextPath}/controller?command=edit_profile" method="post">

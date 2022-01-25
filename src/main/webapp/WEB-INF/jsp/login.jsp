@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="input-container">
-                    <input type="password" name="password" id="inputPassword" class="form-control" aria-label="Password" placeholder="Password" required>
+                    <input type="password" name="password" id="inputPassword" class="form-control" aria-label="Password" placeholder="${password}" required>
                 </div>
 
                 <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">${login}</button>
