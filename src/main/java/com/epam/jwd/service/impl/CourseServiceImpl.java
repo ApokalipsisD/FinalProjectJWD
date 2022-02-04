@@ -31,7 +31,7 @@ public class CourseServiceImpl implements Service<CourseDto, Integer> {
         try {
             return converter.convert(courseDao.save(converter.convert(courseDto)));
         } catch (DaoException e) {
-            logger.error(e.getMessage() + e);
+            logger.error(e);
             throw new ServiceException(e.getMessage());
         }
     }
@@ -42,7 +42,7 @@ public class CourseServiceImpl implements Service<CourseDto, Integer> {
         try {
             return courseDao.update(converter.convert(courseDto));
         } catch (DaoException e) {
-            logger.error(e.getMessage() + e);
+            logger.error(e);
             throw new ServiceException(e.getMessage());
         }
     }

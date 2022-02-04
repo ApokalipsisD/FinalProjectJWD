@@ -9,10 +9,6 @@
 <html>
 <head>
 <style>
-    /** {*/
-    /*    margin: 0;*/
-    /*    padding: 0;*/
-    /*}*/
     html,
     body {
         height: 100%;
@@ -73,7 +69,7 @@
 
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
         © 2022 Copyright:
-        <a class="text-white" href="https://www.youtube.com/watch?v=G1IbRujko-A&t=164s&ab_channel=10Hours">Site name</a>
+        <a class="text-white" href="https://www.youtube.com/watch?v=G1IbRujko-A&t=164s&ab_channel=10Hours">Study GO</a>
     </div>
 
 </footer>

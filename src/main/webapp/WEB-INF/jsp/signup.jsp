@@ -19,7 +19,6 @@
     <style>
         <%@include file="/WEB-INF/css/bootstrap.min.css" %>
         <%@include file="/WEB-INF/css/signUp.css" %>
-        <%@include file="/WEB-INF/js/signUp.js" %>
 
     </style>
 

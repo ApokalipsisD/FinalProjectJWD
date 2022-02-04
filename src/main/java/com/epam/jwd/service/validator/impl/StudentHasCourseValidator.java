@@ -41,7 +41,7 @@ public class StudentHasCourseValidator implements Validator<StudentHasCourseDto,
         if (Objects.isNull(date)) {
             throw new ServiceException(MessageException.APPLICATION_DATE_IS_NULL_EXCEPTION);
         }
-        if (date.toString().matches(DATE_PATTERN)) {
+        if (!date.toString().matches(DATE_PATTERN)) {
             throw new ServiceException(MessageException.INCORRECT_DATE_EXCEPTION);
         }
     }

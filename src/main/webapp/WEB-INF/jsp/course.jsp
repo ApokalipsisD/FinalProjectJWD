@@ -177,7 +177,7 @@
 
                                                         <div class="modal-body">
                                                             <div class="form-group">
-                                                                <label for="grade">${grade}:${entry.key.id}</label>
+                                                                <label for="grade">${grade}</label>
                                                                 <input type="text" name="gradeChange" class="form-control"
                                                                        id="grade1"
                                                                        aria-label="Grade"

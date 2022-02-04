@@ -92,6 +92,16 @@ public class AccountDao implements Dao<Account, Integer> {
         }
     }
 
+    public void deleteAfterUser(Account account, Connection connection) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ACCOUNT)) {
+            preparedStatement.setInt(1, account.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(DaoMessageException.DELETE_ACCOUNT_EXCEPTION + e);
+            throw new DaoException(DaoMessageException.DELETE_ACCOUNT_EXCEPTION);
+        }
+    }
+
     @Override
     public Account findById(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();

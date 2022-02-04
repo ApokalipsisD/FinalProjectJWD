@@ -1,8 +1,33 @@
 package com.epam.jwd.controller.command;
 
 import com.epam.jwd.controller.command.api.Command;
-import com.epam.jwd.controller.command.impl.*;
-import com.epam.jwd.controller.command.impl.showPage.*;
+import com.epam.jwd.controller.command.impl.ChangeCourseCommand;
+import com.epam.jwd.controller.command.impl.ChangeLanguageCommand;
+import com.epam.jwd.controller.command.impl.ChangePasswordCommand;
+import com.epam.jwd.controller.command.impl.ChangeReviewCommand;
+import com.epam.jwd.controller.command.impl.CourseCommand;
+import com.epam.jwd.controller.command.impl.CreateCourseCommand;
+import com.epam.jwd.controller.command.impl.DefaultCommand;
+import com.epam.jwd.controller.command.impl.DeleteAccountCommand;
+import com.epam.jwd.controller.command.impl.DeleteCourseCommand;
+import com.epam.jwd.controller.command.impl.DeleteReviewCommand;
+import com.epam.jwd.controller.command.impl.DropCourseCommand;
+import com.epam.jwd.controller.command.impl.EditProfileCommand;
+import com.epam.jwd.controller.command.impl.JoinCourseCommand;
+import com.epam.jwd.controller.command.impl.LoginCommand;
+import com.epam.jwd.controller.command.impl.LogoutCommand;
+import com.epam.jwd.controller.command.impl.ReviewCommand;
+import com.epam.jwd.controller.command.impl.SignUpCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowCoursesPageCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowEditProfileCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowErrorPageCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowLoginPageCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowMainPageCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowMyCoursesCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowPasswordPageCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowProfilePageCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowSignUpPageCommand;
+import com.epam.jwd.controller.command.impl.showPage.ShowTeacherCoursesCommand;
 import com.epam.jwd.dao.entity.Role;
 
 import java.util.Arrays;

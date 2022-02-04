@@ -6,7 +6,6 @@ import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.dao.entity.Status;
 import com.epam.jwd.service.dto.CourseDto;
 import com.epam.jwd.service.exception.ServiceException;
-import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.CourseServiceImpl;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -31,7 +30,6 @@ public class ChangeCourseCommand implements Command {
 
     private static final Command INSTANCE = new ChangeCourseCommand();
     private static final CourseServiceImpl catalog = new CourseServiceImpl();
-    private static final AccountServiceImpl account = new AccountServiceImpl();
     private static String pagePath;
 
     private static final String PAGE_PATH = "/controller?command=catalog&course=";

@@ -26,6 +26,7 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
 
     @Override
     public StudentHasCourseDto create(StudentHasCourseDto studentHasCourseDto) throws ServiceException {
+        validator.validate(studentHasCourseDto);
         try {
             return converter.convert(studentHasCourseDao.save(converter.convert(studentHasCourseDto)));
         } catch (DaoException e) {
@@ -36,6 +37,7 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
 
     @Override
     public boolean update(StudentHasCourseDto studentHasCourseDto) throws ServiceException {
+        validator.validate(studentHasCourseDto);
         try {
             return studentHasCourseDao.update(converter.convert(studentHasCourseDto));
         } catch (DaoException e) {
@@ -46,6 +48,7 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
 
     @Override
     public boolean delete(StudentHasCourseDto studentHasCourseDto) throws ServiceException {
+        validator.validate(studentHasCourseDto);
         try {
             return studentHasCourseDao.delete(converter.convert(studentHasCourseDto));
         } catch (DaoException e) {
@@ -56,7 +59,8 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
 
     @Override
     public StudentHasCourseDto getById(Integer id) throws ServiceException {
-        StudentHasCourse result = null;
+        validator.validateId(id);
+        StudentHasCourse result;
         try {
             result = studentHasCourseDao.findById(id);
             if (Objects.isNull(result)) {
@@ -84,6 +88,8 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
     }
 
     public boolean findRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws ServiceException {
+        validator.validateId(courseId);
+        validator.validateId(studentId);
         try {
             return studentHasCourseDao.findRecordByCourseIdAndStudentId(courseId, studentId);
         } catch (DaoException e) {
@@ -93,6 +99,8 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
     }
 
     public StudentHasCourseDto getRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws ServiceException {
+        validator.validateId(courseId);
+        validator.validateId(studentId);
         try {
             return converter.convert(studentHasCourseDao.getRecordByCourseIdAndStudentId(courseId, studentId));
         } catch (DaoException e) {
@@ -102,6 +110,7 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
     }
 
     public List<StudentHasCourseDto> getRecordsByStudentId(Integer studentId) throws ServiceException {
+        validator.validateId(studentId);
         List<StudentHasCourse> studentList;
         List<StudentHasCourseDto> studentDtoList = new ArrayList<>();
         try {
@@ -115,6 +124,7 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
     }
 
     public List<StudentHasCourseDto> getRecordsByCourseId(Integer courseId) throws ServiceException {
+        validator.validateId(courseId);
         List<StudentHasCourse> studentList;
         List<StudentHasCourseDto> studentDtoList = new ArrayList<>();
         try {

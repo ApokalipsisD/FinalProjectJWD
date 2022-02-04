@@ -96,7 +96,7 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
                 throw new DaoException(MessageException.USER_NOT_FOUND_EXCEPTION);
             }
         } catch (DaoException e) {
-            logger.error(e.getMessage() + e);
+            logger.error(e);
             throw new ServiceException(e.getMessage());
         }
         return converter.convert(result);

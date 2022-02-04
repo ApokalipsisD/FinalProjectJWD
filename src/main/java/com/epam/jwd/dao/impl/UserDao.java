@@ -100,10 +100,20 @@ public class UserDao implements Dao<User, Integer> {
     public boolean delete(User user) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_USER)) {
-            accountDao.delete(accountDao.getAccountByUserId(user.getId()));
+            connection.setAutoCommit(false);
+            accountDao.deleteAfterUser(accountDao.getAccountByUserId(user.getId()), connection);
             preparedStatement.setInt(1, user.getId());
-            return preparedStatement.executeUpdate() > 0;
+            int status = preparedStatement.executeUpdate();
+            connection.commit();
+            connection.setAutoCommit(true);
+            return status > 0;
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.error(ex.getMessage() + ex);
+                throw new DaoException(DaoMessageException.DELETE_USER_EXCEPTION);
+            }
             logger.error(DaoMessageException.DELETE_USER_EXCEPTION + e);
             throw new DaoException(DaoMessageException.DELETE_USER_EXCEPTION);
         } finally {
