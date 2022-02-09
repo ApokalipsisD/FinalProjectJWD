@@ -1,5 +1,9 @@
 package com.epam.jwd.service.dto;
 
+/**
+ * Class AbstractDto which provides id of provided type
+ * @param <T> type of id
+ */
 public abstract class AbstractDto<T> {
     protected T id;
 

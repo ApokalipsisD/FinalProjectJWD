@@ -5,6 +5,9 @@ import com.epam.jwd.dao.entity.Status;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * CourseDto class for Course entity
+ */
 public class CourseDto extends AbstractDto<Integer> {
     private String title;
     private String description;

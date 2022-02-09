@@ -23,6 +23,9 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Filter class which filter every servlet request for role identity
+ */
 @WebFilter(urlPatterns = "/controller")
 public class PermissionFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(PermissionFilter.class);
@@ -30,7 +33,6 @@ public class PermissionFilter implements Filter {
     private static final String ERROR_PAGE = "/controller?command=show_error_page";
     private static final String ACCOUNT_ATTRIBUTE = "account";
     private static final String COMMAND_ATTRIBUTE = "command";
-    private static final String CURRENT_USER = "user";
 
     private final Map<Role, Set<ApplicationCommand>> commandsByRole;
 
@@ -41,9 +43,9 @@ public class PermissionFilter implements Filter {
     /**
      * Main filter method which filter request or redirect to error page
      *
-     * @param request     servlet request
-     * @param response    servlet response
-     * @param filterChain filter chain
+     * @param request     - servlet request
+     * @param response    - servlet response
+     * @param filterChain - filter chain
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
@@ -73,7 +75,6 @@ public class PermissionFilter implements Filter {
      */
     @Override
     public void init(FilterConfig filterConfig) {
-
         for (ApplicationCommand command : ApplicationCommand.values()) {
             for (Role allowedRole : command.getAllowRoles()) {
                 Set<ApplicationCommand> commands = commandsByRole.computeIfAbsent(allowedRole, k -> EnumSet.noneOf(ApplicationCommand.class));

@@ -33,6 +33,9 @@ import com.epam.jwd.dao.entity.Role;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Enum which contains commands
+ */
 public enum ApplicationCommand {
     DEFAULT(DefaultCommand.getInstance()),
     SHOW_LOGIN(ShowLoginPageCommand.getInstance(), Role.UNAUTHORIZED),
@@ -71,6 +74,12 @@ public enum ApplicationCommand {
         this.allowRoles = roles != null && roles.length > 0 ? Arrays.asList(roles) : Role.valuesAsList();
     }
 
+    /**
+     * Method which takes command by command name
+     *
+     * @param name - command name
+     * @return - Command
+     */
     public static Command getCommandByString(String name) {
         return Arrays.stream(ApplicationCommand.values())
                 .filter(command -> command.toString().equalsIgnoreCase(name))
@@ -87,6 +96,12 @@ public enum ApplicationCommand {
         return allowRoles;
     }
 
+    /**
+     * Method for getting Commands field by name
+     *
+     * @param commandName - command name
+     * @return - ApplicationCommand fields
+     */
     public static ApplicationCommand getCommands(String commandName) {
         for (ApplicationCommand command : values()) {
             if (command.name().equalsIgnoreCase(commandName)) {

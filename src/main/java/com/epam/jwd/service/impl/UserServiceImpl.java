@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * UserService implementation class of Service for UserDto with Integer id
+ */
 public class UserServiceImpl implements Service<UserDto, Integer> {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     private final UserDao userDao = new UserDao();
@@ -88,6 +91,13 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
         return userDtoList;
     }
 
+    /**
+     * Method for getting UserDto entity by login
+     *
+     * @param login - user login
+     * @return - UserDto entity
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public UserDto getByLogin(String login) throws ServiceException {
         User result;
         try {
@@ -102,7 +112,13 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
         return converter.convert(result);
     }
 
-
+    /**
+     * Method to check an existing login
+     *
+     * @param login - user login
+     * @return - true if login is free and false otherwise
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public boolean checkIfLoginFree(String login) throws ServiceException {
         try {
             return userDao.checkIfLoginFree(login);
@@ -111,10 +127,4 @@ public class UserServiceImpl implements Service<UserDto, Integer> {
             throw new ServiceException(e.getMessage());
         }
     }
-
-    public boolean checkRepeatPassword(String password, String repeatPassword){
-        return password.equals(repeatPassword);
-    }
-
-    // sort
 }

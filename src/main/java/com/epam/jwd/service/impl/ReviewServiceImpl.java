@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * ReviewService implementation class of Service for ReviewDto with Integer id
+ */
 public class ReviewServiceImpl implements Service<ReviewDto, Integer> {
     private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
 
@@ -89,6 +92,14 @@ public class ReviewServiceImpl implements Service<ReviewDto, Integer> {
         return reviewDtoList;
     }
 
+    /**
+     * Method which finds review by course and student
+     *
+     * @param courseId  - current course id
+     * @param studentId - current student id
+     * @return - true if review was found and otherwise false or exception
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public boolean findReviewByCourseIdAndStudentId(Integer courseId, Integer studentId) throws ServiceException {
         validator.validateId(courseId);
         validator.validateId(studentId);
@@ -100,6 +111,13 @@ public class ReviewServiceImpl implements Service<ReviewDto, Integer> {
         }
     }
 
+    /**
+     * Method which gets reviews by course id
+     *
+     * @param courseId - current course id
+     * @return - true if review was found and otherwise false or exception
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public List<ReviewDto> getReviewsByCourseId(Integer courseId) throws ServiceException {
         validator.validateId(courseId);
         List<Review> reviewList;

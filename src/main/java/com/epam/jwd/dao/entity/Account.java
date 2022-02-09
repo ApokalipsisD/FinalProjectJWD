@@ -3,22 +3,67 @@ package com.epam.jwd.dao.entity;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * Account entity class which extends Entity class with Integer id field
+ */
 public class Account extends Entity<Integer> {
+    /**
+     * String field with account's first name
+     */
     private String firstName;
+    /**
+     * String field with account's last name
+     */
     private String lastName;
+    /**
+     * String field with account's email
+     */
     private String email;
+    /**
+     * Date field with account's birthdate
+     */
     private Date birthDate;
+    /**
+     * Role field with account's role
+     *
+     * @see Role
+     */
     private Role role;
+    /**
+     * Integer field with account's id which associated with current user
+     */
     private Integer userId;
 
-    public Account(){
+    /**
+     * Constructor without arguments for creating empty Account object
+     *
+     * @see Account#Account(Integer)
+     * @see Account#Account(String, String, String, Date, Integer, Integer)
+     * @see Account#Account(Integer, String, String, String, Date, Integer, Integer)
+     */
+    public Account() {
 
     }
 
-    public Account(Integer userId){
+    /**
+     * Constructor for creating Account object with associated user id
+     *
+     * @param userId - user id which associated with current user
+     */
+    public Account(Integer userId) {
         this.userId = userId;
     }
 
+    /**
+     * Constructor with arguments and without id for creating Account Object
+     *
+     * @param firstName - account's first name
+     * @param lastName  - account's last name
+     * @param email     - account's email
+     * @param birthDate - account's birthdate
+     * @param roleId    - account's role
+     * @param userId    - user id which associated with current user
+     */
     public Account(String firstName, String lastName, String email, Date birthDate, Integer roleId, Integer userId) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,6 +73,17 @@ public class Account extends Entity<Integer> {
         this.userId = userId;
     }
 
+    /**
+     * Constructor with all amount of arguments for creating Account Object
+     *
+     * @param id        - account's id
+     * @param firstName - account's first name
+     * @param lastName  - account's last name
+     * @param email     - account's email
+     * @param birthDate - account's birthdate
+     * @param roleId    - account's role
+     * @param userId    - user id which associated with current user
+     */
     public Account(Integer id, String firstName, String lastName, String email, Date birthDate, Integer roleId, Integer userId) {
         this.id = id;
         this.firstName = firstName;
@@ -77,14 +133,6 @@ public class Account extends Entity<Integer> {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    //    public Integer getRoleId() {
-//        return roleId;
-//    }
-//
-//    public void setRoleId(Integer roleId) {
-//        this.roleId = roleId;
-//    }
 
     public Integer getUserId() {
         return userId;

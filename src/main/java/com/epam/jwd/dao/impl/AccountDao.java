@@ -17,6 +17,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AccountDao implementation class of Dao for Account with Integer id
+ */
 public class AccountDao implements Dao<Account, Integer> {
     private static final Logger logger = LogManager.getLogger(AccountDao.class);
 
@@ -92,6 +95,13 @@ public class AccountDao implements Dao<Account, Integer> {
         }
     }
 
+    /**
+     * Method which delete account by user id
+     *
+     * @param account    - user's account
+     * @param connection - connection
+     * @throws DaoException - if entity wasn't deleted or SQL exception
+     */
     public void deleteAfterUser(Account account, Connection connection) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_DELETE_ACCOUNT)) {
             preparedStatement.setInt(1, account.getId());
@@ -155,6 +165,13 @@ public class AccountDao implements Dao<Account, Integer> {
         return accountList;
     }
 
+    /**
+     * Method which save account with user id
+     *
+     * @param account    - user's account
+     * @param connection - connection
+     * @throws DaoException - if entity wasn't saved or SQL exception
+     */
     public void saveAccountAfterUser(Account account, Connection connection) throws DaoException {
         ResultSet resultSet = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_SAVE_ACCOUNT, Statement.RETURN_GENERATED_KEYS)) {
@@ -177,6 +194,13 @@ public class AccountDao implements Dao<Account, Integer> {
         }
     }
 
+    /**
+     * Method which gets account by user id
+     *
+     * @param id - current user id
+     * @return - account with user id
+     * @throws DaoException - if entity wasn't got or SQL exception
+     */
     public Account getAccountByUserId(Integer id) throws DaoException {
         Connection connection = pool.takeConnection();
         Account account = null;
@@ -203,6 +227,12 @@ public class AccountDao implements Dao<Account, Integer> {
         return account;
     }
 
+    /**
+     * Method which finds all teacher accounts
+     *
+     * @return - list of teacher accounts
+     * @throws DaoException - if entity wasn't found or SQL exception
+     */
     public List<Account> findAllTeachers() throws DaoException {
         List<Account> accountList = new ArrayList<>();
         Connection connection = pool.takeConnection();
@@ -228,6 +258,13 @@ public class AccountDao implements Dao<Account, Integer> {
         return accountList;
     }
 
+    /**
+     * Method which updates user role
+     *
+     * @param accountId - current account id
+     * @param roleId    - user role
+     * @throws DaoException - if entity wasn't updated or SQL exception
+     */
     public void updateRole(Integer accountId, Integer roleId) throws DaoException {
         Connection connection = pool.takeConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ROLE_ID)) {

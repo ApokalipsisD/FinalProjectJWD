@@ -17,6 +17,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CourseDao implementation class of Dao for Course with Integer id
+ */
 public class CourseDao implements Dao<Course, Integer> {
     private static final Logger logger = LogManager.getLogger(CourseDao.class);
 
@@ -144,6 +147,13 @@ public class CourseDao implements Dao<Course, Integer> {
         return courseList;
     }
 
+    /**
+     * Method which finds courses by teacher account id
+     *
+     * @param teacherId - teacher account id
+     * @return - list of courses with this teacher account
+     * @throws DaoException - if entity wasn't found or SQL exception
+     */
     public List<Course> findCoursesByTeacherId(Integer teacherId) throws DaoException {
         List<Course> courseList = new ArrayList<>();
         Connection connection = pool.takeConnection();

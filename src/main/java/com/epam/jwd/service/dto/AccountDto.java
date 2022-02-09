@@ -5,6 +5,9 @@ import com.epam.jwd.dao.entity.Role;
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * AccountDto class for Account entity
+ */
 public class AccountDto extends AbstractDto<Integer>{
     private String firstName;
     private String lastName;

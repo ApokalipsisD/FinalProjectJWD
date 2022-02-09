@@ -9,6 +9,9 @@ import org.apache.log4j.Logger;
 
 import java.util.Objects;
 
+/**
+ * Class which initialize connection pool {@link ConnectionPool}
+ */
 public class ConnectionPoolService {
     private static final Logger logger = LogManager.getLogger(ConnectionPoolService.class);
 
@@ -28,6 +31,11 @@ public class ConnectionPoolService {
         return instance;
     }
 
+    /**
+     * Method for initializing connectionPool
+     *
+     * @throws ServiceException - if it's unable for create connection
+     */
     public void initialize() throws ServiceException {
         try {
             pool.initialize();
@@ -37,6 +45,11 @@ public class ConnectionPoolService {
         }
     }
 
+    /**
+     * Method which shutDowns connection poll
+     *
+     * @throws ServiceException - if it's unable for close connection
+     */
     public void shutDown() throws ServiceException {
         try {
             pool.shutdown();

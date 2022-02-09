@@ -84,7 +84,7 @@ public class ChangePasswordCommand implements Command {
         String confirmPassword = context.getParameterByName(CONFIRM_PASSWORD_ATTRIBUTE);
 
         try {
-            if (!userService.checkRepeatPassword(newPassword, confirmPassword)) {
+            if(!newPassword.equals(confirmPassword)){
                 throw new ServiceException(MessageException.PASSWORD_MISMATCH_MESSAGE);
             }
             if(!oldPassword.equals(userDto.getPassword())){

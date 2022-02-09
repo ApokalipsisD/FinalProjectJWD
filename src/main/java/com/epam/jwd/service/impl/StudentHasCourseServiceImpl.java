@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * StudentHasCourseService implementation class of Service for StudentHasCourseDto with Integer id
+ */
 public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto, Integer> {
     private static final Logger logger = LogManager.getLogger(StudentHasCourseServiceImpl.class);
 
@@ -87,6 +90,14 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
         return studentDtoList;
     }
 
+    /**
+     * Method which finds record by course and student
+     *
+     * @param courseId  - current course id
+     * @param studentId - current student id
+     * @return - true if record was found and otherwise false or exception
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public boolean findRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws ServiceException {
         validator.validateId(courseId);
         validator.validateId(studentId);
@@ -98,6 +109,14 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
         }
     }
 
+    /**
+     * Method which gets record by course and student
+     *
+     * @param courseId  - current course id
+     * @param studentId - current student id
+     * @return - StudentHasCourseDto entity record by current user and current course
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public StudentHasCourseDto getRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws ServiceException {
         validator.validateId(courseId);
         validator.validateId(studentId);
@@ -109,6 +128,13 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
         }
     }
 
+    /**
+     * Method which gets record by student id
+     *
+     * @param studentId - current student id
+     * @return - list of records courses with student id
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public List<StudentHasCourseDto> getRecordsByStudentId(Integer studentId) throws ServiceException {
         validator.validateId(studentId);
         List<StudentHasCourse> studentList;
@@ -123,6 +149,13 @@ public class StudentHasCourseServiceImpl implements Service<StudentHasCourseDto,
         return studentDtoList;
     }
 
+    /**
+     * Method which gets record by course id
+     *
+     * @param courseId - current course id
+     * @return - list of records students with course id
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public List<StudentHasCourseDto> getRecordsByCourseId(Integer courseId) throws ServiceException {
         validator.validateId(courseId);
         List<StudentHasCourse> studentList;

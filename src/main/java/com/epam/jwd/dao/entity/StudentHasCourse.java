@@ -2,21 +2,54 @@ package com.epam.jwd.dao.entity;
 
 import java.sql.Date;
 
+/**
+ * StudentHasCourse entity class which extends Entity class with Integer id field
+ */
 public class StudentHasCourse extends Entity<Integer> {
+    /**
+     * Integer field with course id which associated with current course
+     */
     private Integer courseId;
+    /**
+     * Integer field with user id which associated with current user
+     */
     private Integer studentId;
+    /**
+     * Date field with record application date
+     */
     private Date applicationDate;
 
+    /**
+     * Constructor without arguments for creating empty StudentHasCourse object
+     *
+     * @see StudentHasCourse#StudentHasCourse(Integer, Integer, Date)
+     * @see StudentHasCourse#StudentHasCourse(Integer, Integer, Integer, Date)
+     */
     public StudentHasCourse() {
 
     }
 
+    /**
+     * Constructor with arguments and without id for creating StudentHasCourse Object
+     *
+     * @param courseId        - course id associated with current course
+     * @param studentId       - student id associated with current user
+     * @param applicationDate - record application date
+     */
     public StudentHasCourse(Integer courseId, Integer studentId, Date applicationDate) {
         this.courseId = courseId;
         this.studentId = studentId;
         this.applicationDate = applicationDate;
     }
 
+    /**
+     * Constructor with all amount of arguments for creating StudentHasCourse Object
+     *
+     * @param id              - record id
+     * @param courseId        - course id associated with current course
+     * @param studentId       - student id associated with current user
+     * @param applicationDate - record application date
+     */
     public StudentHasCourse(Integer id, Integer courseId, Integer studentId, Date applicationDate) {
         this.id = id;
         this.courseId = courseId;

@@ -20,11 +20,6 @@ public class RequestContextImpl implements RequestContext {
     }
 
     @Override
-    public void removeAttributeFromJsp(String name) {
-        request.removeAttribute(name);
-    }
-
-    @Override
     public Optional<HttpSession> getCurrentSession() {
         return Optional.ofNullable(request.getSession());
     }
@@ -56,11 +51,4 @@ public class RequestContextImpl implements RequestContext {
     public String getHeader() {
         return request.getHeader(REFERER);
     }
-
-//    @Override
-//    public String getPath() {
-//        String url = request.getRequestURL().toString();
-//        String queryString = request.getQueryString();
-//        return url + "?" + queryString;
-//    }
 }

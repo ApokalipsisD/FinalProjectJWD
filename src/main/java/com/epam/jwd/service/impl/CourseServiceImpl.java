@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * CourseService implementation class of Service for CourseDto with Integer id
+ */
 public class CourseServiceImpl implements Service<CourseDto, Integer> {
     private static final Logger logger = LogManager.getLogger(CourseServiceImpl.class);
 
@@ -88,6 +91,13 @@ public class CourseServiceImpl implements Service<CourseDto, Integer> {
         return courseDtoList;
     }
 
+    /**
+     * Method which gets courses by teacher account id
+     *
+     * @param courseId - course id
+     * @return - list of CourseDto with this teacher account
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public List<CourseDto> getCoursesByTeacherId(Integer courseId) throws ServiceException {
         validator.validateId(courseId);
         List<Course> courseList;

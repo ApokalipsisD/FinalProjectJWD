@@ -2,6 +2,9 @@ package com.epam.jwd.service.dto;
 
 import java.util.Objects;
 
+/**
+ * ReviewDto class for Review entity
+ */
 public class ReviewDto extends AbstractDto<Integer> {
     private Integer courseId;
     private Integer studentId;

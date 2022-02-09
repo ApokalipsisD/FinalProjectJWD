@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * AccountService implementation class of Service for AccountDto with Integer id
+ */
 public class AccountServiceImpl implements Service<AccountDto, Integer> {
     private static final Logger logger = LogManager.getLogger(AccountServiceImpl.class);
 
@@ -88,6 +91,13 @@ public class AccountServiceImpl implements Service<AccountDto, Integer> {
         return accountDtoList;
     }
 
+    /**
+     * Method which gets account by user id
+     *
+     * @param id - current user id
+     * @return - AccountDto with user id
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public AccountDto getAccountByUserId(Integer id) throws ServiceException {
         validator.validateId(id);
         try {
@@ -98,6 +108,12 @@ public class AccountServiceImpl implements Service<AccountDto, Integer> {
         }
     }
 
+    /**
+     * Method which gets all teacher accounts
+     *
+     * @return - list of teacher accounts
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public List<AccountDto> getAllTeachers() throws ServiceException {
         List<Account> accountList;
         List<AccountDto> accountDtoList = new ArrayList<>();
@@ -111,6 +127,13 @@ public class AccountServiceImpl implements Service<AccountDto, Integer> {
         return accountDtoList;
     }
 
+    /**
+     * Method which updates user role
+     *
+     * @param accountId - current account id
+     * @param id        - user role
+     * @throws ServiceException - if any DAOExceptions were thrown
+     */
     public void updateRole(Integer accountId, Integer id) throws ServiceException {
         validator.validateId(id);
         validator.validateId(accountId);

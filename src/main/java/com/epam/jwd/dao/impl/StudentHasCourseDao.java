@@ -17,6 +17,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * StudentHasCourseDao implementation class of Dao for StudentHasCourse with Integer id
+ */
 public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
     private static final Logger logger = LogManager.getLogger(StudentHasCourseDao.class);
 
@@ -134,6 +137,14 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         return studentList;
     }
 
+    /**
+     * Method which finds record by course and student
+     *
+     * @param courseId  - current course id
+     * @param studentId - current student id
+     * @return - true if record was found and otherwise false or exception
+     * @throws DaoException - if entity wasn't found or SQL exception
+     */
     public boolean findRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -151,6 +162,14 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         }
     }
 
+    /**
+     * Method which gets record by course and student
+     *
+     * @param courseId  - current course id
+     * @param studentId - current student id
+     * @return - StudentHasCourse entity record by current user and current course
+     * @throws DaoException - if entity wasn't got or SQL exception
+     */
     public StudentHasCourse getRecordByCourseIdAndStudentId(Integer courseId, Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         StudentHasCourse record = null;
@@ -175,6 +194,13 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         return record;
     }
 
+    /**
+     * Method which gets record by student id
+     *
+     * @param studentId - current student id
+     * @return - list of records courses with student id
+     * @throws DaoException - if entity wasn't got or SQL exception
+     */
     public List<StudentHasCourse> getRecordsByStudentId(Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         List<StudentHasCourse> studentList = new ArrayList<>();
@@ -198,6 +224,13 @@ public class StudentHasCourseDao implements Dao<StudentHasCourse, Integer> {
         return studentList;
     }
 
+    /**
+     * Method which gets record by course id
+     *
+     * @param courseId - current course id
+     * @return - list of records students with course id
+     * @throws DaoException - if entity wasn't got or SQL exception
+     */
     public List<StudentHasCourse> getRecordsByCourseId(Integer courseId) throws DaoException {
         Connection connection = pool.takeConnection();
         List<StudentHasCourse> studentList = new ArrayList<>();

@@ -1,5 +1,8 @@
 package com.epam.jwd.controller.command;
 
+/**
+ * Interface which contains attribute messages
+ */
 public interface Attributes {
     String ERROR_ATTRIBUTE = "error";
     String TEACHERS_ATTRIBUTE = "teachers";
@@ -40,7 +43,6 @@ public interface Attributes {
     String REVIEW_ATTENDANCE_ATTRIBUTE = "attendance";
     String TEXT_REVIEW_ATTRIBUTE = "reviewText";
     String REPEAT_PASSWORD_ATTRIBUTE = "repeat_password";
-
 
     String COURSE_UPDATED_MESSAGE = "Course successfully updated";
     String PASSWORD_CHANGED_MESSAGE = "Password successfully changed";

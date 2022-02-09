@@ -1,5 +1,8 @@
 package com.epam.jwd.service.exception;
 
+/**
+ * Interface which contains exception messages
+ */
 public interface MessageException {
     String INCORRECT_LOGIN_LENGTH_EXCEPTION = "Incorrect login length (login must be greater than 3 and less than 20)";
     String INCORRECT_LOGIN_EXCEPTION = "Incorrect login (login must be greater than 3 and less than 20 and must not contain inaccessible characters)";
@@ -53,6 +56,4 @@ public interface MessageException {
     String INCORRECT_PASSWORD_MESSAGE = "Incorrect password";
     String REPEATING_PASSWORD_MESSAGE = "The new password cannot be the same as the previous one";
     String LOGIN_IS_TAKEN_EXCEPTION = "Login is already taken";
-
-
 }

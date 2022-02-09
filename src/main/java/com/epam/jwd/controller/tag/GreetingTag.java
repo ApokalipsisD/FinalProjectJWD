@@ -9,6 +9,9 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Personal  jsp tag
+ */
 public class GreetingTag extends TagSupport {
     private static final Logger logger = LogManager.getLogger(GreetingTag.class);
     private static final String USER_WELCOME_MESSAGE = "Hello, %s";
@@ -27,6 +30,11 @@ public class GreetingTag extends TagSupport {
         return EVAL_PAGE;
     }
 
+    /**
+     * Method for building welcome message for current user
+     *
+     * @return greeting string
+     */
     private String buildWelcomeMessage() {
         return Optional.ofNullable(pageContext.getSession())
                 .map(session -> session.getAttribute(USER_NAME_SESSION_ATTRIB))
@@ -34,6 +42,12 @@ public class GreetingTag extends TagSupport {
                 .orElse(DEFAULT_WELCOME_MESSAGE);
     }
 
+    /**
+     * Method for printing generated greeting text
+     *
+     * @param tagResultText - greeting text
+     * @throws JspException - if IOException were thrown
+     */
     private void printMessage(String tagResultText) throws JspException {
         final JspWriter out = pageContext.getOut();
         try {

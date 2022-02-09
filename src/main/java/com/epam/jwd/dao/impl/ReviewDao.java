@@ -17,6 +17,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ReviewDao implementation class of Dao for Review with Integer id
+ */
 public class ReviewDao implements Dao<Review, Integer> {
     private static final Logger logger = LogManager.getLogger(ReviewDao.class);
 
@@ -140,6 +143,14 @@ public class ReviewDao implements Dao<Review, Integer> {
         return reviewList;
     }
 
+    /**
+     * Method which finds review by course and student
+     *
+     * @param courseId  - current course id
+     * @param studentId - current student id
+     * @return - true if review was found and otherwise false or exception
+     * @throws DaoException - if entity wasn't found or SQL exception
+     */
     public boolean findReviewByCourseIdAndStudentId(Integer courseId, Integer studentId) throws DaoException {
         Connection connection = pool.takeConnection();
         ResultSet resultSet = null;
@@ -157,6 +168,13 @@ public class ReviewDao implements Dao<Review, Integer> {
         }
     }
 
+    /**
+     * Method which finds reviews by course id
+     *
+     * @param courseId - current course id
+     * @return - true if review was found and otherwise false or exception
+     * @throws DaoException - if entity wasn't found or SQL exception
+     */
     public List<Review> getReviewsByCourseId(Integer courseId) throws DaoException {
         Connection connection = pool.takeConnection();
         List<Review> reviewList = new ArrayList<>();

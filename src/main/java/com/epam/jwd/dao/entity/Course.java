@@ -1,25 +1,59 @@
 package com.epam.jwd.dao.entity;
 
-import com.epam.jwd.dao.api.Dao;
-import com.epam.jwd.dao.impl.AccountDao;
-
 import java.sql.Date;
 import java.util.Objects;
 
+/**
+ * Course entity class which extends Entity class with Integer id field
+ */
 public class Course extends Entity<Integer> {
+    /**
+     * String field with course title
+     */
     private String title;
+    /**
+     * String field with course description
+     */
     private String description;
+    /**
+     * Date field with course startDate
+     */
     private Date startDate;
+    /**
+     * Date field with course endDate
+     */
     private Date endDate;
+    /**
+     * Status field with course status
+     *
+     * @see Status
+     */
     private Status courseStatus;
+    /**
+     * Integer field with course id which associated with teacher account
+     */
     private Integer teacherId;
 
-    private static final Dao<Account, Integer> accountDao = new AccountDao();
-
-    public Course(){
+    /**
+     * Constructor without arguments for creating empty Course object
+     *
+     * @see Course#Course(String, String, Date, Date, Integer, Integer)
+     * @see Course#Course(Integer, String, String, Date, Date, Integer, Integer)
+     */
+    public Course() {
 
     }
 
+    /**
+     * Constructor with arguments and without id for creating Course Object
+     *
+     * @param title        - course title
+     * @param description  - course description
+     * @param startDate    - course start date
+     * @param endDate      - course end date
+     * @param courseStatus - course status
+     * @param teacherId    - course teacher id which associated with teacher account
+     */
     public Course(String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId) {
         this.title = title;
         this.description = description;
@@ -29,6 +63,17 @@ public class Course extends Entity<Integer> {
         this.teacherId = teacherId;
     }
 
+    /**
+     * Constructor with all amount of arguments for creating Course Object
+     *
+     * @param id           - course id
+     * @param title        - course title
+     * @param description  - course description
+     * @param startDate    - course start date
+     * @param endDate      - course end date
+     * @param courseStatus - course status
+     * @param teacherId    - course teacher id which associated with teacher account
+     */
     public Course(Integer id, String title, String description, Date startDate, Date endDate, Integer courseStatus, Integer teacherId) {
         this.id = id;
         this.title = title;

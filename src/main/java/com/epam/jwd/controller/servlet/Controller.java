@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Controller class which provides main http method logic
+ */
 @WebServlet("/controller")
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(Controller.class);
@@ -32,6 +35,12 @@ public class Controller extends HttpServlet {
         process(request, response);
     }
 
+    /**
+     * Method which describes main logic of taken command from request and gives it to precise command class
+     *
+     * @param request  {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     */
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Command command = Command.of(request.getParameter(COMMAND_PARAMETER_NAME));
         ResponseContext commandResult = command.execute(new RequestContextImpl(request));
@@ -43,6 +52,9 @@ public class Controller extends HttpServlet {
         }
     }
 
+    /**
+     * Method for initialization of connection pool within start of the application
+     */
     @Override
     public void init() {
         try {
@@ -52,6 +64,9 @@ public class Controller extends HttpServlet {
         }
     }
 
+    /**
+     * Method that shutDowns connection pool in the end of application work
+     */
     @Override
     public void destroy() {
         super.destroy();

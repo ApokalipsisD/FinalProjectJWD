@@ -1,5 +1,8 @@
 package com.epam.jwd.dao.exception;
 
+/**
+ * Interface which contains exception messages
+ */
 public interface DaoMessageException {
     String SAVE_USER_EXCEPTION = "Save user was failed";
     String UPDATE_USER_EXCEPTION = "Update user was failed";

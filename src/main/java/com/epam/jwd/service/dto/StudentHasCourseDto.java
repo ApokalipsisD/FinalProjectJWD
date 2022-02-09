@@ -2,6 +2,9 @@ package com.epam.jwd.service.dto;
 
 import java.sql.Date;
 
+/**
+ * StudentHasCourseDto class for StudentHasCourse entity
+ */
 public class StudentHasCourseDto extends AbstractDto<Integer> {
     private Integer courseId;
     private Integer studentId;

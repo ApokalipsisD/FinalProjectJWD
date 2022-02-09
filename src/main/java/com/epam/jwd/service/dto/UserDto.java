@@ -1,5 +1,8 @@
 package com.epam.jwd.service.dto;
 
+/**
+ * UserDto class for User entity
+ */
 public class UserDto extends AbstractDto<Integer> {
     private String login;
     private String password;

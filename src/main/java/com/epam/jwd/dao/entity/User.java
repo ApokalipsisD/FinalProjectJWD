@@ -1,18 +1,46 @@
 package com.epam.jwd.dao.entity;
 
+/**
+ * User entity class which extends Entity with Integer id field
+ */
 public class User extends Entity<Integer> {
+    /**
+     * String field with user's login
+     */
     private String login;
+    /**
+     * String field with user's password
+     */
     private String password;
 
-    public User(){
+    /**
+     * Constructor without arguments for creating empty User Object
+     *
+     * @see User#User(String, String)
+     * @see User#User(Integer, String, String)
+     */
+    public User() {
 
     }
 
+    /**
+     * Constructor with arguments and without id for creating User Object
+     *
+     * @param login    - user's login
+     * @param password - user's password
+     */
     public User(String login, String password) {
         this.login = login;
         this.password = password;
     }
 
+    /**
+     * Constructor with all amount of arguments for creating User object
+     *
+     * @param id       - user's id
+     * @param login    - user's login
+     * @param password - user's password
+     */
     public User(Integer id, String login, String password) {
         this.id = id;
         this.login = login;

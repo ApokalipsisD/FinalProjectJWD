@@ -20,6 +20,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UserDao implementation class of Dao for User with Integer id
+ */
 public class UserDao implements Dao<User, Integer> {
     private static final Logger logger = LogManager.getLogger(UserDao.class);
 
@@ -33,7 +36,6 @@ public class UserDao implements Dao<User, Integer> {
 
     private final ConnectionPool pool = ConnectionPoolImpl.getInstance();
     private final PasswordManager passwordManager = new PasswordManagerImpl();
-
     private static final AccountDao accountDao = new AccountDao();
 
     @Override
@@ -166,6 +168,13 @@ public class UserDao implements Dao<User, Integer> {
         return userList;
     }
 
+    /**
+     * Method for finding User entity by login
+     *
+     * @param login - user login
+     * @return - User entity
+     * @throws DaoException - if it's unable to take query from DB
+     */
     public User findByLogin(String login) throws DaoException {
         Connection connection = pool.takeConnection();
         User user = null;
@@ -188,6 +197,13 @@ public class UserDao implements Dao<User, Integer> {
         return user;
     }
 
+    /**
+     * Method to check an existing login
+     *
+     * @param login - user login
+     * @return - true if login is free and false otherwise
+     * @throws DaoException - if it's unable to take query from DB
+     */
     public boolean checkIfLoginFree(String login) throws DaoException {
         Connection connection = pool.takeConnection();
         boolean isLoginFree = false;

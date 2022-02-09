@@ -21,11 +21,30 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+/**
+ * Class which is a realization of Proxy pattern and provides an instance of connection with extra behavior
+ * Implements Connection class and override its methods
+ *
+ * @see Connection
+ */
 public class ProxyConnection implements Connection {
 
+    /**
+     * Real connection field
+     */
     private final Connection connection;
+    /**
+     * Pool to work with
+     */
     private final ConnectionPool connectionPool;
 
+    /**
+     * Constructor which initialize {@link ProxyConnection#connection} field
+     * and {@link ProxyConnection#connectionPool}
+     *
+     * @param connection     - {@link ProxyConnection#connection}
+     * @param connectionPool - {@link ProxyConnection#connectionPool}
+     */
     public ProxyConnection(Connection connection, ConnectionPool connectionPool) {
         this.connection = connection;
         this.connectionPool = connectionPool;
@@ -75,6 +94,11 @@ public class ProxyConnection implements Connection {
         connection.rollback();
     }
 
+    /**
+     * Method which returns connection to ConnectionPool
+     *
+     * @see ConnectionPoolImpl#returnConnection(Connection)
+     */
     @Override
     public void close() {
         this.connectionPool.returnConnection(connection);

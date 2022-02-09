@@ -22,17 +22,38 @@ public final class ConnectionPoolImpl implements ConnectionPool {
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String CONNECTION_FAILED = "Connection has been failed";
 
+    /**
+     * BlockingQueue which contains ProxyConnections {@link ProxyConnection} that are available to take
+     */
     private final BlockingQueue<ProxyConnection> availableConnections;
+    /**
+     * BlockingQueue which contains ProxyConnections {@link ProxyConnection} that are not available to take
+     */
     private final BlockingQueue<ProxyConnection> usedConnections;
 
+    /**
+     * Instance of ConnectionPool
+     */
     private static ConnectionPool instance;
+
+    /**
+     * Field which shows current state of connection pool
+     */
     private boolean initialized;
 
+    /**
+     * Constructor which initialize available and given away connections
+     */
     private ConnectionPoolImpl() {
         availableConnections = new ArrayBlockingQueue<>(POOL_SIZE);
         usedConnections = new ArrayBlockingQueue<>(POOL_SIZE);
     }
 
+    /**
+     * Singleton realization of given instance back to user
+     *
+     * @return - Connection pool instance in one copy
+     */
     public static ConnectionPool getInstance() {
         synchronized (ConnectionPool.class) {
             if (Objects.isNull(instance)) {
@@ -50,6 +71,12 @@ public final class ConnectionPoolImpl implements ConnectionPool {
         }
     }
 
+    /**
+     * Method which creates connection pool of INITIAL_SIZE
+     * It creates ProxyConnections {@link ProxyConnection} and puts it to {@link ConnectionPoolImpl#availableConnections}
+     *
+     * @throws DaoException - if SQL driver is unavailable
+     */
     private void createConnection() throws DaoException {
         try {
             for (int i = 0; i < POOL_SIZE; i++) {
@@ -78,12 +105,25 @@ public final class ConnectionPoolImpl implements ConnectionPool {
         }
     }
 
+    /**
+     * Method which takes collection with ProxyConnection and close connections
+     *
+     * @param connections - collection with ProxyConnections
+     * @throws DaoException - if can't close connection
+     */
     private void closeConnections(BlockingQueue<ProxyConnection> connections) throws DaoException {
         for (ProxyConnection connection : connections) {
             closeConnection(connection);
         }
     }
 
+    /**
+     * Method which close one connection
+     * It calls close method on ProxyConnection
+     *
+     * @param proxyConnection - connection to close
+     * @throws DaoException - if can't close current connection
+     */
     private void closeConnection(ProxyConnection proxyConnection) throws DaoException {
         try {
             proxyConnection.realCloseConnection();

@@ -86,7 +86,7 @@ public class SignUpCommand implements Command {
             if (Objects.isNull(login) || Objects.isNull(password) || Objects.isNull(repeatPassword)) {
                 throw new ServiceException(MessageException.ENTER_DATE_EXCEPTION);
             }
-            if (!userService.checkRepeatPassword(password, repeatPassword)) {
+            if(!password.equals(repeatPassword)){
                 throw new ServiceException(MessageException.PASSWORD_MISMATCH_MESSAGE);
             }
             if (!userService.checkIfLoginFree(login)) {
