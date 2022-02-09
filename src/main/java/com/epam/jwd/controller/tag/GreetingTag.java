@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Personal  jsp tag
+ * Personal jsp tag
  */
 public class GreetingTag extends TagSupport {
     private static final Logger logger = LogManager.getLogger(GreetingTag.class);
@@ -46,7 +46,7 @@ public class GreetingTag extends TagSupport {
      * Method for printing generated greeting text
      *
      * @param tagResultText - greeting text
-     * @throws JspException - if IOException were thrown
+     * @throws JspException - if JspException were thrown
      */
     private void printMessage(String tagResultText) throws JspException {
         final JspWriter out = pageContext.getOut();

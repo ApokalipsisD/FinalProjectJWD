@@ -31,6 +31,7 @@ public class PermissionFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(PermissionFilter.class);
 
     private static final String ERROR_PAGE = "/controller?command=show_error_page";
+    private static final String SESSION_ERROR_PAGE = "/controller?command=show_login";
     private static final String ACCOUNT_ATTRIBUTE = "account";
     private static final String COMMAND_ATTRIBUTE = "command";
 
@@ -64,7 +65,11 @@ public class PermissionFilter implements Filter {
         if (allowedCommands.contains(command)) {
             filterChain.doFilter(request, response);
         } else {
-            ((HttpServletResponse) response).sendRedirect(ERROR_PAGE);
+            if (session != null && !session.isNew()) {
+                ((HttpServletResponse) response).sendRedirect(ERROR_PAGE);
+            } else {
+                ((HttpServletResponse) response).sendRedirect(SESSION_ERROR_PAGE);
+            }
         }
     }
 
