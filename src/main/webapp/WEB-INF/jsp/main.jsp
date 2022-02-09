@@ -60,13 +60,12 @@
             <div class="header-h1" style="padding-bottom: 20px; padding-top: 20px">
                 <h1 style="font-size: 45px">Study GO</h1>
             </div>
-<%--            <h1 style="text-align: center; font-size: 60px; padding-bottom: 20px; padding-top: 20px">Study GO</h1>--%>
             <h3 style="text-align: center;  color: #0097a7; font-family: ‘Lobster’, cursive; font-size: 36px; font-weight: normal; line-height: 48px; margin: 0 0 18px; text-shadow: 1px 0 0 #fff;"><jwdt:welcomeText/></h3>
             <c:choose>
                 <c:when test="${not empty sessionScope.user}">
                     <div class="row justify-content-between" style="margin-top: 50px">
-                        <div class="card card-body col-xs-5 col-md-5 col-sm-5 col-lg-5">
-                            <div class="card-body align-items-center justify-content-center"
+                        <div class="card card-body col-sm-5 col-md-6 col-lg-5">
+                            <div class="card-body"
                                  style="height: 150px; justify-content: center; text-align: center">
                                 <p style="text-align: center; font-size: 30px">${catalog}</p>
                                 <a class="btn btn-primary btn-lg"
@@ -74,8 +73,8 @@
                                    role="button" style="align-content: center; align-items: center" type="submit">${catalog}</a>
                             </div>
                         </div>
-                        <div class="card card-body col-md-5 col-sm-5 col-lg-5">
-                            <div class="card-body align-items-center justify-content-center"
+                        <div class="card card-body col-sm-5 col-md-6 col-lg-5">
+                            <div class="card-body"
                                  style="height: 150px; justify-content: center; text-align: center">
                                 <p style="text-align: center; font-size: 30px">${profile}</p>
                                 <a class="btn btn-primary btn-lg"

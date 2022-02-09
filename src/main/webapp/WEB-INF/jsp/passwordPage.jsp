@@ -84,7 +84,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="inputOldPassword">${oldPassword}</label>
-                                    <input name="oldPass" type="password" class="form-control" id="inputOldPassword"/>
+                                    <input name="oldPass" type="password" class="form-control" id="inputOldPassword" required/>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputNewPassword">${newPassword}</label>
