@@ -243,30 +243,33 @@
                                     </div>
 
                                     <li class="list-group-item">${entry.key.login}
-                                        <c:choose>
-                                            <c:when test="${entry.value eq true}">
-                                                <div class="pull-right">
-                                                    <a class="btn btn-primary" href="#"
-                                                       data-toggle="modal"
-                                                       data-target="#changeReview${entry.key.id}"
-                                                       role="button">${changeReview}</a>
-                                                    <a class="btn btn-primary" href="#"
-                                                       data-toggle="modal"
-                                                       data-target="#deleteReview${entry.key.id}"
-                                                       role="button">${deleteReview}</a>
-                                                </div>
+                                        <c:if test="${status ne Status.Coming}">
+                                            <c:choose>
+                                                <c:when test="${entry.value eq true}">
+                                                    <div class="pull-right">
+                                                        <a class="btn btn-primary" href="#"
+                                                           data-toggle="modal"
+                                                           data-target="#changeReview${entry.key.id}"
+                                                           role="button">${changeReview}</a>
+                                                        <a class="btn btn-primary" href="#"
+                                                           data-toggle="modal"
+                                                           data-target="#deleteReview${entry.key.id}"
+                                                           role="button">${deleteReview}</a>
+                                                    </div>
 
-                                            </c:when>
-                                            <c:otherwise>
-                                                <button class="btn btn-primary pull-right" role="button"
-                                                        type="button"
-                                                        data-toggle="modal"
-                                                        data-target="#review${entry.key.id}"
-                                                        name="studentIdOnCourse" value="${entry.key.id}">
-                                                        ${review}
-                                                </button>
-                                            </c:otherwise>
-                                        </c:choose>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button class="btn btn-primary pull-right" role="button"
+                                                            type="button"
+                                                            data-toggle="modal"
+                                                            data-target="#review${entry.key.id}"
+                                                            name="studentIdOnCourse" value="${entry.key.id}">
+                                                            ${review}
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
+
                                     </li>
 
                                 </c:forEach>

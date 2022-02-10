@@ -5,10 +5,12 @@ import com.epam.jwd.controller.command.api.RequestContext;
 import com.epam.jwd.controller.command.api.ResponseContext;
 import com.epam.jwd.controller.command.impl.showPage.ShowCoursesPageCommand;
 import com.epam.jwd.service.dto.CourseDto;
+import com.epam.jwd.service.dto.ReviewDto;
 import com.epam.jwd.service.dto.StudentHasCourseDto;
 import com.epam.jwd.service.exception.ServiceException;
 import com.epam.jwd.service.impl.AccountServiceImpl;
 import com.epam.jwd.service.impl.CourseServiceImpl;
+import com.epam.jwd.service.impl.ReviewServiceImpl;
 import com.epam.jwd.service.impl.StudentHasCourseServiceImpl;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -28,6 +30,7 @@ public class DeleteCourseCommand implements Command {
     private static final CourseServiceImpl catalog = new CourseServiceImpl();
     private static final AccountServiceImpl account = new AccountServiceImpl();
     private static final StudentHasCourseServiceImpl record = new StudentHasCourseServiceImpl();
+    private static final ReviewServiceImpl review = new ReviewServiceImpl();
 
     private static final String PAGE_PATH = "/controller?command=show_courses";
     private static final String ERROR_PAGE_PATH = "/WEB-INF/jsp/error.jsp";
@@ -68,11 +71,16 @@ public class DeleteCourseCommand implements Command {
         Integer id = Integer.valueOf(context.getParameterByName(ID_ATTRIBUTE));
         CourseDto courseDto;
         List<StudentHasCourseDto> list;
+        List<ReviewDto> reviewDtoList;
         try {
             courseDto = catalog.getById(id);
             list = record.getRecordsByCourseId(courseDto.getId());
             for (StudentHasCourseDto student : list) {
                 record.delete(student);
+            }
+            reviewDtoList = review.getReviewsByCourseId(courseDto.getId());
+            for(ReviewDto reviewDto: reviewDtoList){
+                review.delete(reviewDto);
             }
             catalog.delete(courseDto);
             context.addAttributeToJsp(MESSAGE, COURSE_DELETED_MESSAGE);
